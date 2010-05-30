@@ -1,0 +1,9 @@
+
+PRJ_PLATFORMS
+DEFAULT
+
+PRJ_EXPORTS
+..\inc\AlternateDjvuRecog.h
+
+PRJ_MMPFILES
+AlternateDjvuRecog.mmp

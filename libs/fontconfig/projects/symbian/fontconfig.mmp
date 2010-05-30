@@ -1,0 +1,60 @@
+// fontconfig makefile for symbian
+//
+// Copyright (c) 2009 by iwanj@users.sourceforge.net
+//
+
+target		fontconfig.lib
+targettype	lib
+uid 		0x1000008d 0xe000ff05
+capability	none
+
+epocallowdlldata
+
+macro	FC_BUILD_LIBRARY
+
+#ifdef WINSCW
+deffile	bwins/fontconfig.def
+#else
+deffile	eabi/fontconfig.def
+#endif
+
+macro HAVE_STDINT_H
+macro HAVE_RANDOM
+macro HAVE_FT_GET_NEXT_CHAR=1
+macro XML_STATIC
+
+systeminclude	/epoc32/include
+systeminclude	/epoc32/include/stdapis
+systeminclude	/epoc32/include/freetype
+systeminclude	/epoc32/include/freetype/config
+systeminclude 	/epoc32/include/expat
+systeminclude	../..
+userinclude		../../src
+
+sourcepath	../../src
+
+source	fcatomic.c
+source	fcblanks.c
+source	fccache.c
+source	fccfg.c
+source	fccharset.c
+source	fcdbg.c
+source	fcdefault.c
+source	fcdir.c
+source	fcfreetype.c
+source	fcfs.c
+source	fcinit.c
+source	fclang.c
+source	fclist.c
+source	fcmatch.c
+source	fcmatrix.c
+source	fcname.c
+source	fcpat.c
+source	fcserialize.c
+source	fcstr.c
+source	fcxml.c
+source	ftglue.c
+
+library	libc.lib
+staticlibrary	freetype.lib
+staticlibrary	libexpat.lib

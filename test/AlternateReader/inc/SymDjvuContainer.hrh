@@ -1,0 +1,33 @@
+/*
+========================================================================
+ Name        : SymDjvuContainer.hrh
+ Author      : midday
+ Copyright   : All right reserved by Midday ЬРав 2009
+ Description : 
+========================================================================
+*/
+enum TSymDjvuContainerViewCommands
+	{
+	EOpenFile = 0x6000,
+	
+	EZoomIn,
+	EZoomOut,
+	EZoomWidth,
+	EFitActualSize,
+	
+	EFullscreen,
+	EExitFullscreen,
+	
+	EGoToPage,
+	
+	EExit,
+	
+	EButtonDown,
+	EButtonUp
+	
+	};
+enum TSymDjvuContainerViewControls
+	{
+	ESymDjvuContainerViewWaitDialog = 1,
+	ESymDjvuContainerViewNumOfPage
+	};

@@ -1,0 +1,6 @@
+PRJ_MMPFILES
+..\RecognizerDll\group\AlternateDjvuRecog.mmp
+
+PRJ_EXPORTS
+..\RecognizerDll\inc\AlternateDjvuRecog.h
+

@@ -1,0 +1,59 @@
+/*
+========================================================================
+ Name        : SymDjvu.rss
+ Author      : midday
+ Copyright   : All right reserved by Midday ЬРав 2009
+ Description : 
+========================================================================
+*/
+NAME SYMD
+
+#include <avkon.rsg>
+#include <avkon.rh>
+#include <eikon.rh>
+#include <appinfo.rh>
+#include <CommonDialogs.rh>
+#include "SymDjvu.hrh"
+#include "SymDjvu.loc"
+
+RESOURCE RSS_SIGNATURE
+	{
+	}
+RESOURCE TBUF
+	{
+	buf = STR_SymDjvuApplicationName;
+	}
+RESOURCE EIK_APP_INFO r_application_sym_djvu_app_ui
+	{
+	cba = R_AVKON_SOFTKEYS_OPTIONS_EXIT;
+	status_pane = r_application_status_pane;
+	}
+RESOURCE STATUS_PANE_APP_MODEL r_application_status_pane
+	{
+	}
+RESOURCE LOCALISABLE_APP_INFO r_localisable_app_info
+	{
+	short_caption = STR_SymDjvuApplicationName;
+	caption_and_icon = CAPTION_AND_ICON_INFO
+		{
+		caption = STR_SymDjvuApplicationName;
+		number_of_icons = 1;
+		icon_file = "c:\\resource\\apps\\SymDjvu_aif.mif";
+		};
+	}
+RESOURCE TBUF r_application_akn_view_reference1
+	{
+	}
+
+RESOURCE MEMORYSELECTIONDIALOG r_memory_selection
+    {
+    title = STR_SymDjvuContainerViewSelectMemory;
+    softkey_1 = text_softkey_ok; // The text for the left softkey.
+    softkey_2 = text_softkey_cancel; // The text for the right softkey.
+    locations =
+        {
+        LOCATION { root_path =  text_phone_memory_root_path; },
+        LOCATION { root_path = text_memory_card_root_path; }
+        };
+    } 
+#include "SymDjvuContainer.rssi"

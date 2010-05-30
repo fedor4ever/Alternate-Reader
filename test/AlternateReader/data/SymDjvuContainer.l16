@@ -1,0 +1,15 @@
+
+// localized strings for language: Russian (16)
+CHARACTER_SET UTF8
+
+#define STR_SymDjvuContainerViewApplicationName "Djvu Reader"
+#define STR_SymDjvuContainerViewOpenFile "Открыть файл..."
+#define STR_SymDjvuContainerViewGoToPage "Перейти на страницу..."
+#define STR_SymDjvuContainerViewZoomIn "Увеличить"
+#define STR_SymDjvuContainerViewZoomOut "Уменьшить"
+#define STR_SymDjvuContainerViewZoomWidth "Растянуть по ширине"
+#define STR_SymDjvuContainerViewFitActualSize "Актуальный размер"
+#define STR_SymDjvuContainerViewFullscreen "Полноэкранный режим"
+#define STR_SymDjvuContainerViewExitFullscreen "Обычный режим"
+#define STR_SymDjvuContainerViewSelectMemory "Выбор памяти:"
+#define STR_SymDjvuContainerViewExit "Выход"

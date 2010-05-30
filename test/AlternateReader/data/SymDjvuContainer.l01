@@ -1,0 +1,15 @@
+
+// localized strings for language: UK English (01)
+CHARACTER_SET UTF8
+
+#define STR_SymDjvuContainerViewApplicationName "Djvu Reader"
+#define STR_SymDjvuContainerViewOpenFile "Open File..."
+#define STR_SymDjvuContainerViewGoToPage "Go To Page..."
+#define STR_SymDjvuContainerViewZoomIn "Zoom In"
+#define STR_SymDjvuContainerViewZoomOut "Zoom Out"
+#define STR_SymDjvuContainerViewZoomWidth "Fit Width"
+#define STR_SymDjvuContainerViewFitActualSize "Fit Actual Size"
+#define STR_SymDjvuContainerViewFullscreen "Fullscreen mode"
+#define STR_SymDjvuContainerViewExitFullscreen "Normal mode"
+#define STR_SymDjvuContainerViewSelectMemory "Select memory:"
+#define STR_SymDjvuContainerViewExit "Exit"
