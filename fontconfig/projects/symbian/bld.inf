@@ -1,0 +1,16 @@
+// fontconfig makefile for symbian
+//
+// Copyright (c) 2009 by iwanj@users.sourceforge.net
+//
+prj_platforms
+winscw gcce armv5
+
+prj_mmpfiles
+fontconfig.mmp
+
+prj_exports
+../../fontconfig/fontconfig.h /epoc32/include/fontconfig/fontconfig.h
+../../fontconfig/fcfreetype.h /epoc32/include/fontconfig/fcfreetype.h
+
+fonts.dtd   c:/data/fontconfig/fonts.dtd
+fonts.conf  c:/data/fontconfig/fonts.conf

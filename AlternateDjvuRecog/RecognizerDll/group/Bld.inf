@@ -1,0 +1,9 @@
+
+PRJ_PLATFORMS
+DEFAULT
+
+PRJ_EXPORTS
+..\inc\AlternateReaderRecog.h
+
+PRJ_MMPFILES
+AlternateReaderRecog.mmp

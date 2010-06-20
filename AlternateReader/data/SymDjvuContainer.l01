@@ -1,0 +1,28 @@
+
+// localized strings for language: UK English (01)
+CHARACTER_SET UTF8
+
+#define STR_SymDjvuContainerViewApplicationName "Djvu & PDF Reader"
+#define STR_SymDjvuContainerViewOpenFile "Open File..."
+#define STR_SymDjvuContainerViewGoToPage "Go To Page..."
+#define STR_SymDjvuContainerViewZoomIn "Zoom In"
+#define STR_SymDjvuContainerViewZoomOut "Zoom Out"
+#define STR_SymDjvuContainerViewZoomWidth "Fit Width"
+#define STR_SymDjvuContainerViewFitActualSize "Fit Actual Size"
+#define STR_SymDjvuContainerViewFullscreen "Fullscreen mode"
+#define STR_SymDjvuContainerViewExitFullscreen "Normal mode"
+#define STR_SymDjvuContainerViewSelectMemory "Select memory:"
+#define STR_SymDjvuContainerViewExit "Exit"
+#define STR_SymDjvuContainerViewAbout "About..."
+
+#define qtn_choose_page "Choose page"
+#define qtn_choose_page_maximum "Total"
+#define qtn_choose_page_pages "pages"
+
+#define qtn_select_file_select_file "Select file"
+#define qtn_select_file_select "Select"
+#define qtn_select_file_open "Open"
+#define qtn_select_file_back "Back"
+	
+#define qtn_about_dialog_title "About"
+#define qtn_about_dialog_text "AlternateReader 1.0.8(3)\n\nAutor: Vasily Kharitonov\nkharitonov2004@mail.ru\n\nhttp://sourceforge.net/projects/alternatedjvu/\n\nDonate:\nWEBMONEY RUB: R354392641614\nWEBMONEY WMZ: Z290483498834\nWEBMONEY EUR: E240134583601\nWEBMONEY UAH: U335103001810"

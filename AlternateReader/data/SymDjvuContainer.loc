@@ -1,0 +1,14 @@
+/*
+========================================================================
+ Name        : SymDjvuContainer.loc
+ Author      : midday
+ Copyright   : All right reserved by Midday ЬРав 2009
+ Description : 
+========================================================================
+*/
+
+#if defined LANGUAGE_01
+  #include "SymDjvuContainer.l01"
+#elif defined LANGUAGE_16
+  #include "SymDjvuContainer.l16"
+#endif

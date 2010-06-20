@@ -1,0 +1,5 @@
+
+// localized strings for language: UK English (01)
+
+#define STR_SymDjvuApplicationName "AlternateReader"
+
