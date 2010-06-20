@@ -1,7 +1,0 @@
-Makefile
-libdjvulibre*.a
-libdjvulibre*.so*
-libdjvulibre.la
-*.lo
-.libs
-ddjvuapi.pc

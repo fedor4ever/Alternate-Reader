@@ -1,6 +1,0 @@
-
-#ifdef LANGUAGE_01
-#include "SymDjvu.l01"
-#elif LANGUAGE_16
-#include "SymDjvu.l16"
-#endif
