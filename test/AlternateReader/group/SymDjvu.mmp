@@ -3,20 +3,19 @@ TARGET			SymDjvu.exe
 UID			   0x100039CE 0xE1A0B4F1
 VENDORID	  	  0
 TARGETTYPE		exe
-EPOCSTACKSIZE	 0x14000
-EPOCHEAPSIZE 0x10000 52428800
+EPOCSTACKSIZE	 0x10000
+EPOCHEAPSIZE 0x3000 52428800
 
 MACRO HAVE_CONFIG_H=1 
 OPTION CW -wchar_t on 
 MACRO  _WCHAR_T_DECLARED
 
-
 SYSTEMINCLUDE \epoc32\include 
 SYSTEMINCLUDE \epoc32\include\variant 
 SYSTEMINCLUDE \epoc32\include\ecom 
 SYSTEMINCLUDE \epoc32\include\stdapis 
-SYSTEMINCLUDE \epoc32\include\stdapis\stlport 
 SYSTEMINCLUDE \epoc32\include\stdapis\sys
+SYSTEMINCLUDE \epoc32\include\stdapis\stlport
 
 SYSTEMINCLUDE        ..
 SYSTEMINCLUDE        ..\fofi
@@ -24,7 +23,10 @@ SYSTEMINCLUDE        ..\goo
 SYSTEMINCLUDE        ..\splash
 SYSTEMINCLUDE        ..\poppler
 SYSTEMINCLUDE        ..\..\libpng
+SYSTEMINCLUDE        ..\..\fontconfig
 SYSTEMINCLUDE        ..\..\freetype
+
+;Disable for S3x
 SYSTEMINCLUDE        ..\..\freetype\include
 
 SOURCE               ..\goo\gfile.cc
@@ -131,17 +133,28 @@ START RESOURCE	SymDjvu_reg.rss
 TARGETPATH 	  \private\10003a3f\apps
 END //RESOURCE
 
-LIBRARY			euser.lib apparc.lib cone.lib eikcore.lib avkon.lib animation.lib 
-LIBRARY			commonengine.lib efsrv.lib estor.lib eikcoctl.lib eikdlg.lib 
-LIBRARY			eikctl.lib bafl.lib fbscli.lib aknnotify.lib aknicon.lib
-LIBRARY			etext.lib gdi.lib egul.lib insock.lib
-LIBRARY			ecom.lib InetProtUtil.lib http.lib esock.lib libc.lib charconv.lib libpthread.lib commondialogs.lib libm.lib numberconversion.lib
+LIBRARY			euser.lib apparc.lib cone.lib eikcore.lib avkon.lib 
+LIBRARY			commonengine.lib efsrv.lib estor.lib eikdlg.lib 
+LIBRARY			eikctl.lib bafl.lib fbscli.lib aknicon.lib
+LIBRARY			etext.lib gdi.lib egul.lib 
+LIBRARY			ecom.lib libc.lib charconv.lib commondialogs.lib 
 LIBRARY         libz.lib
-LIBRARY         platformver.lib
 
-LIBRARY         bitgdi.lib  
+LIBRARY libm.lib
+LIBRARY eikcoctl.lib // Stylus pop up menu
+LIBRARY numberconversion.lib 
 
-LIBRARY remconcoreapi.lib remconinterfacebase.lib
+LIBRARY animation.lib
+LIBRARY remconcoreapi.lib remconinterfacebase.lib // Media keys
+
+//LIBRARY insock.lib
+//LIBRARY libpthread.lib
+//LIBRARY aknnotify.lib
+//LIBRARY InetProtUtil.lib http.lib esock.lib
+//LIBRARY bitgdi.lib // Using painting on bitmap  
+
+ 
+
 
 LANG 				01 16
 
@@ -235,6 +248,6 @@ SOURCEPATH ..\src
 SOURCE WaitingAnimation.cpp 
 SOURCE LastFileOpener.cpp
 SOURCEPATH ..\inc
-SOURCE AbstractReader.cpp DjvuReader.cpp
+SOURCE ..\src\AbstractReader.cpp
 SOURCEPATH ..\src
-SOURCE PdfReader.cpp
+SOURCE DjvuReader.cpp PdfReader.cpp

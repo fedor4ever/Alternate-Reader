@@ -3,9 +3,13 @@
 #define ANIMATEDGIF_H_
 
 #include <e32base.h>
-#include <ICLAnimationDataProvider.h>
-#include <basicanimation.h>
-#include <AnimationConfig.h>
+#include "Config.h"
+
+//#ifdef _S603xF1_
+	#include <ICLAnimationDataProvider.h>
+	#include <basicanimation.h>
+	#include <AnimationConfig.h>
+//#endif
 
 
 class CAnimatedGif : public CBase
@@ -30,8 +34,11 @@ public:
 private:
 	void ConstructL(const TFileName& aFileName, RWindow& aWindow, const TPoint& aPoint);
 	
+#ifdef _S603xF1_	
 	CICLAnimationDataProvider* iGifProvider;
 	CBasicAnimation* iGifImage;
+#endif
+	
 	TBool iStart;
 	};
 

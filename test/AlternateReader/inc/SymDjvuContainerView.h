@@ -54,8 +54,10 @@ protected:
 		const TDesC8& aCustomMessage );
 	void DoDeactivate();
 	void HandleStatusPaneSizeChange();
-	void DynInitMenuPaneL(TInt aResourceId, CEikMenuPane* aMenuPane);
 	
+	#ifdef _TOUCH_SUPPORT_ 
+	void DynInitMenuPaneL(TInt aResourceId, CEikMenuPane* aMenuPane);
+	#endif
 	
 	TBool HandleOpenFileMenuItemSelectedL( TInt aCommand );
 	TBool HandleGoToPageItemSelectedL( TInt aCommand );
@@ -65,6 +67,7 @@ protected:
 	TBool HandleFitActualSizeItemSelectedL( TInt aCommand );
 	TBool HandleFullscreenItemSelectedL( TInt aCommand );
 	TBool HandleExitItemSelectedL( TInt aCommand );
+	TBool HandleAboutItemSelectedL( TInt aCommand );
 
 private:
 	
@@ -74,7 +77,6 @@ private:
 public:
 	
 	CRenderThreadManager* iRenderThreadManager;
-	CEikScrollBarFrame* iSBFrame;
 	CDjvuReader* iDjVuReader;
 	CLastFileOpener* iLastFileOpener;
 	

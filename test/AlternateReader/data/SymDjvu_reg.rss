@@ -22,7 +22,12 @@ RESOURCE APP_REGISTRATION_INFO
           		{ 
 					priority = EDataTypePriorityHigh;
 					type = "image/vnd.djvu";
-          		}
+          		},
+			DATATYPE
+				{ 
+					priority = EDataTypePriorityHigh;
+					type = "application/pdf";
+				}
         };
 	}
 

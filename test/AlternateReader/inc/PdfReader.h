@@ -1,27 +1,26 @@
 /*
- * DjvuReader.h
+ * PdfReader.h
  *
  *  Created on: 28.05.2010
  *      Author: 1
  */
 
-#ifndef DJVUREADER_H_
-#define DJVUREADER_H_
+#ifndef PDFREADER_H_
+#define PDFREADER_H_
 
 #include "AbstractReader.h"
 
-class DjvuReader : public AbstractReader
+class PdfReader : public AbstractReader
 	{
 public:
+	PdfReader();
+	virtual ~PdfReader();
 	
-	DjvuReader();
-	virtual ~DjvuReader();
-	
-	ddjvu_document_t*	iDjvuDoc;
-	ddjvu_context_t*	iDjvuContext;
-	ddjvu_page_t*	    iDjvuPage;
-	ddjvu_format_t*     iDjvuFormat;
-	ddjvu_render_mode_t iDjvuRenderMode;
+	PDFDoc* iPdfDoc;
+	Catalog* iPdfCatalog;
+	Page* iPdfPage;
+	SplashOutputDev* iOutputDevice;
+	SplashColor iSplashColor;
 	
 	void OpenL(const TDesC& aFileName);
 	void RenderPageWithoutBitmapCopyL(TInt aPage);
@@ -34,18 +33,18 @@ public:
 	
 	void SetDPIForWidth(TInt aPageWidth)
 	{
-		
+		iDPI = ((TReal)aPageWidth*iZoomK/iImageWidth)*iDPI;
 	}
 	
 	TInt FirstPageNumber()
 	{
-		return 0;
+		return 1;
 	}
 	TInt LastPageNumber()
 	{
-		return iPageCount - 1;
+		return iPageCount;
 	}
 	
 	};
 
-#endif /* DJVUREADER_H_ */
+#endif /* PDFREADER_H_ */

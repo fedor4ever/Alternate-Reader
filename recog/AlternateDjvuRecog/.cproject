@@ -21,15 +21,15 @@
 <extension id="com.nokia.carbide.cdt.builder.MakeDefErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
 </extensions>
 </storageModule>
+<storageModule moduleId="org.eclipse.cdt.core.language.mapping"/>
+<storageModule moduleId="org.eclipse.cdt.internal.ui.text.commentOwnerProjectMappings"/>
 <storageModule moduleId="CarbideConfigurationDataProvider">
 <ENV_VAR_DATA_ID/>
 <ARGUMENTS_DATA_ID ABLDFREEZEARGSSTORAGE="-r"/>
 <ROM_BUILDER_DATA_ID ROMBUILDWORKINGDIRECTORYSTORAGE="C:\"/>
 </storageModule>
-<storageModule filesCache="D:\Symbian\Workspace5\AlternateDjvuRecog\group\bld.inf;D:\Symbian\Workspace5\AlternateDjvuRecog\RecognizerDll\group\AlternateDjvuRecog.mmp;" includesCache="D:/Symbian/Workspace5/AlternateDjvuRecog/RecognizerDll/inc[LOCAL];D:/S60/devices/S60_5th_Edition_SDK_v1.0/epoc32/include;D:/S60/devices/S60_5th_Edition_SDK_v1.0/epoc32/include/ecom;" macrosCache="__DLL__;_UNICODE;__SYMBIAN32__;__SUPPORT_CPP_EXCEPTIONS__;__S60_3X__;__SERIES60_3X__;__S60_5X__;__CW32__;__WINS__;__WINSCW__;__S60_50__;_DEBUG;" moduleId="configDataCache" sourcesCache="/AlternateDjvuRecog/RecognizerDll/group;/AlternateDjvuRecog/RecognizerDll/inc;/AlternateDjvuRecog/RecognizerDll/src;" timestampCache="1272830317723" useMmpMacrosCache="true"/>
+<storageModule filesCache="D:\Symbian\Workspace5\AlternateDjvuRecog\group\bld.inf;D:\Symbian\Workspace5\AlternateDjvuRecog\RecognizerDll\group\AlternateReaderRecog.mmp;" includesCache="D:/Symbian/Workspace5/AlternateDjvuRecog/RecognizerDll/inc[LOCAL];D:/S60/devices/S60_5th_Edition_SDK_v1.0/epoc32/include;D:/S60/devices/S60_5th_Edition_SDK_v1.0/epoc32/include/ecom;D:/S60/devices/S60_5th_Edition_SDK_v1.0/epoc32/include/libc;" macrosCache="__DLL__;_UNICODE;__SYMBIAN32__;__SUPPORT_CPP_EXCEPTIONS__;__S60_3X__;__SERIES60_3X__;__S60_5X__;__CW32__;__WINS__;__WINSCW__;__S60_50__;_DEBUG;" moduleId="configDataCache" sourcesCache="/AlternateDjvuRecog/RecognizerDll/group;/AlternateDjvuRecog/RecognizerDll/inc;/AlternateDjvuRecog/RecognizerDll/src;" timestampCache="1277037064535" useMmpMacrosCache="true"/>
 <storageModule moduleId="org.eclipse.cdt.core.externalSettings"/>
-<storageModule moduleId="org.eclipse.cdt.core.language.mapping"/>
-<storageModule moduleId="org.eclipse.cdt.internal.ui.text.commentOwnerProjectMappings"/>
 </cconfiguration>
 <cconfiguration id="Phone Debug (GCCE) [S60_5th_Edition_SDK_v1.0]">
 <storageModule buildSystemId="com.nokia.carbide.cdt.builder.CarbideConfigurationDataProvider" id="Phone Debug (GCCE) [S60_5th_Edition_SDK_v1.0]" moduleId="org.eclipse.cdt.core.settings" name="Phone Debug (GCCE) [S60_5th_Edition_SDK_v1.0]">
@@ -49,15 +49,15 @@
 <extension id="com.nokia.carbide.cdt.builder.GCCELinkerErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
 </extensions>
 </storageModule>
+<storageModule moduleId="org.eclipse.cdt.core.language.mapping"/>
+<storageModule moduleId="org.eclipse.cdt.internal.ui.text.commentOwnerProjectMappings"/>
 <storageModule moduleId="CarbideConfigurationDataProvider">
 <ENV_VAR_DATA_ID/>
 <ARGUMENTS_DATA_ID ABLDFREEZEARGSSTORAGE="-r"/>
 <ROM_BUILDER_DATA_ID ROMBUILDWORKINGDIRECTORYSTORAGE="C:\"/>
 </storageModule>
-<storageModule filesCache="D:\Symbian\Workspace5\AlternateDjvuRecog\group\bld.inf;D:\Symbian\Workspace5\AlternateDjvuRecog\RecognizerDll\group\AlternateDjvuRecog.mmp;" includesCache="D:/Symbian/Workspace5/AlternateDjvuRecog/RecognizerDll/inc[LOCAL];D:/S60/devices/S60_5th_Edition_SDK_v1.0/epoc32/include;D:/S60/devices/S60_5th_Edition_SDK_v1.0/epoc32/include/ecom;" macrosCache="__DLL__;_UNICODE;__SUPPORT_CPP_EXCEPTIONS__;__MARM_ARMV5__;__SYMBIAN32__;__GCCE__;__MARM__;__SERIES60_3X__;__S60_3X__;__S60_5X__;__EPOC32__;__GENERIC_MARM__;__EABI__;_DEBUG;__S60_50__;" moduleId="configDataCache" sourcesCache="/AlternateDjvuRecog/RecognizerDll/group;/AlternateDjvuRecog/RecognizerDll/inc;/AlternateDjvuRecog/RecognizerDll/src;" timestampCache="1272830317723" useMmpMacrosCache="true"/>
+<storageModule filesCache="D:\Symbian\Workspace5\AlternateDjvuRecog\group\bld.inf;D:\Symbian\Workspace5\AlternateDjvuRecog\RecognizerDll\group\AlternateReaderRecog.mmp;" includesCache="D:/Symbian/Workspace5/AlternateDjvuRecog/RecognizerDll/inc[LOCAL];D:/S60/devices/S60_5th_Edition_SDK_v1.0/epoc32/include;D:/S60/devices/S60_5th_Edition_SDK_v1.0/epoc32/include/ecom;D:/S60/devices/S60_5th_Edition_SDK_v1.0/epoc32/include/libc;" macrosCache="__DLL__;_UNICODE;__SUPPORT_CPP_EXCEPTIONS__;__MARM_ARMV5__;__SYMBIAN32__;__GCCE__;__MARM__;__SERIES60_3X__;__S60_3X__;__S60_5X__;__EPOC32__;__GENERIC_MARM__;__EABI__;_DEBUG;__S60_50__;" moduleId="configDataCache" sourcesCache="/AlternateDjvuRecog/RecognizerDll/group;/AlternateDjvuRecog/RecognizerDll/inc;/AlternateDjvuRecog/RecognizerDll/src;" timestampCache="1277037064558" useMmpMacrosCache="true"/>
 <storageModule moduleId="org.eclipse.cdt.core.externalSettings"/>
-<storageModule moduleId="org.eclipse.cdt.core.language.mapping"/>
-<storageModule moduleId="org.eclipse.cdt.internal.ui.text.commentOwnerProjectMappings"/>
 </cconfiguration>
 <cconfiguration id="Phone Release (GCCE) [S60_5th_Edition_SDK_v1.0]">
 <storageModule buildSystemId="com.nokia.carbide.cdt.builder.CarbideConfigurationDataProvider" id="Phone Release (GCCE) [S60_5th_Edition_SDK_v1.0]" moduleId="org.eclipse.cdt.core.settings" name="Phone Release (GCCE) [S60_5th_Edition_SDK_v1.0]">
@@ -77,16 +77,16 @@
 <extension id="com.nokia.carbide.cdt.builder.GCCELinkerErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
 </extensions>
 </storageModule>
+<storageModule moduleId="org.eclipse.cdt.core.language.mapping"/>
+<storageModule moduleId="org.eclipse.cdt.internal.ui.text.commentOwnerProjectMappings"/>
 <storageModule moduleId="CarbideConfigurationDataProvider">
-<SIS_BUILDER_DATA_ID CREATESTUBSTORAGE="false" ENABLEDSTORAGE="true" OUTPUTFILENAMESTORAGE="AlternateDjvuRecog.sis" PARTIALUPGRADESTORAGE="false" PASSWORDSTORAGE="12345678" PKGFILESTORAGE="RecognizerDll\sis\AlternateDjvuRecog.pkg" SIGNEDSISFILENAMESTORAGE="AlternateDjvuRecog.sisx" SIGNINGTYPESTORAGE="1"/>
+<SIS_BUILDER_DATA_ID CREATESTUBSTORAGE="false" ENABLEDSTORAGE="true" OUTPUTFILENAMESTORAGE="AlternateReaderRecog.sis" PARTIALUPGRADESTORAGE="false" PASSWORDSTORAGE="1234567" PKGFILESTORAGE="RecognizerDll\sis\AlternateReaderRecog.pkg" SIGNEDSISFILENAMESTORAGE="AlternateReaderRecog.sisx" SIGNINGTYPESTORAGE="1"/>
 <ENV_VAR_DATA_ID/>
 <ARGUMENTS_DATA_ID ABLDFREEZEARGSSTORAGE="-r"/>
 <ROM_BUILDER_DATA_ID ROMBUILDWORKINGDIRECTORYSTORAGE="C:\"/>
 </storageModule>
-<storageModule filesCache="D:\Symbian\Workspace5\AlternateDjvuRecog\group\bld.inf;D:\Symbian\Workspace5\AlternateDjvuRecog\RecognizerDll\group\AlternateDjvuRecog.mmp;" includesCache="D:/Symbian/Workspace5/AlternateDjvuRecog/RecognizerDll/inc[LOCAL];D:/S60/devices/S60_5th_Edition_SDK_v1.0/epoc32/include;D:/S60/devices/S60_5th_Edition_SDK_v1.0/epoc32/include/ecom;" macrosCache="__DLL__;_UNICODE;__SUPPORT_CPP_EXCEPTIONS__;__MARM_ARMV5__;NDEBUG;__SYMBIAN32__;__GCCE__;__MARM__;__SERIES60_3X__;__S60_3X__;__S60_5X__;__EPOC32__;__GENERIC_MARM__;__EABI__;__S60_50__;" moduleId="configDataCache" sourcesCache="/AlternateDjvuRecog/RecognizerDll/group;/AlternateDjvuRecog/RecognizerDll/inc;/AlternateDjvuRecog/RecognizerDll/src;" timestampCache="1272830317754" useMmpMacrosCache="true"/>
+<storageModule filesCache="D:\Symbian\Workspace5\AlternateDjvuRecog\group\bld.inf;D:\Symbian\Workspace5\AlternateDjvuRecog\RecognizerDll\group\AlternateReaderRecog.mmp;" includesCache="D:/Symbian/Workspace5/AlternateDjvuRecog/RecognizerDll/inc[LOCAL];D:/S60/devices/S60_5th_Edition_SDK_v1.0/epoc32/include;D:/S60/devices/S60_5th_Edition_SDK_v1.0/epoc32/include/ecom;D:/S60/devices/S60_5th_Edition_SDK_v1.0/epoc32/include/libc;" macrosCache="__DLL__;_UNICODE;__SUPPORT_CPP_EXCEPTIONS__;__MARM_ARMV5__;NDEBUG;__SYMBIAN32__;__GCCE__;__MARM__;__SERIES60_3X__;__S60_3X__;__S60_5X__;__EPOC32__;__GENERIC_MARM__;__EABI__;__S60_50__;" moduleId="configDataCache" sourcesCache="/AlternateDjvuRecog/RecognizerDll/group;/AlternateDjvuRecog/RecognizerDll/inc;/AlternateDjvuRecog/RecognizerDll/src;" timestampCache="1277037064569" useMmpMacrosCache="true"/>
 <storageModule moduleId="org.eclipse.cdt.core.externalSettings"/>
-<storageModule moduleId="org.eclipse.cdt.core.language.mapping"/>
-<storageModule moduleId="org.eclipse.cdt.internal.ui.text.commentOwnerProjectMappings"/>
 </cconfiguration>
 </storageModule>
 </cproject>

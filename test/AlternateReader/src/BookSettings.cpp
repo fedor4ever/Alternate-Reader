@@ -41,6 +41,7 @@ CBookSettings::ExternalizeL(RWriteStream& aStream) const
 		aStream << iFullScreenMode;
 		
 		aStream << iZoom;
+		aStream << iDPI;
 		aStream << iPageWidth;
 	
 	}
@@ -58,6 +59,7 @@ CBookSettings::InternalizeL(RReadStream& aStream)
 		aStream >> iFullScreenMode;
 		
 		aStream >> iZoom;
+		aStream >> iDPI;
 		aStream >> iPageWidth;
 	
 	}
@@ -109,12 +111,13 @@ void CBookSettings::LoadSettings(TFileName fileName)
 			if(result == KErrNone)
 			{
 				iBookName = fileName;
-				iCurrentPage = 1;
+				iCurrentPage     = 0;
 				iCursorPositionX = 0;
 				iCursorPositionY = 0;
 				iFullScreenMode = EFalse;
 				iPageWidth = 360;
 				iZoom = 1;
+				iDPI = 30;
 				
 				ExternalizeL(fws);
 				
@@ -129,6 +132,7 @@ void CBookSettings::LoadSettings(TFileName fileName)
 		iContainer->iDjVuReader->SetCurrentPage(iCurrentPage);
 		iContainer->iDjVuReader->SetPageWidth(iPageWidth);
 		iContainer->iDjVuReader->SetZoom(iZoom);
+		iContainer->iDjVuReader->SetDPI(iDPI);
 		
 	}
 
@@ -178,6 +182,7 @@ void CBookSettings::SaveSettings()
 			iPageWidth = iContainer->iDjVuReader->GetPageWidth();
 			iFullScreenMode = iContainer->iFullScreenMode;
 			iZoom = iContainer->iDjVuReader->GetZoom();
+			iDPI = iContainer->iDjVuReader->GetDPI();
 			
 			ExternalizeL(fws);
 			
@@ -284,13 +289,34 @@ TBool CBookSettings::LoadLastOpenFile(TFileName& aLastFile)
 		{
 			frs >> aLastFile;
 			
-			CleanupStack::PopAndDestroy(&frs);
-			CleanupStack::PopAndDestroy(&fs);
-			
 			// Parse a file name
 			TParse parse;
 			parse.Set(aLastFile, NULL, NULL);
-			return parse.PathPresent();
+			if(parse.PathPresent())
+			{
+			
+				TInt result = frs.Open(fs, parse.FullName(), EFileRead);
+
+				CleanupStack::PopAndDestroy(&frs);
+				CleanupStack::PopAndDestroy(&fs);
+				
+				if(result == KErrNone)
+				{
+					return ETrue;
+				}
+				else
+				{
+					return EFalse;
+				}
+				
+			}
+			else
+			{
+				CleanupStack::PopAndDestroy(&frs);
+				CleanupStack::PopAndDestroy(&fs);
+
+				return EFalse;
+			}
 			
 		}
 		else

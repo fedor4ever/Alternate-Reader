@@ -45,6 +45,7 @@ private:
 	TInt32 iCurrentPage;
 	TInt32 iPageWidth;
 	TReal  iZoom;
+	TReal  iDPI;
 
 	// CSymDjvuContainer settings 
 	TInt32  iCursorPositionX;

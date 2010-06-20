@@ -71,15 +71,17 @@ TInt ThreadRenderDecrementZoom(TAny* aParams)
 TInt ThreadRenderZoomWidth(TAny* aParams)
 	{
 		CRenderThreadManager* RenderThreadManager = static_cast<CRenderThreadManager*>(aParams);
-		RenderThreadManager->iContainer->iDjVuReader->SetZoom(1.00);
+		
+		RenderThreadManager->iContainer->iDjVuReader->SetDPIForWidth(RenderThreadManager->iContainer->Rect().Width());
+		RenderThreadManager->iContainer->iDjVuReader->SetZoom(1.00);		
 		RenderThreadManager->iContainer->iDjVuReader->SetPageWidth(RenderThreadManager->iContainer->Rect().Width());
+		
 		RenderThreadManager->iContainer->iDjVuReader->RenderPageWithoutBitmapCopyL(RenderThreadManager->iContainer->iDjVuReader->CurrentPage());
 		return KErrNone;
 	}
 TInt ThreadRenderFitActualSize(TAny* aParams)
 	{
 		CRenderThreadManager* RenderThreadManager = static_cast<CRenderThreadManager*>(aParams);
-		RenderThreadManager->iContainer->iDjVuReader->SetZoom(1.00);
 		
 		TReal x1 = RenderThreadManager->iContainer->iDjVuReader->GetImageLeftMargin();
 		TReal x2 = RenderThreadManager->iContainer->iDjVuReader->GetImageRightMargin();
@@ -88,8 +90,11 @@ TInt ThreadRenderFitActualSize(TAny* aParams)
 		TReal ww = RenderThreadManager->iContainer->Rect().Width();
 		
 		TReal w = (ww/l)*(l+x1+x2);
-		
+
+		RenderThreadManager->iContainer->iDjVuReader->SetDPIForWidth((TInt)w);
+		RenderThreadManager->iContainer->iDjVuReader->SetZoom(1.00);
 		RenderThreadManager->iContainer->iDjVuReader->SetPageWidth((TInt)w);
+
 		RenderThreadManager->iContainer->iDjVuReader->RenderPageWithoutBitmapCopyL(RenderThreadManager->iContainer->iDjVuReader->CurrentPage());
 		return KErrNone;
 	}

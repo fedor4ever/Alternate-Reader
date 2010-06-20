@@ -56,61 +56,34 @@ void CDjvuReader::BitmapCopyL()
 		iAbstractReader->BitmapCopyL();
 	}
 
-void CDjvuReader::RenderPageL(TInt aPage)
-	{
-		
-		iAbstractReader->RenderPageL(aPage);				
-			
-	}
-
 void CDjvuReader::RenderPageWithoutBitmapCopyL(TInt aPage)
 	{
-		
 		iAbstractReader->RenderPageWithoutBitmapCopyL(aPage);
-		
-	}
-
-void CDjvuReader::NextPageL()
-	{
-		if (iAbstractReader->iCurrentPage + 1 < iAbstractReader->iPageCount)
-		{
-			iAbstractReader->iCurrentPage++;
-			iAbstractReader->RenderPageL(iAbstractReader->iCurrentPage);
-		}
 	}
 
 void CDjvuReader::NextPageWithoutBitmapCopyL()
 	{
-		if (iAbstractReader->iCurrentPage + 1 < iAbstractReader->iPageCount)
+		if (iAbstractReader->GetCurrentPage() < iAbstractReader->LastPageNumber())
 		{
 			iAbstractReader->iCurrentPage++;
 			iAbstractReader->RenderPageWithoutBitmapCopyL(iAbstractReader->iCurrentPage);
-		}
-	}
-
-void CDjvuReader::PreviousPageL()
-	{
-		if (iAbstractReader->iCurrentPage > 0)
-		{
-			iAbstractReader->iCurrentPage--;
-			iAbstractReader->RenderPageL(iAbstractReader->iCurrentPage);
 		}
 	}
 
 void CDjvuReader::PreviousPageWithoutBitmapCopyL()
 	{
-		if (iAbstractReader->iCurrentPage > 0)
+		if (iAbstractReader->iCurrentPage > iAbstractReader->FirstPageNumber())
 		{
 			iAbstractReader->iCurrentPage--;
 			iAbstractReader->RenderPageWithoutBitmapCopyL(iAbstractReader->iCurrentPage);
 		}
 	}
 
-void CDjvuReader::OpenL(const TDesC& aFileName)
+TBool CDjvuReader::OpenL(const TDesC& aFileName)
 	{
 		if(iAbstractReader)
 		{
-			delete (PdfReader*)iAbstractReader; 
+			delete iAbstractReader; 
 		}
 		
 	    TParse parse;
@@ -122,13 +95,16 @@ void CDjvuReader::OpenL(const TDesC& aFileName)
 			iAbstractReader = (AbstractReader*)new DjvuReader();
 			iAbstractReader->iBitmap = iBitmap;
 			iAbstractReader->OpenL(aFileName);
+			return ETrue;
 		}
-	    
-	    if (ext.CompareF(KExtensionPdf)==0)
+	    else if (ext.CompareF(KExtensionPdf)==0)
 		{
 			iAbstractReader = (AbstractReader*)new PdfReader();
 			iAbstractReader->iBitmap = iBitmap;
 			iAbstractReader->OpenL(aFileName);
+			return ETrue;
 		}	    
 		
+	    return EFalse;
+	    
 	}

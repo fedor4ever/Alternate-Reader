@@ -3,7 +3,7 @@ PRJ_PLATFORMS
 DEFAULT
 
 PRJ_EXPORTS
-..\inc\AlternateDjvuRecog.h
+..\inc\AlternateReaderRecog.h
 
 PRJ_MMPFILES
-AlternateDjvuRecog.mmp
+AlternateReaderRecog.mmp

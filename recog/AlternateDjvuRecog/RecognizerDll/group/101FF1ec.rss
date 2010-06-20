@@ -14,11 +14,11 @@ RESOURCE REGISTRY_INFO r_registry
                 {
                     implementation_uid = 0x101FF1ed; // unique implementation uid
                     version_no = 1;
-                    display_name = "Djvu recognizer";
-                    default_data = "Djvu";
+                    display_name = "Djvu & Pdf recognizer";
+                    default_data = "";
                     opaque_data  = "";
                 }
-            };
+             };
         }
     };
 }

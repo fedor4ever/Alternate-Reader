@@ -1,4 +1,5 @@
 
+#include <aknmessagequerydialog.h>
 #include <aknviewappui.h>
 #include <eikmenub.h>
 #include <avkon.hrh>
@@ -12,7 +13,15 @@
 #include <eikenv.h>
 #include <SymDjvu.rsg>
 #include <CAknFileSelectionDialog.h> 
-#include <CAknMemorySelectionDialog.h> 
+
+#include <CAknMemorySelectionDialog.h>
+
+#include "Config.h"
+#ifdef _TOUCH_SUPPORT_ 
+	#include <caknmemoryselectiondialogmultidrive.h>
+#endif 
+
+
 #include <AknQueryDialog.h> 
 
 #include "SymDjvu.hrh"
@@ -85,6 +94,7 @@ CSymDjvuContainerView* CSymDjvuContainerView::NewLC()
  */ 
 void CSymDjvuContainerView::ConstructL()
 	{
+		
 		BaseConstructL( R_SYM_DJVU_CONTAINER_SYM_DJVU_CONTAINER_VIEW );
 		iDjVuReader = CDjvuReader::NewL();
 	}
@@ -138,6 +148,9 @@ void CSymDjvuContainerView::HandleCommandL( TInt aCommand )
 			case EExit:
 				commandHandled = HandleExitItemSelectedL( aCommand );
 				break;		
+			case EAbout:
+				commandHandled = HandleAboutItemSelectedL( aCommand );
+				break;		
 			default:
 				break;
 			}
@@ -175,11 +188,6 @@ void CSymDjvuContainerView::DoActivateL(
 			iRenderThreadManager->iAnimation->iContainer = mSymDjvuContainer;
 			iRenderThreadManager->iBookSettings->iContainer = mSymDjvuContainer;
 			
-			iSBFrame = new ( ELeave ) CEikScrollBarFrame( iRenderThreadManager->iContainer, NULL );
-			iSBFrame->CreateDoubleSpanScrollBarsL( ETrue, EFalse, ETrue, EFalse );
-			iSBFrame->SetTypeOfVScrollBar( CEikScrollBarFrame::EDoubleSpan );
-			iSBFrame->SetScrollBarVisibilityL(CEikScrollBarFrame::EOn, CEikScrollBarFrame::EOn );
-			
 			iLastFileOpener = CLastFileOpener::NewL();
 			iLastFileOpener->iDjVuReader = iDjVuReader;
 			iLastFileOpener->iRenderThreadManager = iRenderThreadManager;
@@ -199,9 +207,6 @@ void CSymDjvuContainerView::DoDeactivate()
 		if ( iRenderThreadManager->iContainer != NULL )
 		{
 			AppUi()->RemoveFromViewStack( *this, iRenderThreadManager->iContainer );
-			
-			delete iSBFrame;
-			iSBFrame = NULL;		
 		}
 	
 	}
@@ -234,6 +239,7 @@ CSymDjvuContainer* CSymDjvuContainerView::CreateContainerL()
 		return CSymDjvuContainer::NewL( ClientRect(), NULL, this, iDjVuReader);
 	}
 
+#ifdef _TOUCH_SUPPORT_ 
 void CSymDjvuContainerView::DynInitMenuPaneL(TInt aResourceId, CEikMenuPane* aMenuPane)
   {
     if (R_SYM_DJVU_CONTAINER_MENU_PANE1_MENU_PANE == aResourceId)
@@ -246,7 +252,8 @@ void CSymDjvuContainerView::DynInitMenuPaneL(TInt aResourceId, CEikMenuPane* aMe
 		aMenuPane->SetItemDimmed(EGoToPage,      !iDjVuReader->IsOpen() || iRenderThreadManager->iThreadStarted);
       }
   }
-			
+#endif
+
 void CSymDjvuContainerView::SetupStatusPaneL()
 	{
 		// reset the context pane
@@ -319,7 +326,12 @@ TInt CSymDjvuContainerView::RunPageNumL(
 TBool CSymDjvuContainerView::HandleOpenFileMenuItemSelectedL( TInt aCommand )
 	{
 	
-		CAknMemorySelectionDialog::TMemory memory = CAknMemorySelectionDialog::EPhoneMemory;
+		#ifdef _TOUCH_SUPPORT_ 
+					
+		#else 
+			CAknMemorySelectionDialog::TMemory memory = CAknMemorySelectionDialog::EPhoneMemory;
+		#endif
+		
 		TFileName fileName;
 		TBool result = EFalse;
 		TBool SecondIteration = EFalse;
@@ -332,39 +344,75 @@ TBool CSymDjvuContainerView::HandleOpenFileMenuItemSelectedL( TInt aCommand )
 				if(!LastDirectory || SecondIteration)
 				{
 					
-					CAknMemorySelectionDialog* memDlg = CAknMemorySelectionDialog::NewL(ECFDDialogTypeSelect, ETrue);
-					CleanupStack::PushL(memDlg);
-					CAknMemorySelectionDialog::TReturnKey Key = memDlg->ExecuteL(memory);
-					CleanupStack::PopAndDestroy();
-					if (Key == CAknFileSelectionDialog::ERightSoftkey)
-					{
-						// cancel selection
-						break;
-					}
-			
-					if (memory == CAknMemorySelectionDialog::EMemoryCard)
-					{
-						//	aFileName = PathInfo::MemoryCardRootPath();
-						fileName.Copy(_L("E:\\"));
-					}
-					else
-					{
-						//	aFileName = PathInfo::PhoneMemoryRootPath();
-						fileName.Copy(_L("C:\\"));
-					}
+					#ifdef _TOUCH_SUPPORT_ 
+					
+						CAknMemorySelectionDialogMultiDrive* memDlg = CAknMemorySelectionDialogMultiDrive::NewL(ECFDDialogTypeSelect, EFalse);
+						CleanupStack::PushL(memDlg);
+						TDriveNumber drive;
+						CAknCommonDialogsBase::TReturnKey Key = memDlg->ExecuteL(drive);
+						CleanupStack::PopAndDestroy();
+						if (Key == CAknFileSelectionDialog::ERightSoftkey)
+						{
+							// cancel selection
+							break;
+						}
+						
+						RFs fs;
+						fs.SetHandle(CCoeEnv::Static()->FsSession().Handle());
+						TChar DriveLetter;
+						User::LeaveIfError(fs.DriveToChar(drive, DriveLetter));
+						fileName.Zero();
+						fileName.Append(DriveLetter);
+						fileName.Append(_L(":\\"));
+					
+					#else 
+					
+						CAknMemorySelectionDialog* memDlg = CAknMemorySelectionDialog::NewL(ECFDDialogTypeSelect, ETrue);
+						CleanupStack::PushL(memDlg);
+						CAknMemorySelectionDialog::TReturnKey Key = memDlg->ExecuteL(memory);
+						CleanupStack::PopAndDestroy();
+						if (Key == CAknFileSelectionDialog::ERightSoftkey)
+						{
+							// cancel selection
+							break;
+						}
+				
+						if (memory == CAknMemorySelectionDialog::EMemoryCard)
+						{
+							//	aFileName = PathInfo::MemoryCardRootPath();
+							fileName.Copy(_L("E:\\"));
+						}
+						else
+						{
+							//	aFileName = PathInfo::PhoneMemoryRootPath();
+							fileName.Copy(_L("C:\\"));
+						}
+				
+					#endif 
+				
 				}
 				
-				// Создание объекта сделано в цикле для обхода ошибки
-				// при перевыборе файла (если выбрать память телефона то
-				// не понятно как перейти к памяти карты).
 				// Create select file dialog
 				CAknFileSelectionDialog* dlg = CAknFileSelectionDialog::NewL(ECFDDialogTypeSelect);
 				CleanupStack::PushL(dlg);
+				
 				// Dialog customizations:
-				dlg->SetTitleL(_L("Select file"));
-				dlg->SetLeftSoftkeyFileL(_L("Select"));
-				dlg->SetLeftSoftkeyFolderL(_L("Open"));
-				dlg->SetRightSoftkeyRootFolderL(_L("Back")); // for root folder				
+				HBufC* msg1 = iEikonEnv->AllocReadResourceLC(R_SELECT_FILE_SELECT_FILE);
+				dlg->SetTitleL(*msg1);
+				CleanupStack::PopAndDestroy(msg1);
+				
+				HBufC* msg2 = iEikonEnv->AllocReadResourceLC(R_SELECT_FILE_SELECT);
+				dlg->SetLeftSoftkeyFileL(*msg2);
+				CleanupStack::PopAndDestroy(msg2);
+				
+				HBufC* msg3 = iEikonEnv->AllocReadResourceLC(R_SELECT_FILE_OPEN);
+				dlg->SetLeftSoftkeyFolderL(*msg3);
+				CleanupStack::PopAndDestroy(msg3);
+				
+				HBufC* msg4 = iEikonEnv->AllocReadResourceLC(R_SELECT_FILE_BACK);
+				dlg->SetRightSoftkeyRootFolderL(*msg4);
+				CleanupStack::PopAndDestroy(msg4);
+				
 				if (dlg->ExecuteL(fileName))
 				{
 					iRenderThreadManager->iBookSettings->iBookNameCache = fileName;
@@ -373,10 +421,12 @@ TBool CSymDjvuContainerView::HandleOpenFileMenuItemSelectedL( TInt aCommand )
 						iRenderThreadManager->iBookSettings->SaveSettings();
 					}
 					
-					iDjVuReader->OpenL(fileName);
-					iRenderThreadManager->iBookSettings->LoadSettings(fileName);			
-					iRenderThreadManager->RenderOpenFile();
-					result = ETrue;
+					if(iDjVuReader->OpenL(fileName))
+					{
+						iRenderThreadManager->iBookSettings->LoadSettings(fileName);			
+						iRenderThreadManager->RenderOpenFile();
+						result = ETrue;
+					}
 				}
 				else
 				{
@@ -411,19 +461,36 @@ TBool CSymDjvuContainerView::HandleGoToPageItemSelectedL( TInt aCommand )
 		{
 			
 			TBuf<25> numOfPage;
-			TBuf<25> title;
-			_LIT(KTitle, "Choose page (max ");
-			_LIT(KTitleEnd, ")");
-			title = KTitle;
-			title.AppendNum(iDjVuReader->GetPageCount());
-			title.Append(KTitleEnd);
+			TBuf<50> title;
 			
-			HBufC* text = StringLoader::LoadLC( R_SYM_DJVU_CONTAINER_NUM_OF_PAGE );
-			numOfPage.Copy( *text );
-			CleanupStack::PopAndDestroy( text );
+			title.Zero();
+			
+			HBufC* msg = iEikonEnv->AllocReadResourceLC(R_CHOOSE_PAGE);
+			title.Append(*msg);
+			CleanupStack::PopAndDestroy(msg);
+			
+			title.Append(' ');
+			title.Append('(');
+			
+			HBufC* msg1 = iEikonEnv->AllocReadResourceLC(R_CHOOSE_PAGE_MAXIMUM);
+			title.Append(*msg1);
+			CleanupStack::PopAndDestroy(msg1);
+			
+			title.Append(' ');
+			title.AppendNum(iDjVuReader->GetPageCount());
+			title.Append(' ');
+			
+			HBufC* msg2 = iEikonEnv->AllocReadResourceLC(R_CHOOSE_PAGE_PAGES);
+			title.Append(*msg2);
+			CleanupStack::PopAndDestroy(msg2);
+			
+			title.Append(')');
+			
+			numOfPage.Zero();
+			numOfPage.AppendNum(iDjVuReader->CurrentPage()+1);
 							
 			CAknTextQueryDialog* queryDialog = CAknTextQueryDialog::NewL( numOfPage );	
-				
+			
 			CleanupStack::PushL( queryDialog );
 			queryDialog->SetPromptL( title );
 			CleanupStack::Pop(); // queryDialog
@@ -521,6 +588,22 @@ TBool CSymDjvuContainerView::HandleExitItemSelectedL( TInt aCommand )
 		return ETrue;
 	}
 
+TBool CSymDjvuContainerView::HandleAboutItemSelectedL( TInt aCommand )
+	{
+		
+		CAknMessageQueryDialog* dlg = new (ELeave) CAknMessageQueryDialog();
+		dlg->PrepareLC(R_ABOUT_QUERY_DIALOG);
+		HBufC* title = iEikonEnv->AllocReadResourceLC(R_ABOUT_DIALOG_TITLE);
+		dlg->QueryHeading()->SetTextL(*title);
+		CleanupStack::PopAndDestroy(); //title
+		HBufC* msg = iEikonEnv->AllocReadResourceLC(R_ABOUT_DIALOG_TEXT);
+		dlg->SetMessageTextL(*msg);
+		CleanupStack::PopAndDestroy(); //msg
+		dlg->RunLD();
+	
+		return ETrue;
+	}
+
 TBool CSymDjvuContainerView::HandleUpButtonPressedL()
 	{
 
@@ -530,7 +613,11 @@ TBool CSymDjvuContainerView::HandleUpButtonPressedL()
 			if (iRenderThreadManager->iContainer->iCursorPosition.iY == iRenderThreadManager->iContainer->iMargin
 				|| iRenderThreadManager->iContainer->iDjVuReader->GetBitmap()->SizeInPixels().iHeight <= iRenderThreadManager->iContainer->Rect().Height())
 			{
-				iRenderThreadManager->RenderPreviousPage();
+				if(iRenderThreadManager->iContainer->iDjVuReader->CurrentPage() > iRenderThreadManager->iContainer->iDjVuReader->FirstPageNumber())
+				{
+					iRenderThreadManager->RenderPreviousPage();
+				}
+				
 			}
 			else
 			{
@@ -552,7 +639,10 @@ TBool CSymDjvuContainerView::HandleDownButtonPressedL()
 			if (iRenderThreadManager->iContainer->iCursorPosition.iY == (iRenderThreadManager->iContainer->Rect().Height() - iRenderThreadManager->iContainer->iDjVuReader->GetBitmap()->SizeInPixels().iHeight - iRenderThreadManager->iContainer->iMargin)
 				|| iRenderThreadManager->iContainer->iDjVuReader->GetBitmap()->SizeInPixels().iHeight <= iRenderThreadManager->iContainer->Rect().Height())
 			{
-				iRenderThreadManager->RenderNextPage();
+				if(iRenderThreadManager->iContainer->iDjVuReader->CurrentPage() < iRenderThreadManager->iContainer->iDjVuReader->LastPageNumber())
+				{
+					iRenderThreadManager->RenderNextPage();
+				}
 			}
 			else
 			{

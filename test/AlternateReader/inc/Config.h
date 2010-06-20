@@ -13,7 +13,7 @@
 
 
 #define _TOUCH_SUPPORT_ 1
-
+#define _S603xF1_ 1
 
 
 /* config.h.  Generated from config.h.cmake by cmake.  */

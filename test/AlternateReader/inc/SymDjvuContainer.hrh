@@ -21,6 +21,7 @@ enum TSymDjvuContainerViewCommands
 	EGoToPage,
 	
 	EExit,
+	EAbout,
 	
 	EButtonDown,
 	EButtonUp

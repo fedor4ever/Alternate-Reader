@@ -32,14 +32,11 @@ public:
 	CDjvuReader();
 	virtual ~CDjvuReader();
 	
-	void OpenL(const TDesC& aFileName);
-	void RenderPageL(TInt aPage);
+	TBool OpenL(const TDesC& aFileName);
 	void RenderPageWithoutBitmapCopyL(TInt aPage);
 	void BitmapCopyL();
 	
-	void NextPageL();
 	void NextPageWithoutBitmapCopyL();
-	void PreviousPageL();
 	void PreviousPageWithoutBitmapCopyL();
 	
 public:
@@ -94,11 +91,26 @@ public:
     	iAbstractReader->iZoomK = aZoom;
     }    
     
+    void SetDPI(TReal aDPI)
+	{
+		iAbstractReader->iDPI = aDPI;
+	} 
+    
+    TReal GetDPI()
+   	{
+		if(!iAbstractReader)
+		{	
+			return 75;
+		}		
+    	
+    	return iAbstractReader->iDPI;
+  	} 
+    
     TReal GetZoom() const
 	{
 		if(!iAbstractReader)
 		{	
-			return 0;
+			return 1;
 		}		
     	
     	return iAbstractReader->iZoomK;
@@ -106,8 +118,31 @@ public:
     
     void SetPageWidth(TInt aPageWidth)
 	{
-    	iAbstractReader->iPageWidth = aPageWidth;
+    	iAbstractReader->SetPageWidth(aPageWidth);
 	} 
+    
+    void SetDPIForWidth(TInt aPageWidth)
+   	{
+       	iAbstractReader->SetDPIForWidth(aPageWidth);
+   	} 
+    
+    TInt FirstPageNumber()
+   	{
+       	if(!iAbstractReader)
+		{
+			return 0;
+		}
+    	return iAbstractReader->FirstPageNumber();
+   	} 
+    
+    TInt LastPageNumber()
+	{
+		if(!iAbstractReader)
+		{
+			return 0;
+		}
+		return iAbstractReader->LastPageNumber();
+	}
     
     TInt GetPageWidth() const
    	{
@@ -116,14 +151,13 @@ public:
 			return 0;
 		}		
  
-    	
     	return iAbstractReader->iPageWidth;
    	}
     
     void IncrementZoomL()
     {
     	iAbstractReader->iZoomK += 0.2;
-    	iAbstractReader->RenderPageL(iAbstractReader->iCurrentPage);
+    	iAbstractReader->RenderPageWithoutBitmapCopyL(iAbstractReader->iCurrentPage);
     }
     
     void IncrementZoomWithoutBitmapCopyL()
@@ -136,7 +170,7 @@ public:
     {
     	if (iAbstractReader->iZoomK > 0.2)
     		iAbstractReader->iZoomK -= 0.2;
-    	iAbstractReader->RenderPageL(iAbstractReader->iCurrentPage);
+    	iAbstractReader->RenderPageWithoutBitmapCopyL(iAbstractReader->iCurrentPage);
     }
     
     void DecrementZoomWithoutBitmapCopyL()
@@ -152,7 +186,6 @@ public:
 		{	
 			return 0;
 		}		
-
     	
     	return iAbstractReader->iImageWidth;
 	}
@@ -163,7 +196,6 @@ public:
 		{	
 			return 0;
 		}		
- 		
     	
     	return iAbstractReader->iRealWidth;
    	} 

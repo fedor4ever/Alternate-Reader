@@ -37,7 +37,8 @@ void CSymDjvuAppUi::InitializeContainersL()
 		iInterfaceSelector->OpenTargetL();
 	}
 
-// ----------------------------------------------------------------------------
+  
+  // ----------------------------------------------------------------------------
   // MrccatoCommand()
   // Receives events (press/click/release) from the following buttons:
   // ’Play/Pause’, ’Volume Up’, ’Volume Down’, ’Stop’, ’Rewind’, ’Forward’
@@ -62,6 +63,7 @@ void CSymDjvuAppUi::InitializeContainersL()
 				  break;
 		  }
     }
+
 
 /**
  * Handle a command for this appui (override)
@@ -141,9 +143,11 @@ void CSymDjvuAppUi::LoadFile(const TFileName& filename)
 	{
 	
 		iSymDjvuContainerView->iRenderThreadManager->iBookSettings->iBookNameCache = filename;
-		iSymDjvuContainerView->iDjVuReader->OpenL(filename);
-		iSymDjvuContainerView->iRenderThreadManager->iBookSettings->LoadSettings(filename);			
-		iSymDjvuContainerView->iRenderThreadManager->RenderOpenFile();
+		if(iSymDjvuContainerView->iDjVuReader->OpenL(filename))
+		{
+			iSymDjvuContainerView->iRenderThreadManager->iBookSettings->LoadSettings(filename);			
+			iSymDjvuContainerView->iRenderThreadManager->RenderOpenFile();
+		}
 	
 	}
 	
