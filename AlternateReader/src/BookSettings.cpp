@@ -1,6 +1,12 @@
 
+#include <e32def.h>
+#include <e32cmn.h>
+#include <e32base.h>
+#include <s32strm.h>
+
 #include "BookSettings.h"
 #include "CDjvuReader.h"
+#include "SymDjvuContainer.h"
 
 CBookSettings::~CBookSettings()
 	{

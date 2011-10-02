@@ -30,15 +30,17 @@
 ;<source> <destination>
 "$(EPOCROOT)Epoc32\release\$(PLATFORM)\$(TARGET)\SymDjvu.exe"		-"!:\sys\bin\SymDjvu.exe"
 
-IF (Option1)
-    "$(EPOCROOT)Epoc32\data\z\resource\apps\SymDjvu.r01"    -"!:\resource\apps\SymDjvu.r01"
-ENDIF
- 
-IF (Option2)
-    "$(EPOCROOT)Epoc32\data\z\resource\apps\SymDjvu.r16"    -"!:\resource\apps\SymDjvu.r16"
-ENDIF
+{
+    "$(EPOCROOT)Epoc32\data\z\resource\apps\SymDjvu.r01"
+    "$(EPOCROOT)Epoc32\data\z\resource\apps\SymDjvu.r16"
+}    -"!:\resource\apps\SymDjvu.rsc"
 
-"$(EPOCROOT)Epoc32\data\z\private\10003a3f\apps\SymDjvu_reg.r01"	-"!:\private\10003a3f\import\apps\SymDjvu_reg.r01"
+{
+"$(EPOCROOT)Epoc32\data\z\private\10003a3f\apps\SymDjvu_reg.r01"
+"$(EPOCROOT)Epoc32\data\z\private\10003a3f\apps\SymDjvu_reg.r16"
+}	-"!:\private\10003a3f\import\apps\SymDjvu_reg.rsc"
+
+
 "$(EPOCROOT)epoc32\data\z\resource\apps\SymDjvu_aif.mif" -"!:\resource\apps\SymDjvu_aif.mif"
 "$(EPOCROOT)epoc32\data\z\resource\apps\SymDjvu.mbm" -"!:\resource\apps\SymDjvu.mbm"
 "..\group\load.gif" - "c:\private\e1a0b4f1\load.gif"

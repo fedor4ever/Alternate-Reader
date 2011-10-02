@@ -26,7 +26,7 @@ SYSTEMINCLUDE        ..\..\libpng
 SYSTEMINCLUDE        ..\..\fontconfig
 SYSTEMINCLUDE        ..\..\freetype
 
-;Disable for S3x
+//;Disable for S3x
 SYSTEMINCLUDE        ..\..\freetype\include
 
 SOURCE               ..\goo\gfile.cc

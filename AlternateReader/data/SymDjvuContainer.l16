@@ -11,6 +11,7 @@ CHARACTER_SET UTF8
 #define STR_SymDjvuContainerViewFitActualSize "Актуальный размер"
 #define STR_SymDjvuContainerViewFullscreen "Полноэкранный режим"
 #define STR_SymDjvuContainerViewExitFullscreen "Обычный режим"
+#define STR_SymDjvuContainerViewToggleHorizontalScroll "Блокировать по горизонтали"
 #define STR_SymDjvuContainerViewSelectMemory "Выбор памяти:"
 #define STR_SymDjvuContainerViewExit "Выход"
 #define STR_SymDjvuContainerViewAbout "О программе..."

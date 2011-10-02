@@ -148,6 +148,11 @@ RESOURCE STYLUS_POPUP_MENU r_stylus_popup_menu
 				},
 			STYLUS_POPUP_MENU_ITEM
 				{
+					txt = STR_SymDjvuContainerViewToggleHorizontalScroll;
+					command = EFixVertically;
+				},
+			STYLUS_POPUP_MENU_ITEM
+				{
 					txt = STR_SymDjvuContainerViewExitFullscreen;
 					command = EExitFullscreen; 
 				},

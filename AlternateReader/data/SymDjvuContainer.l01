@@ -10,6 +10,7 @@ CHARACTER_SET UTF8
 #define STR_SymDjvuContainerViewZoomWidth "Fit Width"
 #define STR_SymDjvuContainerViewFitActualSize "Fit Actual Size"
 #define STR_SymDjvuContainerViewFullscreen "Fullscreen mode"
+#define STR_SymDjvuContainerViewToggleHorizontalScroll "Toggle side scroll"
 #define STR_SymDjvuContainerViewExitFullscreen "Normal mode"
 #define STR_SymDjvuContainerViewSelectMemory "Select memory:"
 #define STR_SymDjvuContainerViewExit "Exit"

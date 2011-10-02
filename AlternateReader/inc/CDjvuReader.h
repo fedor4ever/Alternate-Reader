@@ -22,6 +22,8 @@
 #include "DjvuReader.h"
 #include "PdfReader.h"
 
+const TReal KZoomFactor = 0.1;
+
 class CDjvuReader : public CBase
 	{
 public:
@@ -156,27 +158,27 @@ public:
     
     void IncrementZoomL()
     {
-    	iAbstractReader->iZoomK += 0.2;
+    	iAbstractReader->iZoomK += KZoomFactor;
     	iAbstractReader->RenderPageWithoutBitmapCopyL(iAbstractReader->iCurrentPage);
     }
     
     void IncrementZoomWithoutBitmapCopyL()
 	{
-    	iAbstractReader->iZoomK += 0.2;
+    	iAbstractReader->iZoomK += KZoomFactor;
 		iAbstractReader->RenderPageWithoutBitmapCopyL(iAbstractReader->iCurrentPage);
 	}
     
     void DecrementZoomL()
     {
-    	if (iAbstractReader->iZoomK > 0.2)
-    		iAbstractReader->iZoomK -= 0.2;
+    	if (iAbstractReader->iZoomK > KZoomFactor)
+    		iAbstractReader->iZoomK -= KZoomFactor;
     	iAbstractReader->RenderPageWithoutBitmapCopyL(iAbstractReader->iCurrentPage);
     }
     
     void DecrementZoomWithoutBitmapCopyL()
     {
-    	if (iAbstractReader->iZoomK > 0.2)
-    		iAbstractReader->iZoomK -= 0.2;
+    	if (iAbstractReader->iZoomK > KZoomFactor)
+    		iAbstractReader->iZoomK -= KZoomFactor;
     	iAbstractReader->RenderPageWithoutBitmapCopyL(iAbstractReader->iCurrentPage);
     }    
     

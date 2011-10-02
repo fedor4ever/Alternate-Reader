@@ -24,8 +24,9 @@ enum TSymDjvuContainerViewCommands
 	EAbout,
 	
 	EButtonDown,
-	EButtonUp
+	EButtonUp,
 	
+	EFixVertically
 	};
 enum TSymDjvuContainerViewControls
 	{

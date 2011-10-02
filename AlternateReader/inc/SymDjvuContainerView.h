@@ -5,10 +5,11 @@
 #include <aknview.h>
 
 #include "Config.h"
-#include "CDjvuReader.h"
-#include "SymDjvuContainer.h"
-#include "RenderThreadManager.h"
-#include "LastFileOpener.h"
+
+class CSymDjvuContainer;
+class CLastFileOpener;
+class CDjvuReader;
+class CRenderThreadManager;
 
 //class CSymDjvuContainer;
 
@@ -59,20 +60,19 @@ protected:
 	void DynInitMenuPaneL(TInt aResourceId, CEikMenuPane* aMenuPane);
 	#endif
 	
-	TBool HandleOpenFileMenuItemSelectedL( TInt aCommand );
-	TBool HandleGoToPageItemSelectedL( TInt aCommand );
-	TBool HandleZoomInItemSelectedL( TInt aCommand );
-	TBool HandleZoomOutItemSelectedL( TInt aCommand );
-	TBool HandleZoomWidthItemSelectedL( TInt aCommand );
-	TBool HandleFitActualSizeItemSelectedL( TInt aCommand );
-	TBool HandleFullscreenItemSelectedL( TInt aCommand );
-	TBool HandleExitItemSelectedL( TInt aCommand );
-	TBool HandleAboutItemSelectedL( TInt aCommand );
+	TBool HandleOpenFileMenuItemSelectedL();
+	TBool HandleGoToPageItemSelectedL();
+	TBool HandleZoomInItemSelectedL();
+	TBool HandleZoomOutItemSelectedL();
+	TBool HandleZoomWidthItemSelectedL();
+	TBool HandleFitActualSizeItemSelectedL();
+	TBool HandleFullscreenItemSelectedL();
+	TBool HandleExitItemSelectedL();
+	TBool HandleAboutItemSelectedL();
 
 private:
 	
 	void SetupStatusPaneL();
-	void CleanupStatusPane();
 
 public:
 	

@@ -8,6 +8,8 @@
 #include "SymDjvu.hrh"
 #include "SymDjvuContainer.hrh"
 #include "SymDjvuContainerView.h"
+#include "CDjvuReader.h"
+#include "RenderThreadManager.h"
 
 /**
  * Construct the CSymDjvuAppUi instance

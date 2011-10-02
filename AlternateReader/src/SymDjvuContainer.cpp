@@ -8,11 +8,15 @@
 #include <AknQueryDialog.h>
 #include <stringloader.h>
 #include <aknappui.h>
+#include <stdlib.h>
+#include <eiksbfrm.h>
+
 
 #include "numberconversion.h"
 #include "SymDjvuContainer.h"
 #include "SymDjvuContainerView.h"
 #include "SymDjvu.hrh"
+#include "CDjvuReader.h"
 #include "SymDjvuContainer.hrh"
 
 const TUint KMinimalTouchEnabledMajorVersion = 5;
@@ -37,11 +41,9 @@ CSymDjvuContainer::~CSymDjvuContainer()
 		delete iLongTapDetector;
 		iLongTapDetector = NULL;
 		
-		if(iStylusPopupMenu)
-		{
-			delete iStylusPopupMenu;
-			iStylusPopupMenu = NULL;
-		}
+		delete iStylusPopupMenu;
+		iStylusPopupMenu = NULL;
+
 	#endif
 		
 		delete iGif;
@@ -122,8 +124,8 @@ void CSymDjvuContainer::ConstructL(
 
 		#ifdef _TOUCH_SUPPORT_ 		
 			iLongTapDetector = CAknLongTapDetector::NewL(this);
-			iLongTapDetector->SetLongTapDelay(1000000); // One second
-			iLongTapDetector->SetTimeDelayBeforeAnimation(500000); // Half second
+			iLongTapDetector->SetLongTapDelay(1500000);
+			iLongTapDetector->SetTimeDelayBeforeAnimation(1000000);
 			iLongTapDetector->EnableLongTapAnimation(EFalse);
 		#endif
 		
@@ -138,8 +140,7 @@ void CSymDjvuContainer::ConstructL(
 		iMargin = 15; 
 		
 		iDjVuReader = aDjvuReader;
-			
-		InitializeControlsL();
+		
 		SetRect( aRect );
 		
 		ActivateL();
@@ -167,10 +168,6 @@ TInt CSymDjvuContainer::CountComponentControls() const
 */
 CCoeControl* CSymDjvuContainer::ComponentControl( TInt aIndex ) const
 	{
-		switch ( aIndex )
-		{
-		}
-		
 		return NULL;
 	}
 				
@@ -183,15 +180,7 @@ CCoeControl* CSymDjvuContainer::ComponentControl( TInt aIndex ) const
  */				
 void CSymDjvuContainer::SizeChanged()
 	{
-		CCoeControl::SizeChanged();
-		LayoutControls();
-	}
-				
-/**
- * Layout components as specified in the UI Designer
- */
-void CSymDjvuContainer::LayoutControls()
-	{
+//		CCoeControl::SizeChanged();
 	}
 
 RWindow*
@@ -217,14 +206,10 @@ TKeyResponse CSymDjvuContainer::OfferKeyEventL(
 					iCommandObserver->ProcessCommandL(EButtonDown);
 					return EKeyWasConsumed;
 					
-					break;
-					
 				case EKeyUpArrow:
 					
 					iCommandObserver->ProcessCommandL(EButtonUp); 
 					return EKeyWasConsumed;
-					
-					break;
 					
 				case EKeyLeftArrow:
 					
@@ -237,8 +222,6 @@ TKeyResponse CSymDjvuContainer::OfferKeyEventL(
 					
 					return EKeyWasConsumed;
 					
-					break;
-					
 				case EKeyRightArrow:
 					
 					if (iDjVuReader && iDjVuReader->IsOpen())
@@ -249,31 +232,21 @@ TKeyResponse CSymDjvuContainer::OfferKeyEventL(
 					} 
 					
 					return EKeyWasConsumed;
-					
-					break;
+
 				case 50:
 					
 					iCommandObserver->ProcessCommandL(EZoomIn);
 					return EKeyWasConsumed;
-					
-					break;
+
 				case 56:
 					
 					iCommandObserver->ProcessCommandL(EZoomOut); 
 					return EKeyWasConsumed;
-					
-					break;
+
 				case 42: // *
 					
-					if(!iFullScreenMode)
-						iCommandObserver->ProcessCommandL(EFullscreen); 
-					
-					if(iFullScreenMode)
-						iCommandObserver->ProcessCommandL(EExitFullscreen); 
-
+					iCommandObserver->ProcessCommandL(EFullscreen); 
 					return EKeyWasConsumed;
-					
-					break;
 				
 				case EKeyEnter:
 					
@@ -281,8 +254,6 @@ TKeyResponse CSymDjvuContainer::OfferKeyEventL(
 				case EKeyOK:
 					
 					return EKeyWasConsumed;
-					
-					break;
 			}
 		}
 		
@@ -378,7 +349,9 @@ void CSymDjvuContainer::HandlePointerEventL(const TPointerEvent& aPointerEvent)
 				dX = iEButtonDownLastPositionDrag.iX - aPointerEvent.iPosition.iX;	
 				dY = iEButtonDownLastPositionDrag.iY - aPointerEvent.iPosition.iY;
 				
-				iCursorPosition.iX -= dX;
+				if (iVertFix)
+					iCursorPosition.iX -= dX;
+
 				iCursorPosition.iY -= dY;
 				
 				CursorPositionCorrection();
@@ -392,15 +365,21 @@ void CSymDjvuContainer::HandlePointerEventL(const TPointerEvent& aPointerEvent)
 				
 				if ( !iDragEnabled )
 				{
-					if (aPointerEvent.iPosition.iY > (Rect().Height() / 2))
+					const TInt KScrollRectHeight = 30;
+					
+					TRect viewRect(Rect());
+					TRect topRect(viewRect.iTl, TSize(viewRect.Width(), KScrollRectHeight));
+					TRect downRect(TPoint(viewRect.iTl.iX, viewRect.iBr.iY - KScrollRectHeight),
+							TSize(viewRect.Width(), KScrollRectHeight));
+					
+					if (topRect.Contains(aPointerEvent.iPosition))
+					{
+						iCommandObserver->ProcessCommandL(EButtonUp);
+					} else if (downRect.Contains(aPointerEvent.iPosition))
 					{
 						iCommandObserver->ProcessCommandL(EButtonDown);
 					}
-					else
-					{
-						iCommandObserver->ProcessCommandL(EButtonUp);
-					}
-				}				
+				}
 				
 				break;
 			default:
@@ -409,15 +388,13 @@ void CSymDjvuContainer::HandlePointerEventL(const TPointerEvent& aPointerEvent)
 		}
 		
 		// Call base class HandlePointerEventL()
-		CCoeControl::HandlePointerEventL(aPointerEvent);
+//		CCoeControl::HandlePointerEventL(aPointerEvent);
     }
 #endif
 
 
 void CSymDjvuContainer::ProcessCommandL(TInt aCommand)
 {
-	iCommandObserver->ProcessCommandL(aCommand);
-    
 	switch(aCommand)
     {
         case EExitFullscreen:
@@ -425,9 +402,12 @@ void CSymDjvuContainer::ProcessCommandL(TInt aCommand)
 				iCommandObserver->ProcessCommandL(EFullscreen);
         	}
         	break;
+        	
         default:
-        
-        	break; 
+        {
+        	iCommandObserver->ProcessCommandL(aCommand);
+        }
+        break;
     }
 }
 
@@ -438,6 +418,36 @@ void CSymDjvuContainer::SetFullScreenMode(TBool aMode)
 			iCommandObserver->ProcessCommandL(EFullscreen);
 		}	
 	}
+
+
+void CSymDjvuContainer::SetFullScreenMode()
+{
+	if (!iFullScreenMode)
+	{
+		iFullScreenMode = ETrue;
+
+#ifdef _TOUCH_SUPPORT_
+		EnableLongTapAnimation(ETrue);
+#endif	
+
+		SetExtentToWholeScreen();
+	}
+	else
+	{
+
+#ifdef _TOUCH_SUPPORT_
+		EnableLongTapAnimation(EFalse);
+#endif	
+
+		iFullScreenMode = EFalse;
+
+		SetRect(iAvkonViewAppUi->View( TUid::Uid( ESymDjvuContainerViewId ) )->ClientRect());
+	}
+
+	CursorPositionCorrection();
+	DrawNow();
+}
+
 
 #ifdef _TOUCH_SUPPORT_
 void CSymDjvuContainer::HandleLongTapEventL( const TPoint& aPenEventLocation, 
@@ -468,33 +478,24 @@ void CSymDjvuContainer::HandleLongTapEventL( const TPoint& aPenEventLocation,
     }
 #endif
 
-/**
- *	Initialize each control upon creation.
- */				
-void CSymDjvuContainer::InitializeControlsL()
-	{
-	
-	}
-
 /** 
  * Handle global resource changes, such as scalable UI or skin events (override)
  */
 void CSymDjvuContainer::HandleResourceChange( TInt aType )
-	{
-		
-		CCoeControl::HandleResourceChange( aType );
-		
-		SetRect(iAvkonViewAppUi->View( TUid::Uid( ESymDjvuContainerViewId ) )->ClientRect());
-		
-		if (iFullScreenMode)
-		{
-			SetExtentToWholeScreen();
-		}
-		
-		CursorPositionCorrection();
-		DrawNow();
+{
+	CCoeControl::HandleResourceChange( aType );
 	
+	if (iFullScreenMode)
+	{
+		SetExtentToWholeScreen();
+	} else {
+		SetRect(iAvkonViewAppUi->View( TUid::Uid( ESymDjvuContainerViewId ) )->ClientRect());
 	}
+
+	CursorPositionCorrection();
+	DrawNow();
+
+}
 				
 /**
  *	Draw container contents.
@@ -558,5 +559,4 @@ void CSymDjvuContainer::Draw( const TRect& aRect ) const
 			}
 			
 		}
-				
 	}

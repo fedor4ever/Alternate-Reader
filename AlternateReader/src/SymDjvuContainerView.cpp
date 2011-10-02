@@ -13,20 +13,20 @@
 #include <eikenv.h>
 #include <SymDjvu.rsg>
 #include <CAknFileSelectionDialog.h> 
-
 #include <CAknMemorySelectionDialog.h>
+#include <AknQueryDialog.h> 
 
 #include "Config.h"
 #ifdef _TOUCH_SUPPORT_ 
 	#include <caknmemoryselectiondialogmultidrive.h>
 #endif 
 
-
-#include <AknQueryDialog.h> 
-
 #include "SymDjvu.hrh"
 #include "SymDjvuContainerView.h"
 #include "SymDjvuContainer.hrh"
+#include "LastFileOpener.h"
+#include "CDjvuReader.h"
+#include "RenderThreadManager.h"
 #include "SymDjvuContainer.h"
 
 #include "numberconversion.h"
@@ -40,9 +40,6 @@
  */
 CSymDjvuContainerView::CSymDjvuContainerView()
 	{
-		iRenderThreadManager = NULL;
-		iDjVuReader = NULL;
-		iLastFileOpener = NULL;
 	}
 
 /** 
@@ -116,28 +113,28 @@ void CSymDjvuContainerView::HandleCommandL( TInt aCommand )
 
 		TBool commandHandled = EFalse;
 		switch ( aCommand )
-			{	// code to dispatch to the AknView's menu and CBA commands is generated here
+			{
 			
 			case EOpenFile:
-				commandHandled = HandleOpenFileMenuItemSelectedL( aCommand );
+				commandHandled = HandleOpenFileMenuItemSelectedL();
 				break;
 			case EGoToPage:
-				commandHandled = HandleGoToPageItemSelectedL( aCommand );
+				commandHandled = HandleGoToPageItemSelectedL();
 				break;		
 			case EZoomIn:
-				commandHandled = HandleZoomInItemSelectedL( aCommand );
+				commandHandled = HandleZoomInItemSelectedL();
 				break;		
 			case EZoomOut:
-				commandHandled = HandleZoomOutItemSelectedL( aCommand );
+				commandHandled = HandleZoomOutItemSelectedL();
 				break;		
 			case EZoomWidth:
-				commandHandled = HandleZoomWidthItemSelectedL( aCommand );
+				commandHandled = HandleZoomWidthItemSelectedL();
 				break;		
 			case EFitActualSize:
-				commandHandled = HandleFitActualSizeItemSelectedL( aCommand );
+				commandHandled = HandleFitActualSizeItemSelectedL();
 				break;		
 			case EFullscreen:
-				commandHandled = HandleFullscreenItemSelectedL( aCommand );
+				commandHandled = HandleFullscreenItemSelectedL();
 				break;		
 			case EButtonDown:
 				commandHandled = HandleDownButtonPressedL();
@@ -146,11 +143,15 @@ void CSymDjvuContainerView::HandleCommandL( TInt aCommand )
 				commandHandled = HandleUpButtonPressedL();
 				break;		
 			case EExit:
-				commandHandled = HandleExitItemSelectedL( aCommand );
+				commandHandled = HandleExitItemSelectedL();
 				break;		
 			case EAbout:
-				commandHandled = HandleAboutItemSelectedL( aCommand );
-				break;		
+				commandHandled = HandleAboutItemSelectedL();
+				break;
+			case EFixVertically:
+				if (iRenderThreadManager->iContainer)
+					iRenderThreadManager->iContainer->FixVertically();
+				break;
 			default:
 				break;
 			}
@@ -159,7 +160,7 @@ void CSymDjvuContainerView::HandleCommandL( TInt aCommand )
 			{
 				if ( aCommand == EAknSoftkeyExit )
 				{
-					HandleExitItemSelectedL( aCommand );
+					HandleExitItemSelectedL();
 				}
 			}
 	
@@ -174,10 +175,9 @@ void CSymDjvuContainerView::DoActivateL(
 		TUid /*aCustomMessageId*/,
 		const TDesC8& /*aCustomMessage*/ )
 	{
-
 		SetupStatusPaneL();
 		
-		if ( iRenderThreadManager == NULL )
+		if (!iRenderThreadManager)
 		{
 			CSymDjvuContainer* mSymDjvuContainer = CreateContainerL();
 			mSymDjvuContainer->SetMopParent( this );
@@ -193,7 +193,10 @@ void CSymDjvuContainerView::DoActivateL(
 			iLastFileOpener->iRenderThreadManager = iRenderThreadManager;
 			iLastFileOpener->StartL(1000000);
 			
-		} 			
+		} else {
+//			AppUi()->AddToStackL( *this, iRenderThreadManager->iContainer );
+//			iRenderThreadManager->iContainer->SetRect(ClientRect());
+		}
 
 	}
 
@@ -201,10 +204,8 @@ void CSymDjvuContainerView::DoActivateL(
  */
 void CSymDjvuContainerView::DoDeactivate()
 	{
-
-		CleanupStatusPane();
 		
-		if ( iRenderThreadManager->iContainer != NULL )
+		if ( iRenderThreadManager->iContainer )
 		{
 			AppUi()->RemoveFromViewStack( *this, iRenderThreadManager->iContainer );
 		}
@@ -219,13 +220,7 @@ void CSymDjvuContainerView::HandleStatusPaneSizeChange()
 		CAknView::HandleStatusPaneSizeChange();
 		
 		// this may fail, but we're not able to propagate exceptions here
-		TVwsViewId view;
-		AppUi()->GetActiveViewId( view );
-		if ( view.iViewUid == Id() )
-		{
-			TInt result;
-			TRAP( result, SetupStatusPaneL() );
-		}
+		TRAPD(err, SetupStatusPaneL());
 	}
 
 /**
@@ -283,9 +278,6 @@ void CSymDjvuContainerView::SetupStatusPaneL()
 				
 	}
 
-void CSymDjvuContainerView::CleanupStatusPane()
-	{
-	}
 
 /**
  * Show the popup dialog for PageNum
@@ -323,7 +315,7 @@ TInt CSymDjvuContainerView::RunPageNumL(
  * @param aCommand the command id invoked
  * @return ETrue if the command was handled, EFalse if not
  */
-TBool CSymDjvuContainerView::HandleOpenFileMenuItemSelectedL( TInt aCommand )
+TBool CSymDjvuContainerView::HandleOpenFileMenuItemSelectedL()
 	{
 	
 		#ifdef _TOUCH_SUPPORT_ 
@@ -455,7 +447,7 @@ TBool CSymDjvuContainerView::HandleOpenFileMenuItemSelectedL( TInt aCommand )
 	
 	}
 
-TBool CSymDjvuContainerView::HandleGoToPageItemSelectedL( TInt aCommand )
+TBool CSymDjvuContainerView::HandleGoToPageItemSelectedL()
 	{
 		if (iDjVuReader && iDjVuReader->IsOpen())
 		{
@@ -510,7 +502,7 @@ TBool CSymDjvuContainerView::HandleGoToPageItemSelectedL( TInt aCommand )
 		return ETrue;
 	}
 
-TBool CSymDjvuContainerView::HandleZoomInItemSelectedL( TInt aCommand )
+TBool CSymDjvuContainerView::HandleZoomInItemSelectedL()
 	{
 		if (iDjVuReader && iDjVuReader->IsOpen())
 		{
@@ -520,7 +512,7 @@ TBool CSymDjvuContainerView::HandleZoomInItemSelectedL( TInt aCommand )
 		return ETrue;
 	}
 
-TBool CSymDjvuContainerView::HandleZoomOutItemSelectedL( TInt aCommand )
+TBool CSymDjvuContainerView::HandleZoomOutItemSelectedL()
 	{
 		if (iDjVuReader && iDjVuReader->IsOpen())
 		{
@@ -530,7 +522,7 @@ TBool CSymDjvuContainerView::HandleZoomOutItemSelectedL( TInt aCommand )
 		return ETrue;
 	}
 
-TBool CSymDjvuContainerView::HandleZoomWidthItemSelectedL( TInt aCommand )
+TBool CSymDjvuContainerView::HandleZoomWidthItemSelectedL()
 	{
 		if (iDjVuReader && iDjVuReader->IsOpen())
 		{
@@ -540,7 +532,7 @@ TBool CSymDjvuContainerView::HandleZoomWidthItemSelectedL( TInt aCommand )
 		return ETrue;
 	}
 
-TBool CSymDjvuContainerView::HandleFitActualSizeItemSelectedL( TInt aCommand )
+TBool CSymDjvuContainerView::HandleFitActualSizeItemSelectedL()
 	{
 		if (iDjVuReader && iDjVuReader->IsOpen())
 		{
@@ -550,45 +542,21 @@ TBool CSymDjvuContainerView::HandleFitActualSizeItemSelectedL( TInt aCommand )
 		return ETrue;
 	}
 
-TBool CSymDjvuContainerView::HandleFullscreenItemSelectedL( TInt aCommand )
+TBool CSymDjvuContainerView::HandleFullscreenItemSelectedL()
 	{
-		iRenderThreadManager->iContainer->SetRect( iAvkonViewAppUi->View( TUid::Uid( ESymDjvuContainerViewId ) )->ClientRect() );
-		if (!iRenderThreadManager->iContainer->iFullScreenMode)
-		{
-			iRenderThreadManager->iContainer->iFullScreenMode = ETrue;
-		
-			#ifdef _TOUCH_SUPPORT_
-			iRenderThreadManager->iContainer->EnableLongTapAnimation(ETrue);
-			#endif	
-			
-			iRenderThreadManager->iContainer->SetExtentToWholeScreen();
-		}
-		else
-		{
-		
-			#ifdef _TOUCH_SUPPORT_
-			iRenderThreadManager->iContainer->EnableLongTapAnimation(EFalse);
-			#endif	
-		
-			iRenderThreadManager->iContainer->iFullScreenMode = EFalse;
-		}
-		
-		iRenderThreadManager->iContainer->CursorPositionCorrection();
-		iRenderThreadManager->iContainer->DrawNow();
-		
+		iRenderThreadManager->iContainer->SetFullScreenMode();
 		return ETrue;
 	}
 
-TBool CSymDjvuContainerView::HandleExitItemSelectedL( TInt aCommand )
+TBool CSymDjvuContainerView::HandleExitItemSelectedL()
 	{
 		
-		iRenderThreadManager->iBookSettings->SaveSettings();
 		AppUi()->HandleCommandL( EEikCmdExit );
 	
 		return ETrue;
 	}
 
-TBool CSymDjvuContainerView::HandleAboutItemSelectedL( TInt aCommand )
+TBool CSymDjvuContainerView::HandleAboutItemSelectedL()
 	{
 		
 		CAknMessageQueryDialog* dlg = new (ELeave) CAknMessageQueryDialog();

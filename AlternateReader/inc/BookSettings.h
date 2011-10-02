@@ -2,14 +2,9 @@
 #ifndef BOOKSETTINGS_H_
 #define BOOKSETTINGS_H_
 
-#include <e32def.h>
-#include <e32cmn.h>
-#include <e32base.h>
-#include <s32strm.h>
-#include "SymDjvuContainer.h"
-
 #include <S32FILE.H>
-//#include <s32strm.h>
+
+class CSymDjvuContainer;
 
 class CBookSettings : CBase
 	{

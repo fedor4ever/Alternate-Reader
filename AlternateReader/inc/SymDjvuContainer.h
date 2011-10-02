@@ -3,9 +3,7 @@
 #define SYMDJVUCONTAINER_H
 
 #include "Config.h"
-#include <coecntrl.h>		
-#include <stdlib.h>
-#include <eiksbfrm.h>
+#include <coecntrl.h>	
 #include <eikmobs.h>
 
 #ifdef _TOUCH_SUPPORT_
@@ -13,7 +11,9 @@
 #include <aknstyluspopupmenu.h>
 #endif
 
+
 #include "AnimatedGif.h"
+
 
 class MEikCommandObserver;
 class CDjvuReader;
@@ -61,11 +61,16 @@ public:
 	
 	RWindow* GetWindow();
 	void SetFullScreenMode(TBool aMode);
+	void SetFullScreenMode();
 	
 	virtual void HandlePointerEventL(const TPointerEvent& aPointerEvent);
 	virtual void HandleLongTapEventL(const TPoint& aPenEventLocation, 
 									 const TPoint& aPenEventScreenLocation);
-
+	void FixVertically()
+	{
+		iVertFix = !iVertFix;
+	}
+	
 protected:
 	// from base class CCoeControl
 	void SizeChanged();
@@ -75,9 +80,6 @@ private:
 	void Draw( const TRect& aRect ) const;
 
 private:
-	
-	void InitializeControlsL();
-	void LayoutControls();
 	
 	void ProcessCommandL(TInt aCommandId);
 	void SetEmphasis(CCoeControl* /*aMenuControl*/,TBool /*aEmphasis*/)
@@ -107,6 +109,8 @@ public:
 	
 	CDjvuReader* iDjVuReader;
 	CAnimatedGif* iGif;
+	
+	TBool iVertFix;
 	
 	void Rotate();
 	
@@ -160,7 +164,7 @@ public:
 	
 	RWindow* GetWindow();
 	void SetFullScreenMode(TBool aMode);
-	
+	void SetFullScreenMode();
 protected:
 	// from base class CCoeControl
 	void SizeChanged();
