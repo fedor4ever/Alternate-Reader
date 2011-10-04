@@ -20,6 +20,8 @@ CHARACTER_SET UTF8
 #define qtn_choose_page_maximum "Total"
 #define qtn_choose_page_pages "pages"
 
+#define qtn_set_zoom "Zoom value (1-99)"
+
 #define qtn_select_file_select_file "Select file"
 #define qtn_select_file_select "Select"
 #define qtn_select_file_open "Open"

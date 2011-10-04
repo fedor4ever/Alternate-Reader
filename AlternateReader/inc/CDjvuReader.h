@@ -23,6 +23,7 @@
 #include "PdfReader.h"
 
 const TReal KZoomFactor = 0.1;
+const TReal KMaxZoom = 1.7;
 
 class CDjvuReader : public CBase
 	{
@@ -164,7 +165,16 @@ public:
     
     void IncrementZoomWithoutBitmapCopyL()
 	{
-    	iAbstractReader->iZoomK += KZoomFactor;
+    	if (iAbstractReader->iZoomK + KZoomFactor < KMaxZoom)
+    	{
+    		iAbstractReader->iZoomK += KZoomFactor;
+    	}
+    	iAbstractReader->RenderPageWithoutBitmapCopyL(iAbstractReader->iCurrentPage);
+	}
+    
+    void SetZoomWithoutBitmapCopyL(const TReal aZoom)
+	{
+    	iAbstractReader->iZoomK = aZoom;
 		iAbstractReader->RenderPageWithoutBitmapCopyL(iAbstractReader->iCurrentPage);
 	}
     

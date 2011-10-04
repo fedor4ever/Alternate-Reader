@@ -136,6 +136,9 @@ void CSymDjvuContainerView::HandleCommandL( TInt aCommand )
 			case EFullscreen:
 				commandHandled = HandleFullscreenItemSelectedL();
 				break;		
+			case ESetZoom:
+				commandHandled = HandleZoomSetItemSelectedL();
+				break;	
 			case EButtonDown:
 				commandHandled = HandleDownButtonPressedL();
 				break;		
@@ -547,6 +550,27 @@ TBool CSymDjvuContainerView::HandleFullscreenItemSelectedL()
 		iRenderThreadManager->iContainer->SetFullScreenMode();
 		return ETrue;
 	}
+
+TBool CSymDjvuContainerView::HandleZoomSetItemSelectedL()
+{
+	const TReal KMaxZoom = 1.7;
+	
+	TReal realZoom = iRenderThreadManager->iContainer->iDjVuReader->GetZoom();
+
+	TInt zoomValue = TInt(100 * realZoom / KMaxZoom) + 1; 
+			
+	CAknNumberQueryDialog* dlg = CAknNumberQueryDialog::NewL(zoomValue);
+	dlg->PrepareLC(R_CUSTOM_ZOOM_DIALOG);
+
+	if (dlg->RunLD())
+	{
+		if (iDjVuReader && iDjVuReader->IsOpen())
+		{
+			iRenderThreadManager->RenderSetZoom(KMaxZoom * zoomValue / 100);
+		}
+	}
+	return ETrue;
+}
 
 TBool CSymDjvuContainerView::HandleExitItemSelectedL()
 	{
