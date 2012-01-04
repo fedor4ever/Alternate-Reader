@@ -1,0 +1,27 @@
+
+// localized strings for language: FR French (02)
+CHARACTER_SET UTF8
+
+#define STR_SymDjvuContainerViewApplicationName "Lecteur de Djvu & PDF"
+#define STR_SymDjvuContainerViewOpenFile "Ouvrir le fichier..." 
+#define STR_SymDjvuContainerViewGoToPage "Aller a la page..." 
+#define STR_SymDjvuContainerViewZoomIn "Agrandissement" 
+#define STR_SymDjvuContainerViewZoomOut "Reduction" 
+#define STR_SymDjvuContainerViewZoomWidth "Adapter a la largeur" 
+#define STR_SymDjvuContainerViewFitActualSize "Adapter a la taille actuelle" 
+#define STR_SymDjvuContainerViewFullscreen "Mode plein ecran" 
+#define STR_SymDjvuContainerViewToggleHorizontalScroll "Defilement a la roulette sur le cote" 
+#define STR_SymDjvuContainerViewExitFullscreen "Mode normal" 
+#define STR_SymDjvuContainerViewSelectMemory "Selectionner la memoire :" 
+#define STR_SymDjvuContainerViewExit "Quitter" 
+#define STR_SymDjvuContainerViewAbout "A propos..." 
+#define qtn_choose_page "Choisir la page" 
+#define qtn_choose_page_maximum "Total" 
+#define qtn_choose_page_pages "pages" 
+#define qtn_select_file_select_file "Selectionner le fichier" 
+#define qtn_select_file_select "Selectionner" 
+#define qtn_select_file_open "Ouvrir" 
+#define qtn_select_file_back "Retour" 
+#define qtn_about_dialog_title "A propos" 
+#define qtn_about_dialog_text "AlternateReader 1.0.8(3)\n\nAuteur: Vasily Kharitonov\nkharitonov2004@mail.ru\n\nhttp://sourceforge.net/projects/alternatedjvu/\n\nDons:\nWEBMONEY RUB: R354392641614\nWEBMONEY WMZ: Z290483498834\nWEBMONEY EUR: E240134583601\nWEBMONEY UAH: U335103001810"
+

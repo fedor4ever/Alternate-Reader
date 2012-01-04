@@ -1,0 +1,4 @@
+
+// localized strings for language: FR French (02)
+
+#define STR_SymDjvuApplicationName "AlternateReader"

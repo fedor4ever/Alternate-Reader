@@ -69,8 +69,7 @@ protected:
 	TBool HandleFullscreenItemSelectedL();
 	TBool HandleExitItemSelectedL();
 	TBool HandleAboutItemSelectedL();
-	TBool HandleZoomSetItemSelectedL();
-	
+
 private:
 	
 	void SetupStatusPaneL();

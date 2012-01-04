@@ -20,8 +20,6 @@ CHARACTER_SET UTF8
 #define qtn_choose_page_maximum "Всего"
 #define qtn_choose_page_pages "страниц"
 
-#define qtn_set_zoom "Увеличение (1-99)"
-
 #define qtn_select_file_select_file "Выберите файл"
 #define qtn_select_file_select "Выбрать"
 #define qtn_select_file_open "Открыть"

@@ -34,14 +34,12 @@ public:
 	void RenderDecrementZoom();
 	void RenderZoomWidth();
 	void RenderFitActualSize();
-	void RenderSetZoom(const TReal aZoom);
 	
 	RThread iThread;
 	TBool iThreadStarted;
 	CSymDjvuContainer* iContainer;
 	CWaitingAnimation* iAnimation;
 	CBookSettings* iBookSettings;
-	TReal iSetZoom;
 	
 private:
 	// C++ constructor
@@ -82,8 +80,7 @@ private:
 			EIncrementZoom,
 			EDecrementZoom,
 			EZoomWidth,
-			EFitActualSize,
-			ESetZoom
+			EFitActualSize
 		};
 
 private:

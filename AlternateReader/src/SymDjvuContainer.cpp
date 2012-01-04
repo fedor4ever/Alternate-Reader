@@ -365,7 +365,7 @@ void CSymDjvuContainer::HandlePointerEventL(const TPointerEvent& aPointerEvent)
 				
 				if ( !iDragEnabled )
 				{
-					const TInt KScrollRectHeight = 30;
+					const TInt KScrollRectHeight = 50;
 					
 					TRect viewRect(Rect());
 					TRect topRect(viewRect.iTl, TSize(viewRect.Width(), KScrollRectHeight));

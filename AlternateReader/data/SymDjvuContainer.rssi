@@ -148,11 +148,6 @@ RESOURCE STYLUS_POPUP_MENU r_stylus_popup_menu
 				},
 			STYLUS_POPUP_MENU_ITEM
 				{
-					txt = "Set zoom";
-					command = ESetZoom;
-				},
-			STYLUS_POPUP_MENU_ITEM
-				{
 					txt = STR_SymDjvuContainerViewToggleHorizontalScroll;
 					command = EFixVertically;
 				},
@@ -274,27 +269,3 @@ RESOURCE TBUF r_select_file_back
 	{
 		buf = qtn_select_file_back;
 	}
-
-RESOURCE DIALOG r_custom_zoom_dialog
-{
-	flags = EGeneralQueryFlags;
-	buttons = R_AVKON_SOFTKEYS_OK_CANCEL;
-	items =
-	{
-		DLG_LINE
-		{
-			type = EAknCtQuery;
-			id = EGeneralQuery;
-			control = AVKON_DATA_QUERY
-			{
-				layout = ENumberLayout;
-				label = qtn_set_zoom;
-				control = AVKON_INTEGER_EDWIN
-				{
-					min = 1;
-					max = 99;
-				};
-			};
-		}
-	};
-}

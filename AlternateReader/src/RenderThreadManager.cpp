@@ -98,20 +98,6 @@ TInt ThreadRenderFitActualSize(TAny* aParams)
 		RenderThreadManager->iContainer->iDjVuReader->RenderPageWithoutBitmapCopyL(RenderThreadManager->iContainer->iDjVuReader->CurrentPage());
 		return KErrNone;
 	}
-
-TInt ThreadRenderSetZoom(TAny* aParams)
-	{
-		CRenderThreadManager* RenderThreadManager = static_cast<CRenderThreadManager*>(aParams);
-		TReal zoom = RenderThreadManager->iSetZoom;
-		
-		if (zoom < KMaxZoom)
-		{
-			RenderThreadManager->iContainer->iDjVuReader->SetZoomWithoutBitmapCopyL(zoom);
-		}
-		
-		return KErrNone;
-	}
-
 TInt ThreadRenderCurrentPage(TAny* aParams)
 	{
 		CRenderThreadManager* RenderThreadManager = static_cast<CRenderThreadManager*>(aParams);
@@ -290,29 +276,6 @@ void CRenderThreadManager::RenderFitActualSize()
 		}
 	}
 
-void CRenderThreadManager::RenderSetZoom(const TReal aZoom)
-	{
-		if(!iThreadStarted)
-		{
-			iRendering = EIncrementZoom;
-			
-			iSetZoom = aZoom;
-			
-			TInt result = iThread.Create(
-				_L("SymThr"),
-				ThreadRenderSetZoom,
-				KStackSize,
-				NULL, // Using heap of this process
-				this
-			);
-			
-			if(result == KErrNone)
-			{
-				StartL();
-			}
-		}
-	}
-
 void CRenderThreadManager::DoCancel()
 	{
 		iThread.LogonCancel(iStatus);
@@ -372,10 +335,6 @@ void CRenderThreadManager::RunL()
 				case EFitActualSize:
 					iContainer->CursorPositionCorrection();
 					iContainer->iCursorPosition.iX = -iContainer->iDjVuReader->GetImageLeftMargin(); 
-				break;
-				
-				case ESetZoom:
-					iContainer->CursorPositionCorrection();
 				break;
 				
 				default:
