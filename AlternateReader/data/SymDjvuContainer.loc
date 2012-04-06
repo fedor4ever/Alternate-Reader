@@ -13,4 +13,6 @@
   #include "SymDjvuContainer.l02"
 #elif defined LANGUAGE_16
   #include "SymDjvuContainer.l16"
+#elif defined LANGUAGE_27
+  #include "SymDjvuContainer.l27"
 #endif

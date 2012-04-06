@@ -9,19 +9,19 @@
 ; extensions .rsc to .r01.
 ;
 ;Language - standard language definitions
-&EN,RU,FR
+&EN,RU,FR,PL
 
 ; standard SIS file header
-#{"AlternateReader","AlternateReader","AlternateReader"},(0xE1A0B4F1),1,8,3
+#{"AlternateReader","AlternateReader","AlternateReader","AlternateReader"},(0xE1A0B4F1),1,8,3
 
 ;Localised Vendor name
-%{"Kharitonov","Kharitonov","Kharitonov"}
+%{"Kharitonov","Kharitonov","Kharitonov","Kharitonov"}
 
 ;Unique Vendor name
 :"Kharitonov"
 
 ;Supports Series 60 >= S60 5rd Edition
-[0x1028315F], 0, 0, 0, {"Series60ProductID","Series60ProductID","Series60ProductID"}
+[0x1028315F], 0, 0, 0, {"Series60ProductID","Series60ProductID","Series60ProductID","Series60ProductID"}
 
 ;!({"English", "English" }, {"Russian", "Russian" } )
 
@@ -34,12 +34,14 @@
     "$(EPOCROOT)Epoc32\data\z\resource\apps\SymDjvu.r01"
     "$(EPOCROOT)Epoc32\data\z\resource\apps\SymDjvu.r02"
     "$(EPOCROOT)Epoc32\data\z\resource\apps\SymDjvu.r16"
+	"$(EPOCROOT)Epoc32\data\z\resource\apps\SymDjvu.r27"
 }    -"!:\resource\apps\SymDjvu.rsc"
 
 {
 "$(EPOCROOT)Epoc32\data\z\private\10003a3f\apps\SymDjvu_reg.r01"
 "$(EPOCROOT)Epoc32\data\z\private\10003a3f\apps\SymDjvu_reg.r02"
 "$(EPOCROOT)Epoc32\data\z\private\10003a3f\apps\SymDjvu_reg.r16"
+"$(EPOCROOT)Epoc32\data\z\private\10003a3f\apps\SymDjvu_reg.r27"
 }	-"!:\private\10003a3f\import\apps\SymDjvu_reg.rsc"
 
 

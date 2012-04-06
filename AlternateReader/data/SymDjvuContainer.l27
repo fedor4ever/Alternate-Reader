@@ -1,0 +1,32 @@
+// localized strings for language: PL Polish (27)
+CHARACTER_SET UTF8
+
+#define STR_SymDjvuContainerViewApplicationName "Przegladarka Djvu i PDF"
+#define STR_SymDjvuContainerViewOpenFile "Otworz..."
+#define STR_SymDjvuContainerViewGoToPage "Do strony..."
+#define STR_SymDjvuContainerViewZoomIn "Powieksz"
+#define STR_SymDjvuContainerViewZoomOut "Pomniejsz"
+#define STR_SymDjvuContainerViewZoomWidth "Szerokosc strony"
+#define STR_SymDjvuContainerViewFitActualSize "Szerokosc tekstu"
+#define STR_SymDjvuContainerViewFullscreen "Pelny ekran"
+#define STR_SymDjvuContainerViewToggleHorizontalScroll "Przewijanie w poziomie"
+#define STR_SymDjvuContainerViewExitFullscreen "Widok normalny"
+#define STR_SymDjvuContainerViewSelectMemory "Wybierz pamiec:"
+#define STR_SymDjvuContainerViewExit "Wyjdz"
+#define STR_SymDjvuContainerViewAbout "O programie..."
+
+#define qtn_choose_page "Wybierz strone"
+#define qtn_choose_page_maximum "razem"
+#define qtn_choose_page_pages "str."
+
+#define qtn_select_file_select_file "Wybierz plik"
+#define qtn_select_file_select "Wybierz"
+#define qtn_select_file_open "Otworz"
+#define qtn_select_file_back "Wroc"
+
+#define qtn_about_dialog_title "O programie"
+#define qtn_about_dialog_text "AlternateReader 1.0.8(3)\n\nAutor: Vasily Kharitonov" \
+"\nkharitonov2004@mail.ru\n\nhttp://sourceforge.net/projects/alternatedjvu/\n\nDatki:" \
+"\nWEBMONEY RUB: R354392641614\nWEBMONEY WMZ:"\
+"Z290483498834\nWEBMONEY EUR: E240134583601\nWEBMONEY UAH:"\
+"U335103001810"
