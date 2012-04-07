@@ -9,7 +9,7 @@
 ; extensions .rsc to .r01.
 ;
 ;Language - standard language definitions
-&EN,RU,FR,PL
+&EN,FR,RU,PL
 
 ; standard SIS file header
 #{"AlternateReader","AlternateReader","AlternateReader","AlternateReader"},(0xE1A0B4F1),1,8,3
