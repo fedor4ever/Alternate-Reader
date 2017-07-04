@@ -1,9 +1,6 @@
 
 PRJ_PLATFORMS
-DEFAULT
-
-PRJ_EXPORTS
-..\inc\AlternateReaderRecog.h
+WINSCW GCCE GCCEV6 GCCEV6t2 GCCEV7A
 
 PRJ_MMPFILES
-AlternateReaderRecog.mmp
+recognizer.mmp

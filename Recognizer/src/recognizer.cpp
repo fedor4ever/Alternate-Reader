@@ -3,18 +3,24 @@
 #include <apmrec.h>
 #include <apmstd.h>
 #include <ImplementationProxy.h>
-#include "AlternateDjvuRecog.h"
+#include "recognizer.h"
 #include <f32file.h>
 
 // CONSTANTS
 const TUid KUidRecognizerEx = {0x101FF1ec};
-const TInt KMaxBufferLength = 4;                  // maximum amount of buffer space we will ever use
+const TInt KMaxBufferLength = 8;                  // maximum amount of buffer space we will ever use
 
 _LIT(KExtensionDjvu, ".djvu");
+_LIT(KExtensionDjv, ".djv");
 _LIT(KExtensionPdf, ".pdf");
 
-_LIT8(KDataTypeDjvu, "image/vnd.djvu");
-_LIT8(KDataTypePdf, "application/pdf");
+_LIT8(KDataTypeDjvu, "AT&TFORM");
+_LIT8(KDataTypePdf, "%PDF");
+
+_LIT8(KMimeTypeDjvu, "image/vnd.djvu");
+_LIT8(KMimeTypePdf, "application/pdf");
+_LIT8(KMimeTypeXPdf, "application/x-pdf");
+_LIT8(KMimeTypePdfPlain, "pdf/plain");
 
 // ================= MEMBER FUNCTIONS =======================
 
@@ -23,52 +29,84 @@ _LIT8(KDataTypePdf, "application/pdf");
 // constructs the object
 // ---------------------------------------------------------
 //
-CApaRecognizerEx::CApaRecognizerEx()
+CAlternateRecog::CAlternateRecog()
     : CApaDataRecognizerType(KUidRecognizerEx, CApaDataRecognizerType::ENormal)
-    {
-		iCountDataTypes = 2;
-    }
+{
+    iCountDataTypes = 4;
+}
 
 // ---------------------------------------------------------
 // RecognizerEx::~RecognizerEx()
 // Destroys the object
 // ---------------------------------------------------------
 //
-CApaRecognizerEx::~CApaRecognizerEx()
-    {
-    // Do nothing
-    }
+CAlternateRecog::~CAlternateRecog()
+{
+// Do nothing
+}
 
 // ---------------------------------------------------------
 // RecognizerEx::PreferredBufSize()
 // Returns preferred buffer size
 // ---------------------------------------------------------
 //
-TUint CApaRecognizerEx::PreferredBufSize()
-    {
-		return KMaxBufferLength;
-    }
+TUint CAlternateRecog::PreferredBufSize()
+{
+    return KMaxBufferLength;
+}
 
 // ---------------------------------------------------------
 // RecognizerEx::SupportedDataTypeL()
 // Returns supported mime type
 // ---------------------------------------------------------
 //
-TDataType CApaRecognizerEx::SupportedDataTypeL(TInt aIndex) const
+TDataType CAlternateRecog::SupportedDataTypeL(TInt aIndex) const
+{
+    switch (aIndex)
     {
-		switch (aIndex)
-		{
-			case 1:
-				return TDataType(KDataTypeDjvu);
-			break;
-			case 2:
-				return TDataType(KDataTypePdf);
-			break;
-			default:
-				return TDataType(KDataTypeDjvu);
-			break;
-		}
-		
+        case 1:
+            return TDataType(KMimeTypeDjvu);
+            break;
+        case 2:
+            return TDataType(KMimeTypePdf);
+            break;
+        case 3:
+            return TDataType(KMimeTypeXPdf);
+            break;
+        case 4:
+            return TDataType(KMimeTypePdfPlain);
+            break;
+        default:
+            User::Leave(KErrArgument);
+            break;
+    }
+    return TDataType();
+}
+
+bool CAlternateRecog::CheckForDjvu(const TDesC8 & aBuffer)
+    {
+    if(aBuffer.Size()>KMaxBufferLength)
+        {
+        return false;
+        }
+    if(aBuffer.FindF(KDataTypeDjvu)!= KErrNotFound)
+        {
+        return true;
+        }
+    return false;
+    }
+
+bool CAlternateRecog::CheckForPdf(const TDesC8 & aBuffer)
+    {
+    if(aBuffer.Size()>KMaxBufferLength)
+        {
+        return false;
+        }
+    if(aBuffer.FindF(KDataTypePdf)!= KErrNotFound)
+        {
+        return true;
+        }
+    return false;
     }
 
 // ---------------------------------------------------------
@@ -76,26 +114,19 @@ TDataType CApaRecognizerEx::SupportedDataTypeL(TInt aIndex) const
 // Recognizes the file by name and/or head buffer
 // ---------------------------------------------------------
 //
-void CApaRecognizerEx::DoRecognizeL(const TDesC& aName, const TDesC8& /*aBuffer*/)
+void CAlternateRecog::DoRecognizeL(const TDesC& /*aName */, const TDesC8& aBuffer)
+{
+    if(CheckForDjvu( aBuffer ))
     {
-		
-	    TParse parse;
-	    parse.Set(aName, NULL, NULL);
-	    TPtrC ext = parse.Ext(); // extract the extension from the filename
-
-	    if (ext.CompareF(KExtensionDjvu)==0)
-		{
-			iConfidence = ECertain;
-			iDataType = TDataType(KDataTypeDjvu); 
-		}
-	    else if (ext.CompareF(KExtensionPdf)==0)
-		{
-			iConfidence = ECertain;
-			iDataType = TDataType(KDataTypePdf); 
-		}
- 
+        iConfidence = ECertain;
+        iDataType = TDataType(KMimeTypeDjvu);
     }
-
+    if(CheckForPdf( aBuffer ))
+    {
+        iConfidence = ECertain;
+        iDataType = TDataType(KMimeTypePdf);
+    }
+}
 
 
 // ================= OTHER EXPORTED FUNCTIONS ==============
@@ -105,15 +136,15 @@ void CApaRecognizerEx::DoRecognizeL(const TDesC& aName, const TDesC8& /*aBuffer*
 // Returns pointer to the new object
 // ---------------------------------------------------------
 //
-CApaDataRecognizerType* CApaRecognizerEx::CreateRecognizerL()
-    {
-		return new (ELeave) CApaRecognizerEx();
-    }
+CApaDataRecognizerType* CAlternateRecog::CreateRecognizerL()
+{
+    return new (ELeave) CAlternateRecog();
+}
 
 const TImplementationProxy ImplementationTable[] =
-    {
-    	IMPLEMENTATION_PROXY_ENTRY(KRecognizerExImplementationUid, CApaRecognizerEx::CreateRecognizerL)
-    };
+{
+    IMPLEMENTATION_PROXY_ENTRY(KRecognizerExImplementationUid, CAlternateRecog::CreateRecognizerL)
+};
 
 // ---------------------------------------------------------
 // ImplementationGroupProxy
@@ -121,8 +152,8 @@ const TImplementationProxy ImplementationTable[] =
 // ---------------------------------------------------------
 //
 EXPORT_C const TImplementationProxy* ImplementationGroupProxy(TInt& aTableCount)
-    {
-		aTableCount = sizeof(ImplementationTable) / sizeof(TImplementationProxy);
-		return ImplementationTable;
-    }
+{
+    aTableCount = sizeof(ImplementationTable) / sizeof(TImplementationProxy);
+    return ImplementationTable;
+}
 

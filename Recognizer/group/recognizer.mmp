@@ -4,23 +4,18 @@ TARGETTYPE      PLUGIN
 UID             0x10009D8D 0x101FF1ec
 
 START RESOURCE  101FF1ec.rss
-TARGET          RecognizerEx.rsc
-END
-
-SOURCEPATH      ..\src
-START RESOURCE  HW_startup.rss
+TARGET          AlternateReaderRecog.rsc
 END
 
 CAPABILITY      ProtServ
-VENDORID        0
 
 USERINCLUDE     ..\inc
 SYSTEMINCLUDE   \epoc32\include
 SYSTEMINCLUDE   \epoc32\include\ecom \epoc32\include\libc
 
 SOURCEPATH      ..\src
+SOURCE recognizer.cpp
 
 LIBRARY         EUSER.LIB efsrv.lib
 LIBRARY         APMIME.LIB
 
-SOURCE AlternateReaderRecog.cpp

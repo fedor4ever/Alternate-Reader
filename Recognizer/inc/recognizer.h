@@ -1,15 +1,10 @@
 /*
-* ============================================================================
-*  Name     : CApaSampleRecognizer from RecognizerEx.h
-*  Part of  : RecognizerEx
-*  Created  : 27/06/2006 by Forum Nokia
-*  Version  : 2.0
-*  Copyright: Nokia Corporation
-* ============================================================================
-*/
+ *  Copyright: BSD license
+ * ============================================================================
+ */
 
-#ifndef SAMPLERECOG_H
-#define SAMPLERECOG_H
+#ifndef ALTERNATERECOG_H
+#define ALTERNATERECOG_H
 
 // INCLUDES
 #include <apmrec.h>
@@ -17,29 +12,27 @@
 // CONSTANTS
 const TInt KRecognizerExImplementationUid = 0x101FF1ed;
 
-/**
-*  CApaSampleRecognizer.
-*  Recognizer plug-in for .djvu.
-*/
-class CApaRecognizerEx: public CApaDataRecognizerType
+class CAlternateRecog : public CApaDataRecognizerType
     {
-    public:
-        // constructor and destructor
-        CApaRecognizerEx();
-        virtual ~CApaRecognizerEx();
+public:
+    // constructor and destructor
+    CAlternateRecog();
+    virtual ~CAlternateRecog();
 
-        // creates and returns recognizer
-        static CApaDataRecognizerType* CreateRecognizerL();
+    // creates and returns recognizer
+    static CApaDataRecognizerType* CreateRecognizerL();
 
-        // returns preferred buffer size
-        TUint PreferredBufSize();
+    // returns preferred buffer size
+    TUint PreferredBufSize();
 
-        // returns supported mime type
-        TDataType SupportedDataTypeL(TInt aIndex) const;
+    // returns supported mime type
+    TDataType SupportedDataTypeL(TInt aIndex) const;
 
-    private:
-        // recognises the file by name and/or buffer
-        void DoRecognizeL(const TDesC& aName, const TDesC8& aBuffer);
+private:
+    // recognises the file by name and/or buffer
+    void DoRecognizeL(const TDesC& aName, const TDesC8& aBuffer);
+    bool CheckForDjvu(const TDesC8 & aBuffer);
+    bool CheckForPdf(const TDesC8 & aBuffer);
     };
 
-#endif //SAMPLERECOG_H
+#endif //ALTERNATERECOG_H
