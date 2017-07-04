@@ -1,6 +1,0 @@
-PRJ_MMPFILES
-..\RecognizerDll\group\AlternateReaderRecog.mmp
-
-PRJ_EXPORTS
-..\RecognizerDll\inc\AlternateReaderRecog.h
-

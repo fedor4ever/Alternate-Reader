@@ -1,6 +1,0 @@
-#include <startupitem.rh>
-
-RESOURCE STARTUP_ITEM_INFO
-	{
-		executable_name = "!:\\sys\\bin\\AlternateReaderRecog.dll";
-	}
