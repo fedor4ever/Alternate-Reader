@@ -27,7 +27,17 @@ RESOURCE APP_REGISTRATION_INFO
 				{ 
 					priority = EDataTypePriorityHigh;
 					type = "application/pdf";
-				}
+				}
+			DATATYPE
+				{ 
+					priority = EDataTypePriorityHigh;
+					type = "application/x-pdf";
+				}
+			DATATYPE
+				{ 
+					priority = EDataTypePriorityHigh;
+					type = "pdf/plain";
+				}
         };
 	}
 
