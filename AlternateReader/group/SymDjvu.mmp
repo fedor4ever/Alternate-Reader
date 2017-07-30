@@ -115,9 +115,9 @@ SOURCE               ..\splash\SplashXPath.cc
 SOURCE               ..\splash\SplashXPathScanner.cc
 SOURCE               ..\poppler\JPXStream.cc
 
-STATICLIBRARY libpng.lib   
+STATICLIBRARY libpng-pips.lib   
 STATICLIBRARY fontconfig.lib
-STATICLIBRARY freetype.lib
+STATICLIBRARY freetype-pips.lib
 STATICLIBRARY libexpat.lib
 
 
