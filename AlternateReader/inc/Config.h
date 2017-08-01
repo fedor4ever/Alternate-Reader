@@ -36,6 +36,7 @@
 
 
 #undef _WIN32
+#undef WIN32
 
 
 /* Define to 1 if you have the <dirent.h> header file, and it defines `DIR'. */
