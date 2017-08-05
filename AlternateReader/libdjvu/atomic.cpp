@@ -119,10 +119,9 @@ static void cond_wait()
 # define COND_WAKEALL SetEvent(ev)
 #endif
 
-#if ! defined(COND_WAKEALL) || ! defined(COND_WAIT)
-# error "Could not select suitable waiting code"
-#endif
-
+// #if ! defined(COND_WAKEALL) || ! defined(COND_WAIT)
+// # error "Could not select suitable waiting code"
+// #endif
 
 /* ============================================================ 
 // PART2 - ATOMIC PRIMITIVES

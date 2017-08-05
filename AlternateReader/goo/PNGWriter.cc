@@ -10,6 +10,7 @@
 //
 //========================================================================
 
+#include <zlib.h>
 #include "PNGWriter.h"
 
 #ifdef ENABLE_LIBPNG
