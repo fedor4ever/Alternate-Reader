@@ -9,6 +9,8 @@ EPOCHEAPSIZE 0x3000 52428800
 MACRO HAVE_CONFIG_H=1
 OPTION CW -wchar_t on
 MACRO  _WCHAR_T_DECLARED
+MACRO  __LONG_LONG_SUPPORTED
+MACRO  SYMBIAN_OE_POSIX_SIGNALS WITH_FONTCONFIGURATION_FONTCONFIG
 
 SYSTEMINCLUDE \epoc32\include
 SYSTEMINCLUDE \epoc32\include\variant
@@ -36,7 +38,6 @@ SOURCE               ..\goo\GooTimer.cc
 SOURCE               ..\goo\GooString.cc
 SOURCE               ..\goo\gmem.cc
 SOURCE               ..\goo\FixedPoint.cc
-SOURCE               ..\goo\PNGWriter.cc
 SOURCE               ..\goo\gstrtod.cc
 SOURCE               ..\fofi\FoFiBase.cc
 SOURCE               ..\fofi\FoFiEncodings.cc
@@ -47,7 +48,6 @@ SOURCE               ..\poppler\Annot.cc
 SOURCE               ..\poppler\Array.cc
 SOURCE               ..\poppler\BuiltinFont.cc
 SOURCE               ..\poppler\BuiltinFontTables.cc
-SOURCE               ..\poppler\Catalog.cc
 SOURCE               ..\poppler\CharCodeToUnicode.cc
 SOURCE               ..\poppler\CMap.cc
 SOURCE               ..\poppler\DateInfo.cc
@@ -79,18 +79,14 @@ SOURCE               ..\poppler\PDFDoc.cc
 SOURCE               ..\poppler\PDFDocEncoding.cc
 SOURCE               ..\poppler\PopplerCache.cc
 SOURCE               ..\poppler\ProfileData.cc
-SOURCE               ..\poppler\PreScanOutputDev.cc
 SOURCE               ..\poppler\PSTokenizer.cc
 SOURCE               ..\poppler\Stream.cc
 SOURCE               ..\poppler\UnicodeMap.cc
 SOURCE               ..\poppler\UnicodeTypeTable.cc
 SOURCE               ..\poppler\XRef.cc
-SOURCE               ..\poppler\PSOutputDev.cc
-SOURCE               ..\poppler\TextOutputDev.cc
 SOURCE               ..\poppler\PageLabelInfo.cc
 SOURCE               ..\poppler\SecurityHandler.cc
 SOURCE               ..\poppler\Sound.cc
-SOURCE               ..\poppler\XpdfPluginAPI.cc
 SOURCE               ..\poppler\Movie.cc
 SOURCE               ..\poppler\SplashOutputDev.cc
 SOURCE               ..\splash\Splash.cc
@@ -107,9 +103,6 @@ SOURCE               ..\splash\SplashPath.cc
 SOURCE               ..\splash\SplashPattern.cc
 SOURCE               ..\splash\SplashScreen.cc
 SOURCE               ..\splash\SplashState.cc
-SOURCE               ..\splash\SplashT1Font.cc
-SOURCE               ..\splash\SplashT1FontEngine.cc
-SOURCE               ..\splash\SplashT1FontFile.cc
 SOURCE               ..\splash\SplashXPath.cc
 SOURCE               ..\splash\SplashXPathScanner.cc
 SOURCE               ..\poppler\JPXStream.cc
@@ -145,7 +138,7 @@ LIBRARY eikcoctl.lib // Stylus pop up menu
 LIBRARY numberconversion.lib 
 
 LIBRARY animation.lib
-LIBRARY remconcoreapi.lib remconinterfacebase.lib // Media keys
+LIBRARY remconcoreapi.lib remconinterfacebase.lib libstdcpp.lib // Media keys
 
 //LIBRARY insock.lib
 //LIBRARY libpthread.lib
@@ -238,8 +231,6 @@ SOURCE miniexp.cpp
 
 SOURCEPATH ..\src
 SOURCE CDjvuReader.cpp
-
-SOURCEPATH ..\src
 SOURCE BookSettings.cpp 
 SOURCE AnimatedGif.cpp 
 SOURCE RenderThreadManager.cpp
@@ -247,7 +238,18 @@ SOURCE RenderThreadManager.cpp
 SOURCEPATH ..\src
 SOURCE WaitingAnimation.cpp 
 SOURCE LastFileOpener.cpp
-SOURCEPATH ..\inc
-SOURCE ..\src\AbstractReader.cpp
 SOURCEPATH ..\src
 SOURCE DjvuReader.cpp PdfReader.cpp
+SOURCEPATH ..\fofi
+SOURCE FoFiIdentifier.cc
+SOURCEPATH ..\src
+SOURCE libc-missed.c
+
+SOURCEPATH ..\poppler
+SOURCE Linearization.cc
+SOURCEPATH ..\goo
+SOURCE grandom.cc PNGWriter.cc
+SOURCEPATH ..\poppler
+SOURCE UTF.cc CachedFile.cc Catalog.cc Hints.cc SignatureInfo.cc Rendition.cc ViewerPreferences.cc StructTreeRoot.cc StructElement.cc MarkedContentOutputDev.cc
+
+OPTION GCCE -std=c++14

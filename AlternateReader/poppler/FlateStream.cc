@@ -3,11 +3,25 @@
 // FlateStream.cc
 //
 // Copyright (C) 2005, Jeff Muizelaar <jeff@infidigm.net>
+// Copyright (C) 2010, Albert Astals Cid <aacid@kde.org>
+// Copyright (C) 2016, William Bader <williambader@hotmail.com>
 //
 // This file is under the GPLv2 or later license
 //
 //========================================================================
+
+#include <config.h>
+
+#ifdef USE_GCC_PRAGMAS
+#pragma implementation
+#endif
+
+#include "poppler-config.h"
+
+#if ENABLE_ZLIB_UNCOMPRESS
+
 #include "FlateStream.h"
+
 FlateStream::FlateStream(Stream *strA, int predictor, int columns, int colors, int bits) :
   FilterStream(strA)
 {
@@ -44,10 +58,12 @@ void FlateStream::reset() {
 }
 
 int FlateStream::getRawChar() {
-  if (fill_buffer())
-    return EOF;
+  return doGetRawChar();
+}
 
-  return out_buf[out_pos++];
+void FlateStream::getRawChars(int nChars, int *buffer) {
+  for (int i = 0; i < nChars; ++i)
+    buffer[i] = doGetRawChar();
 }
 
 int FlateStream::getChar() {
@@ -107,7 +123,7 @@ int FlateStream::fill_buffer() {
   return 0;
 }
 
-GooString *FlateStream::getPSFilter(int psLevel, char *indent) {
+GooString *FlateStream::getPSFilter(int psLevel, const char *indent) {
   GooString *s;
 
   if (psLevel < 3 || pred) {
@@ -123,3 +139,5 @@ GooString *FlateStream::getPSFilter(int psLevel, char *indent) {
 GBool FlateStream::isBinary(GBool last) {
   return str->isBinary(gTrue);
 }
+
+#endif

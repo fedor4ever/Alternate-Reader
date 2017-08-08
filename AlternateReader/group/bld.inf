@@ -10,3 +10,5 @@ gnumakefile icons_aif_scalable_dc.mk
 
 
 SymDjvu.mmp
+../../poppler-0.57.0/symbian/poppler.mmp
+../../poppler-0.57.0/symbian/pdf-plugin.mmp

@@ -14,6 +14,8 @@
 // under GPL version 2 or later
 //
 // Copyright (C) 2009 David Benjamin <davidben@mit.edu>
+// Copyright (C) 2013 Adrian Johnson <ajohnson@redneon.com>
+// Copyright (C) 2015 Suzuki Toshiya <mpsuzuki@hiroshima-u.ac.jp>
 //
 // To see a description of the changes please see the Changelog file that
 // came with your tarball or type make ChangeLog if you are building from git
@@ -45,18 +47,22 @@ class JBIG2MMRDecoder;
 class JBIG2Stream: public FilterStream {
 public:
 
-  JBIG2Stream(Stream *strA, Object *globalsStreamA);
-  virtual ~JBIG2Stream();
-  virtual StreamKind getKind() { return strJBIG2; }
-  virtual void reset();
-  virtual void close();
-  virtual int getPos();
-  virtual int getChar();
-  virtual int lookChar();
-  virtual GooString *getPSFilter(int psLevel, char *indent);
-  virtual GBool isBinary(GBool last = gTrue);
+  JBIG2Stream(Stream *strA, Object *globalsStreamA, Object *globalsStreamRefA);
+  ~JBIG2Stream();
+  StreamKind getKind() override { return strJBIG2; }
+  void reset() override;
+  void close() override;
+  Goffset getPos() override;
+  int getChar() override;
+  int lookChar() override;
+  GooString *getPSFilter(int psLevel, const char *indent) override;
+  GBool isBinary(GBool last = gTrue) override;
+  virtual Object *getGlobalsStream() { return &globalsStream; }
+  virtual Ref getGlobalsStreamRef() { return globalsStreamRef; }
 
 private:
+  GBool hasGetChars() override { return true; }
+  int getChars(int nChars, Guchar *buffer) override;
 
   void readSegments();
   GBool readSymbolDictSeg(Guint segNum, Guint length,
@@ -128,6 +134,7 @@ private:
   GBool readLong(int *x);
 
   Object globalsStream;
+  Ref globalsStreamRef;
   Guint pageW, pageH, curPageH;
   Guint pageDefPixel;
   JBIG2Bitmap *pageBitmap;

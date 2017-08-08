@@ -1,6 +1,3 @@
-INCLUDES =					\
-	-I$(top_srcdir)
-
 noinst_LTLIBRARIES = libfofi.la
 
 if ENABLE_XPDF_HEADERS
@@ -10,6 +7,7 @@ poppler_fofi_include_HEADERS =	\
 	FoFiEncodings.h		\
 	FoFiTrueType.h		\
 	FoFiType1.h		\
+	FoFiIdentifier.h	\
 	FoFiType1C.h
 endif
 
@@ -23,4 +21,8 @@ libfofi_la_SOURCES =		\
 	FoFiType1.cc		\
 	FoFiType1.h		\
 	FoFiType1C.cc		\
+	FoFiIdentifier.cc	\
 	FoFiType1C.h
+
+libfofi_la_CPPFLAGS =		\
+	-I$(top_srcdir)

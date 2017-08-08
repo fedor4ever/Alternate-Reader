@@ -6,6 +6,7 @@
  */
 
 #include "DjvuReader.h"
+#include "UTF.h"
 
 DjvuReader::DjvuReader()
 	{

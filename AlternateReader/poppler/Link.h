@@ -15,6 +15,8 @@
 //
 // Copyright (C) 2006, 2008 Pino Toscano <pino@kde.org>
 // Copyright (C) 2008 Hugo Mercier <hmercier31@gmail.com>
+// Copyright (C) 2010, 2011 Carlos Garcia Campos <carlosgc@gnome.org>
+// Copyright (C) 2012 Tobias Koening <tobias.koenig@kdab.com>
 //
 // To see a description of the changes please see the Changelog file that
 // came with your tarball or type make ChangeLog if you are building from git
@@ -31,10 +33,13 @@
 #include "Object.h"
 
 class GooString;
+class GooList;
 class Array;
 class Dict;
 class Sound;
-class Movie;
+class MediaRendition;
+class AnnotLink;
+class Annots;
 
 //------------------------------------------------------------------------
 // LinkAction
@@ -47,9 +52,10 @@ enum LinkActionKind {
   actionURI,			// URI
   actionNamed,			// named action
   actionMovie,			// movie action
-  actionRendition,
+  actionRendition,		// rendition action
   actionSound,			// sound action
   actionJavaScript,		// JavaScript action
+  actionOCGState,               // Set-OCG-State action
   actionUnknown			// anything else
 };
 
@@ -124,8 +130,10 @@ private:
   double left, bottom;		// position
   double right, top;
   double zoom;			// zoom factor
-  GBool changeLeft, changeTop;	// for destXYZ links, which position
-  GBool changeZoom;		//   components to change
+  GBool changeLeft, changeTop;	// which position components to change:
+  GBool changeZoom;		//   destXYZ uses all three;
+				//   destFitH/BH use changeTop;
+				//   destFitV/BV use changeLeft
   GBool ok;			// set if created successfully
 
   LinkDest(LinkDest *dest);
@@ -142,13 +150,13 @@ public:
   LinkGoTo(Object *destObj);
 
   // Destructor.
-  virtual ~LinkGoTo();
+  ~LinkGoTo();
 
   // Was the LinkGoTo created successfully?
-  virtual GBool isOk() { return dest || namedDest; }
+  GBool isOk() override { return dest || namedDest; }
 
   // Accessors.
-  virtual LinkActionKind getKind() { return actionGoTo; }
+  LinkActionKind getKind() override { return actionGoTo; }
   LinkDest *getDest() { return dest; }
   GooString *getNamedDest() { return namedDest; }
 
@@ -172,13 +180,13 @@ public:
   LinkGoToR(Object *fileSpecObj, Object *destObj);
 
   // Destructor.
-  virtual ~LinkGoToR();
+  ~LinkGoToR();
 
   // Was the LinkGoToR created successfully?
-  virtual GBool isOk() { return fileName && (dest || namedDest); }
+  GBool isOk() override { return fileName && (dest || namedDest); }
 
   // Accessors.
-  virtual LinkActionKind getKind() { return actionGoToR; }
+  LinkActionKind getKind() override { return actionGoToR; }
   GooString *getFileName() { return fileName; }
   LinkDest *getDest() { return dest; }
   GooString *getNamedDest() { return namedDest; }
@@ -203,13 +211,13 @@ public:
   LinkLaunch(Object *actionObj);
 
   // Destructor.
-  virtual ~LinkLaunch();
+  ~LinkLaunch();
 
   // Was the LinkLaunch created successfully?
-  virtual GBool isOk() { return fileName != NULL; }
+  GBool isOk() override { return fileName != NULL; }
 
   // Accessors.
-  virtual LinkActionKind getKind() { return actionLaunch; }
+  LinkActionKind getKind() override { return actionLaunch; }
   GooString *getFileName() { return fileName; }
   GooString *getParams() { return params; }
 
@@ -230,13 +238,13 @@ public:
   LinkURI(Object *uriObj, GooString *baseURI);
 
   // Destructor.
-  virtual ~LinkURI();
+  ~LinkURI();
 
   // Was the LinkURI created successfully?
-  virtual GBool isOk() { return uri != NULL; }
+  GBool isOk() override { return uri != NULL; }
 
   // Accessors.
-  virtual LinkActionKind getKind() { return actionURI; }
+  LinkActionKind getKind() override { return actionURI; }
   GooString *getURI() { return uri; }
 
 private:
@@ -254,11 +262,11 @@ public:
   // Build a LinkNamed given the action name.
   LinkNamed(Object *nameObj);
 
-  virtual ~LinkNamed();
+  ~LinkNamed();
 
-  virtual GBool isOk() { return name != NULL; }
+  GBool isOk() override { return name != NULL; }
 
-  virtual LinkActionKind getKind() { return actionNamed; }
+  LinkActionKind getKind() override { return actionNamed; }
   GooString *getName() { return name; }
 
 private:
@@ -282,10 +290,10 @@ public:
   };
 
   LinkMovie(Object *obj);
-  virtual ~LinkMovie();
+  ~LinkMovie();
 
-  virtual GBool isOk() { return annotRef.num >= 0 || annotTitle != NULL; }
-  virtual LinkActionKind getKind() { return actionMovie; }
+  GBool isOk() override { return annotRef.num >= 0 || annotTitle != NULL; }
+  LinkActionKind getKind() override { return actionMovie; }
 
   // a movie action stores either an indirect reference to a movie annotation
   // or the movie annotation title
@@ -312,32 +320,46 @@ private:
 
 class LinkRendition: public LinkAction {
 public:
+  /**
+   * Describes the possible rendition operations.
+   */
+  enum RenditionOperation {
+    NoRendition,
+    PlayRendition,
+    StopRendition,
+    PauseRendition,
+    ResumeRendition
+  };
 
   LinkRendition(Object *Obj);
 
-  virtual ~LinkRendition();
+  ~LinkRendition();
 
-  virtual GBool isOk() { return true; }
+  GBool isOk() override { return true; }
 
-  virtual LinkActionKind getKind() { return actionRendition; }
+  LinkActionKind getKind() override { return actionRendition; }
 
-  GBool hasRenditionObject() { return !renditionObj.isNull(); }
+  GBool hasRenditionObject() { return renditionObj.isDict(); }
   Object* getRenditionObject() { return &renditionObj; }
 
-  GBool hasScreenAnnot() { return screenRef.num > 0; }
-  Ref* getScreenAnnot() { return &screenRef; }
+  GBool hasScreenAnnot() { return screenRef.isRef(); }
+  Ref getScreenAnnot() { return screenRef.getRef(); }
 
-  int getOperation() { return operation; }
+  RenditionOperation getOperation() { return operation; }
 
-  Movie* getMovie() { return movie; }
+  MediaRendition* getMedia() { return media; }
+
+  GooString *getScript() { return js; }
 
 private:
 
-  Ref screenRef;
+  Object screenRef;
   Object renditionObj;
-  int operation;
+  RenditionOperation operation;
 
-  Movie* movie;
+  MediaRendition* media;
+
+  GooString *js;
 };
 
 //------------------------------------------------------------------------
@@ -349,11 +371,11 @@ public:
 
   LinkSound(Object *soundObj);
 
-  virtual ~LinkSound();
+  ~LinkSound();
 
-  virtual GBool isOk() { return sound != NULL; }
+  GBool isOk() override { return sound != NULL; }
 
-  virtual LinkActionKind getKind() { return actionSound; }
+  LinkActionKind getKind() override { return actionSound; }
 
   double getVolume() { return volume; }
   GBool getSynchronous() { return sync; }
@@ -380,16 +402,45 @@ public:
   // Build a LinkJavaScript given the action name.
   LinkJavaScript(Object *jsObj);
 
-  virtual ~LinkJavaScript();
+  ~LinkJavaScript();
 
-  virtual GBool isOk() { return js != NULL; }
+  GBool isOk() override { return js != NULL; }
 
-  virtual LinkActionKind getKind() { return actionJavaScript; }
+  LinkActionKind getKind() override { return actionJavaScript; }
   GooString *getScript() { return js; }
 
 private:
 
   GooString *js;
+};
+
+//------------------------------------------------------------------------
+// LinkOCGState
+//------------------------------------------------------------------------
+class LinkOCGState: public LinkAction {
+public:
+  LinkOCGState(Object *obj);
+
+  ~LinkOCGState();
+
+  GBool isOk() override { return stateList != NULL; }
+
+  LinkActionKind getKind() override { return actionOCGState; }
+
+  enum State { On, Off, Toggle};
+  struct StateList {
+    StateList() { list = NULL; }
+    ~StateList();
+    State st;
+    GooList *list;
+  };
+
+  GooList *getStateList() { return stateList; }
+  GBool getPreserveRB() { return preserveRB; }
+
+private:
+  GooList *stateList;
+  GBool preserveRB;
 };
 
 //------------------------------------------------------------------------
@@ -403,53 +454,18 @@ public:
   LinkUnknown(char *actionA);
 
   // Destructor.
-  virtual ~LinkUnknown();
+  ~LinkUnknown();
 
   // Was the LinkUnknown create successfully?
-  virtual GBool isOk() { return action != NULL; }
+  GBool isOk() override { return action != NULL; }
 
   // Accessors.
-  virtual LinkActionKind getKind() { return actionUnknown; }
+  LinkActionKind getKind() override { return actionUnknown; }
   GooString *getAction() { return action; }
 
 private:
 
   GooString *action;		// action subtype
-};
-
-//------------------------------------------------------------------------
-// Link
-//------------------------------------------------------------------------
-
-class Link {
-public:
-
-  // Construct a link, given its dictionary.
-  Link(Dict *dict, GooString *baseURI);
-
-  // Destructor.
-  ~Link();
-
-  // Was the link created successfully?
-  GBool isOk() { return ok; }
-
-  // Check if point is inside the link rectangle.
-  GBool inRect(double x, double y)
-    { return x1 <= x && x <= x2 && y1 <= y && y <= y2; }
-
-  // Get action.
-  LinkAction *getAction() { return action; }
-
-  // Get the link rectangle.
-  void getRect(double *xa1, double *ya1, double *xa2, double *ya2)
-    { *xa1 = x1; *ya1 = y1; *xa2 = x2; *ya2 = y2; }
-
-private:
-
-  double x1, y1;		// lower left corner
-  double x2, y2;		// upper right corner
-  LinkAction *action;		// action
-  GBool ok;			// is link valid?
 };
 
 //------------------------------------------------------------------------
@@ -460,14 +476,14 @@ class Links {
 public:
 
   // Extract links from array of annotations.
-  Links(Object *annots, GooString *baseURI);
+  Links(Annots *annots);
 
   // Destructor.
   ~Links();
 
   // Iterate through list of links.
   int getNumLinks() const { return numLinks; }
-  Link *getLink(int i) const { return links[i]; }
+  AnnotLink *getLink(int i) const { return links[i]; }
 
   // If point <x>,<y> is in a link, return the associated action;
   // else return NULL.
@@ -478,7 +494,7 @@ public:
 
 private:
 
-  Link **links;
+  AnnotLink **links;
   int numLinks;
 };
 

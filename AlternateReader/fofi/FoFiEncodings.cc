@@ -6,6 +6,20 @@
 //
 //========================================================================
 
+//========================================================================
+//
+// Modified under the Poppler project - http://poppler.freedesktop.org
+//
+// All changes made under the Poppler project to this file are licensed
+// under GPL version 2 or later
+//
+// Copyright (C) 2016 Albert Astals Cid <aacid@kde.org>
+//
+// To see a description of the changes please see the Changelog file that
+// came with your tarball or type make ChangeLog if you are building from git
+//
+//========================================================================
+
 #include <config.h>
 
 #ifdef USE_GCC_PRAGMAS
@@ -19,7 +33,7 @@
 // Type 1 and 1C font data
 //------------------------------------------------------------------------
 
-char *fofiType1StandardEncoding[256] = {
+const char * const fofiType1StandardEncoding[256] = {
   NULL,
   NULL,
   NULL,
@@ -278,7 +292,7 @@ char *fofiType1StandardEncoding[256] = {
   NULL
 };
 
-char *fofiType1ExpertEncoding[256] = {
+const char * const fofiType1ExpertEncoding[256] = {
   NULL,
   NULL,
   NULL,
@@ -541,7 +555,7 @@ char *fofiType1ExpertEncoding[256] = {
 // Type 1C font data
 //------------------------------------------------------------------------
 
-char *fofiType1CStdStrings[391] = {
+const char *fofiType1CStdStrings[391] = {
   ".notdef",
   "space",
   "exclam",

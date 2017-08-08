@@ -11,22 +11,11 @@
 #include <e32base.h>
 #include <fbs.h>
 
-// DjVu
-#include "ddjvuapi.h"
-#include "UTF.h"
-
-// PDF
-#include "PDFDoc.h"
-#include "SplashOutputDev.h"
-#include "goo/GooString.h"
-#include "GlobalParams.h"
-#include "SplashBitmap.h"
-
 class AbstractReader
 	{
 public:
-	AbstractReader();
-	virtual ~AbstractReader();
+	AbstractReader(){}
+	virtual ~AbstractReader(){}
 
 	// Rendering
 	virtual void OpenL(const TDesC& aFileName) = 0;

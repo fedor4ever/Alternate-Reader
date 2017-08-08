@@ -223,6 +223,7 @@ public:
 				}
 			}
 		}
+		return KErrGeneral;
 	}
     
     TInt GetImageRightMargin() const
@@ -246,7 +247,7 @@ public:
     				}
     			}
     		}
-
+    		return KErrGeneral;
     	}
     
 private:

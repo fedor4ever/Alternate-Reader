@@ -9,6 +9,11 @@
 #define PDFREADER_H_
 
 #include "AbstractReader.h"
+#include "SplashTypes.h"
+class PDFDoc;
+class Catalog;
+class Page;
+class SplashOutputDev;
 
 class PdfReader : public AbstractReader
 	{

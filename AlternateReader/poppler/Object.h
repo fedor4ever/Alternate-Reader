@@ -15,8 +15,13 @@
 //
 // Copyright (C) 2007 Julien Rebetez <julienr@svn.gnome.org>
 // Copyright (C) 2008 Kees Cook <kees@outflux.net>
-// Copyright (C) 2008 Albert Astals Cid <aacid@kde.org>
-// Copyright (C) 2009 Jakub Wilk <ubanus@users.sf.net>
+// Copyright (C) 2008, 2010, 2017 Albert Astals Cid <aacid@kde.org>
+// Copyright (C) 2009 Jakub Wilk <jwilk@jwilk.net>
+// Copyright (C) 2012 Fabio D'Urso <fabiodurso@hotmail.it>
+// Copyright (C) 2013 Thomas Freitag <Thomas.Freitag@alfa.de>
+// Copyright (C) 2013 Adrian Johnson <ajohnson@redneon.com>
+// Copyright (C) 2013 Adrian Perez de Castro <aperez@igalia.com>
+// Copyright (C) 2016 Jakub Alba <jakubalba@gmail.com>
 //
 // To see a description of the changes please see the Changelog file that
 // came with your tarball or type make ChangeLog if you are building from git
@@ -30,32 +35,33 @@
 #pragma interface
 #endif
 
+#include <set>
 #include <stdio.h>
 #include <string.h>
 #include "goo/gtypes.h"
 #include "goo/gmem.h"
 #include "goo/GooString.h"
+#include "goo/GooLikely.h"
 #include "Error.h"
-
-#if defined(__GNUC__) && (__GNUC__ > 2) && defined(__OPTIMIZE__)
-# define likely(x)      __builtin_expect((x), 1)
-# define unlikely(x)    __builtin_expect((x), 0)
-#else
-# define likely(x)      (x)
-# define unlikely(x)    (x)
-#endif
 
 #define OBJECT_TYPE_CHECK(wanted_type) \
     if (unlikely(type != wanted_type)) { \
-        error(0, (char *) "Call to Object where the object was type %d, " \
-                 "not the expected type %d", type, wanted_type); \
+        error(errInternal, 0, "Call to Object where the object was type {0:d}, " \
+                 "not the expected type {1:d}", type, wanted_type); \
         abort(); \
     }
 
 #define OBJECT_2TYPES_CHECK(wanted_type1, wanted_type2) \
     if (unlikely(type != wanted_type1) && unlikely(type != wanted_type2)) { \
-        error(0, (char *) "Call to Object where the object was type %d, " \
-                 "not the expected type %d or %d", type, wanted_type1, wanted_type2); \
+        error(errInternal, 0, "Call to Object where the object was type {0:d}, " \
+	      "not the expected type {1:d} or {2:d}", type, wanted_type1, wanted_type2); \
+        abort(); \
+    }
+
+#define OBJECT_3TYPES_CHECK(wanted_type1, wanted_type2, wanted_type3)	\
+    if (unlikely(type != wanted_type1) && unlikely(type != wanted_type2) && unlikely(type != wanted_type3)) { \
+        error(errInternal, 0, "Call to Object where the object was type {0:d}, " \
+	      "not the expected type {1:d}, {2:d} or {3:d}", type, wanted_type1, wanted_type2, wanted_type3); \
         abort(); \
     }
 
@@ -96,10 +102,13 @@ enum ObjType {
   objCmd,			// command name
   objError,			// error return from Lexer
   objEOF,			// end of file return from Lexer
-  objNone			// uninitialized object
+  objNone,			// uninitialized object
+
+  // poppler-only objects
+  objInt64			// integer with at least 64-bits
 };
 
-#define numObjTypes 14		// total number of object types
+#define numObjTypes 15		// total number of object types
 
 //------------------------------------------------------------------------
 // Object
@@ -129,7 +138,7 @@ public:
     { initObj(objReal); real = realA; return this; }
   Object *initString(GooString *stringA)
     { initObj(objString); string = stringA; return this; }
-  Object *initName(char *nameA)
+  Object *initName(const char *nameA)
     { initObj(objName); name = copyString(nameA); return this; }
   Object *initNull()
     { initObj(objNull); return this; }
@@ -145,6 +154,8 @@ public:
     { initObj(objError); return this; }
   Object *initEOF()
     { initObj(objEOF); return this; }
+  Object *initInt64(long long int64gA)
+    { initObj(objInt64); int64g = int64gA; return this; }
 
   // Copy an object.
   Object *copy(Object *obj);
@@ -155,7 +166,7 @@ public:
 
   // If object is a Ref, fetch and return the referenced object.
   // Otherwise, return a copy of the object.
-  Object *fetch(XRef *xref, Object *obj);
+  Object *fetch(XRef *xref, Object *obj, int recursion = 0);
 
   // Free object contents.
   void free();
@@ -165,7 +176,7 @@ public:
   GBool isBool() { return type == objBool; }
   GBool isInt() { return type == objInt; }
   GBool isReal() { return type == objReal; }
-  GBool isNum() { return type == objInt || type == objReal; }
+  GBool isNum() { return type == objInt || type == objReal || type == objInt64; }
   GBool isString() { return type == objString; }
   GBool isName() { return type == objName; }
   GBool isNull() { return type == objNull; }
@@ -177,21 +188,38 @@ public:
   GBool isError() { return type == objError; }
   GBool isEOF() { return type == objEOF; }
   GBool isNone() { return type == objNone; }
+  GBool isInt64() { return type == objInt64; }
+  GBool isIntOrInt64() { return type == objInt || type == objInt64; }
 
   // Special type checking.
-  GBool isName(char *nameA)
+  GBool isName(const char *nameA)
     { return type == objName && !strcmp(name, nameA); }
-  GBool isDict(char *dictType);
+  GBool isDict(const char *dictType);
   GBool isStream(char *dictType);
-  GBool isCmd(char *cmdA)
+  GBool isCmd(const char *cmdA)
     { return type == objCmd && !strcmp(cmd, cmdA); }
 
   // Accessors.
   GBool getBool() { OBJECT_TYPE_CHECK(objBool); return booln; }
   int getInt() { OBJECT_TYPE_CHECK(objInt); return intg; }
   double getReal() { OBJECT_TYPE_CHECK(objReal); return real; }
-  double getNum() { OBJECT_2TYPES_CHECK(objInt, objReal); return type == objInt ? (double)intg : real; }
+
+  // Note: integers larger than 2^53 can not be exactly represented by a double.
+  // Where the exact value of integers up to 2^63 is required, use isInt64()/getInt64().
+  double getNum() { OBJECT_3TYPES_CHECK(objInt, objInt64, objReal);
+    return type == objInt ? (double)intg : type == objInt64 ? (double)int64g : real; }
+  double getNum(bool *ok) {
+    if (unlikely(type != objInt && type != objInt64 && type != objReal)) {
+      *ok = false;
+      return 0.;
+    }
+    return type == objInt ? (double)intg : type == objInt64 ? (double)int64g : real;
+  }
   GooString *getString() { OBJECT_TYPE_CHECK(objString); return string; }
+  // After takeString() the only method that should be called for the object is free()
+  // because the object it's not expected to have a NULL string.
+  GooString *takeString() {
+    OBJECT_TYPE_CHECK(objString); GooString *s = string; string = NULL; return s; }
   char *getName() { OBJECT_TYPE_CHECK(objName); return name; }
   Array *getArray() { OBJECT_TYPE_CHECK(objArray); return array; }
   Dict *getDict() { OBJECT_TYPE_CHECK(objDict); return dict; }
@@ -200,20 +228,25 @@ public:
   int getRefNum() { OBJECT_TYPE_CHECK(objRef); return ref.num; }
   int getRefGen() { OBJECT_TYPE_CHECK(objRef); return ref.gen; }
   char *getCmd() { OBJECT_TYPE_CHECK(objCmd); return cmd; }
+  long long getInt64() { OBJECT_TYPE_CHECK(objInt64); return int64g; }
+  long long getIntOrInt64() { OBJECT_2TYPES_CHECK(objInt, objInt64);
+    return type == objInt ? intg : int64g; }
 
   // Array accessors.
   int arrayGetLength();
   void arrayAdd(Object *elem);
-  Object *arrayGet(int i, Object *obj);
+  void arrayRemove(int i);
+  Object *arrayGet(int i, Object *obj, int recursion);
   Object *arrayGetNF(int i, Object *obj);
 
   // Dict accessors.
   int dictGetLength();
   void dictAdd(char *key, Object *val);
-  void dictSet(char *key, Object *val);
-  GBool dictIs(char *dictType);
-  Object *dictLookup(char *key, Object *obj);
-  Object *dictLookupNF(char *key, Object *obj);
+  void dictSet(const char *key, Object *val);
+  void dictRemove(const char *key);
+  GBool dictIs(const char *dictType);
+  Object *dictLookup(const char *key, Object *obj, int recursion = 0);
+  Object *dictLookupNF(const char *key, Object *obj);
   char *dictGetKey(int i);
   Object *dictGetVal(int i, Object *obj);
   Object *dictGetValNF(int i, Object *obj);
@@ -223,14 +256,15 @@ public:
   void streamReset();
   void streamClose();
   int streamGetChar();
+  int streamGetChars(int nChars, Guchar *buffer);
   int streamLookChar();
   char *streamGetLine(char *buf, int size);
-  Guint streamGetPos();
-  void streamSetPos(Guint pos, int dir = 0);
+  Goffset streamGetPos();
+  void streamSetPos(Goffset pos, int dir = 0);
   Dict *streamGetDict();
 
   // Output.
-  char *getTypeName();
+  const char *getTypeName();
   void print(FILE *f = stdout);
 
   // Memory testing.
@@ -242,6 +276,7 @@ private:
   union {			// value for each type:
     GBool booln;		//   boolean
     int intg;			//   integer
+    long long int64g;           //   64-bit integer
     double real;		//   real
     GooString *string;		//   string
     char *name;			//   name
@@ -270,8 +305,11 @@ inline int Object::arrayGetLength()
 inline void Object::arrayAdd(Object *elem)
   { OBJECT_TYPE_CHECK(objArray); array->add(elem); }
 
-inline Object *Object::arrayGet(int i, Object *obj)
-  { OBJECT_TYPE_CHECK(objArray); return array->get(i, obj); }
+inline void Object::arrayRemove(int i)
+  { OBJECT_TYPE_CHECK(objArray); array->remove(i); }
+
+inline Object *Object::arrayGet(int i, Object *obj, int recursion = 0)
+  { OBJECT_TYPE_CHECK(objArray); return array->get(i, obj, recursion); }
 
 inline Object *Object::arrayGetNF(int i, Object *obj)
   { OBJECT_TYPE_CHECK(objArray); return array->getNF(i, obj); }
@@ -288,19 +326,22 @@ inline int Object::dictGetLength()
 inline void Object::dictAdd(char *key, Object *val)
   { OBJECT_TYPE_CHECK(objDict); dict->add(key, val); }
 
-inline void Object::dictSet(char *key, Object *val)
- 	{ OBJECT_TYPE_CHECK(objDict); dict->set(key, val); }
+inline void Object::dictSet(const char *key, Object *val)
+  { OBJECT_TYPE_CHECK(objDict); dict->set(key, val); }
 
-inline GBool Object::dictIs(char *dictType)
+inline void Object::dictRemove(const char *key)
+  { OBJECT_TYPE_CHECK(objDict); dict->remove(key); }
+
+inline GBool Object::dictIs(const char *dictType)
   { OBJECT_TYPE_CHECK(objDict); return dict->is(dictType); }
 
-inline GBool Object::isDict(char *dictType)
+inline GBool Object::isDict(const char *dictType)
   { return type == objDict && dictIs(dictType); }
 
-inline Object *Object::dictLookup(char *key, Object *obj)
-  { OBJECT_TYPE_CHECK(objDict); return dict->lookup(key, obj); }
+inline Object *Object::dictLookup(const char *key, Object *obj, int recursion)
+  { OBJECT_TYPE_CHECK(objDict); return dict->lookup(key, obj, recursion); }
 
-inline Object *Object::dictLookupNF(char *key, Object *obj)
+inline Object *Object::dictLookupNF(const char *key, Object *obj)
   { OBJECT_TYPE_CHECK(objDict); return dict->lookupNF(key, obj); }
 
 inline char *Object::dictGetKey(int i)
@@ -333,16 +374,19 @@ inline void Object::streamClose()
 inline int Object::streamGetChar()
   { OBJECT_TYPE_CHECK(objStream); return stream->getChar(); }
 
+inline int Object::streamGetChars(int nChars, Guchar *buffer)
+  { OBJECT_TYPE_CHECK(objStream); return stream->doGetChars(nChars, buffer); }
+
 inline int Object::streamLookChar()
   { OBJECT_TYPE_CHECK(objStream); return stream->lookChar(); }
 
 inline char *Object::streamGetLine(char *buf, int size)
   { OBJECT_TYPE_CHECK(objStream); return stream->getLine(buf, size); }
 
-inline Guint Object::streamGetPos()
+inline Goffset Object::streamGetPos()
   { OBJECT_TYPE_CHECK(objStream); return stream->getPos(); }
 
-inline void Object::streamSetPos(Guint pos, int dir)
+inline void Object::streamSetPos(Goffset pos, int dir)
   { OBJECT_TYPE_CHECK(objStream); stream->setPos(pos, dir); }
 
 inline Dict *Object::streamGetDict()

@@ -2,7 +2,9 @@
 #ifndef CONFIG_H_
 #define CONFIG_H_
 
-#include "stdlib.h"
+#include <stdlib.h>
+#include <sys/types.h>
+
 #define HAS_MBSTATE 1
 #define HAS_WCHAR 1
 //#define HAVE_STDINCLUDES
@@ -11,6 +13,8 @@
 #define HAVE_NAMESPACES
 //#define HAVE_EXCEPTIONS
 
+extern "C" ssize_t pread(int fd, void *buf, size_t count, off_t offset);
+extern "C" ssize_t pwrite(int fd, const void *buf, size_t count, off_t offset);
 
 #define _TOUCH_SUPPORT_ 1
 #define _S603xF1_ 1
@@ -46,7 +50,9 @@
 #define HAVE_DLFCN_H 1
 
 /* Have FreeType2 include files */
+#ifndef HAVE_FREETYPE_H
 #define HAVE_FREETYPE_H 1
+#endif
 
 /* Define to 1 if you have the `fseek64' function. */
 #undef HAVE_FSEEK64
@@ -58,7 +64,9 @@
 #undef HAVE_FTELL64
 
 /* Defines if gettimeofday is available on your system */
+#ifndef HAVE_GETTIMEOFDAY
 #define HAVE_GETTIMEOFDAY 1
+#endif
 
 /* Define to 1 if you have the <inttypes.h> header file. */
 #define HAVE_INTTYPES_H 1

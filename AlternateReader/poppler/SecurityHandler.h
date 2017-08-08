@@ -6,6 +6,20 @@
 //
 //========================================================================
 
+//========================================================================
+//
+// Modified under the Poppler project - http://poppler.freedesktop.org
+//
+// All changes made under the Poppler project to this file are licensed
+// under GPL version 2 or later
+//
+// Copyright (C) 2012 Albert Astals Cid <aacid@kde.org>
+//
+// To see a description of the changes please see the Changelog file that
+// came with your tarball or type make ChangeLog if you are building from git
+//
+//========================================================================
+
 #ifndef SECURITYHANDLER_H
 #define SECURITYHANDLER_H
 
@@ -33,6 +47,9 @@ public:
 
   SecurityHandler(PDFDoc *docA);
   virtual ~SecurityHandler();
+
+  // Returns true if the file is actually unencrypted.
+  virtual GBool isUnencrypted() { return gFalse; }
 
   // Check the document's encryption.  If the document is encrypted,
   // this will first try <ownerPassword> and <userPassword> (in
@@ -90,26 +107,27 @@ class StandardSecurityHandler: public SecurityHandler {
 public:
 
   StandardSecurityHandler(PDFDoc *docA, Object *encryptDictA);
-  virtual ~StandardSecurityHandler();
+  ~StandardSecurityHandler();
 
-  virtual void *makeAuthData(GooString *ownerPassword,
-			     GooString *userPassword);
-  virtual void *getAuthData();
-  virtual void freeAuthData(void *authData);
-  virtual GBool authorize(void *authData);
-  virtual int getPermissionFlags() { return permFlags; }
-  virtual GBool getOwnerPasswordOk() { return ownerPasswordOk; }
-  virtual Guchar *getFileKey() { return fileKey; }
-  virtual int getFileKeyLength() { return fileKeyLength; }
-  virtual int getEncVersion() { return encVersion; }
-  virtual int getEncRevision() { return encRevision; }
-  virtual CryptAlgorithm getEncAlgorithm() { return encAlgorithm; }
+  GBool isUnencrypted() override;
+  void *makeAuthData(GooString *ownerPassword,
+			     GooString *userPassword) override;
+  void *getAuthData() override;
+  void freeAuthData(void *authData) override;
+  GBool authorize(void *authData) override;
+  int getPermissionFlags() override { return permFlags; }
+  GBool getOwnerPasswordOk() override { return ownerPasswordOk; }
+  Guchar *getFileKey() override { return fileKey; }
+  int getFileKeyLength() override { return fileKeyLength; }
+  int getEncVersion() override { return encVersion; }
+  int getEncRevision() override { return encRevision; }
+  CryptAlgorithm getEncAlgorithm() override { return encAlgorithm; }
 
 private:
 
   int permFlags;
   GBool ownerPasswordOk;
-  Guchar fileKey[16];
+  Guchar fileKey[32];
   int fileKeyLength;
   int encVersion;
   int encRevision;
@@ -117,6 +135,7 @@ private:
   CryptAlgorithm encAlgorithm;
 
   GooString *ownerKey, *userKey;
+  GooString *ownerEnc, *userEnc;
   GooString *fileID;
   GBool ok;
 };
@@ -143,6 +162,7 @@ public:
   virtual Guchar *getFileKey() { return fileKey; }
   virtual int getFileKeyLength() { return fileKeyLength; }
   virtual int getEncVersion() { return encVersion; }
+  virtual int getEncRevision() { return encRevision; }
   virtual CryptAlgorithm getEncAlgorithm() { return encAlgorithm; }
 
 private:
@@ -154,6 +174,7 @@ private:
   Guchar fileKey[16];
   int fileKeyLength;
   int encVersion;
+  int encRevision;
   CryptAlgorithm encAlgorithm;
   GBool ok;
 };

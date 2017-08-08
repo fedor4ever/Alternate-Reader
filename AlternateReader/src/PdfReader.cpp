@@ -5,9 +5,15 @@
  *      Author: 1
  */
 
-#include "PdfReader.h"
 #include <bitdev.h>
-#include "SplashTypes.h"
+#include "PdfReader.h"
+#include "GlobalParams.h"
+#include "PDFDoc.h"
+#include "Catalog.h"
+#include "Page.h"
+#include "SplashOutputDev.h"
+#include "SplashBitmap.h"
+#include "UTF.h"
 
 PdfReader::PdfReader()
 	{
@@ -50,7 +56,7 @@ void PdfReader::OpenL(const TDesC& aFileName)
 		{
 	
 			iPdfCatalog = iPdfDoc->getCatalog();
-			iOutputDevice->startDoc(iPdfDoc->getXRef());
+			iOutputDevice->startDoc(iPdfDoc);
 			iPageCount = iPdfCatalog->getNumPages();
 			
 			iZoomK = 1;
@@ -61,7 +67,6 @@ void PdfReader::OpenL(const TDesC& aFileName)
 			iCurrentPage = FirstPageNumber();
 			
 		}
-			
 	}
 
 void PdfReader::BitmapCopyL()
@@ -151,7 +156,7 @@ void PdfReader::BitmapCopyL()
 		}		
 		iBitmap->UnlockHeap();
 		
-		iOutputDevice->startPage( 0, NULL );
+		iOutputDevice->startPage( 0, NULL, iPdfDoc->getXRef() );
 		
 		iBitmapCopyWaiting = ETrue;
 	
@@ -173,7 +178,7 @@ void PdfReader::RenderPageWithoutBitmapCopyL(TInt aPage)
 		
 		double DPI = ((TReal)iPageWidth*iZoomK/iPdfPage->getCropWidth())*72;
 		
-		iPdfPage->display(iOutputDevice, DPI, DPI, 0, gFalse, gFalse, gFalse, iPdfCatalog);
+		iPdfPage->display(iOutputDevice, DPI, DPI, 0, gFalse, gFalse, gFalse);
 		
 		iBitmapCopyWaiting = ETrue;
 		

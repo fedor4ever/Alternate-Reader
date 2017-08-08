@@ -9,18 +9,20 @@ poppler_goo_include_HEADERS =			\
 	GooTimer.h				\
 	GooMutex.h				\
 	GooString.h				\
-	GooVector.h				\
 	gtypes.h				\
 	gmem.h					\
 	gfile.h					\
 	FixedPoint.h				\
+	NetPBMWriter.h				\
 	PNGWriter.h				\
-	gstrtod.h
+	JpegWriter.h				\
+	TiffWriter.h				\
+	ImgWriter.h				\
+	GooLikely.h				\
+	gstrtod.h				\
+	grandom.h
 
 endif
-
-INCLUDES =					\
-	-I$(top_srcdir)
 
 libgoo_la_SOURCES =				\
 	gfile.cc				\
@@ -31,5 +33,37 @@ libgoo_la_SOURCES =				\
 	GooString.cc				\
 	gmem.cc					\
 	FixedPoint.cc				\
+	NetPBMWriter.cc				\
 	PNGWriter.cc				\
-	gstrtod.cc
+	JpegWriter.cc				\
+	TiffWriter.cc				\
+	ImgWriter.cc				\
+	gtypes_p.h				\
+	gstrtod.cc				\
+	grandom.cc                              \
+	glibc.cc
+
+if BUILD_LIBJPEG
+libjpeg_includes = $(LIBJPEG_CFLAGS)
+endif
+
+if BUILD_LIBTIFF
+libtiff_includes = $(LIBTIFF_CFLAGS)
+endif
+
+if BUILD_LIBOPENJPEG
+libjpeg2000_includes = $(LIBOPENJPEG_CFLAGS)
+endif
+
+if BUILD_LIBPNG
+libpng_includes = $(LIBPNG_CFLAGS)
+endif
+
+libgoo_la_CPPFLAGS =				\
+	-I$(top_srcdir)				\
+	$(libjpeg_includes)                     \
+	$(libtiff_includes)                     \
+	$(libjpeg2000_includes)                 \
+	$(libpng_includes)
+
+EXTRA_DIST = glibc.h

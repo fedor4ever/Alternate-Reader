@@ -4,7 +4,10 @@
 //
 // A JPX stream decoder using OpenJPEG
 //
-// Copyright 2008 Albert Astals Cid <aacid@kde.org>
+// Copyright 2008, 2010 Albert Astals Cid <aacid@kde.org>
+// Copyright 2011 Daniel Glöckner <daniel-gl@gmx.net>
+// Copyright 2013, 2014 Adrian Johnson <ajohnson@redneon.com>
+// Copyright 2015 Adam Reichold <adam.reichold@t-online.de>
 //
 // Licensed under GPLv2 or later
 //
@@ -14,35 +17,39 @@
 #ifndef JPEG2000STREAM_H
 #define JPEG2000STREAM_H
 
-#include <openjpeg.h>
-
+#include "config.h"
 #include "goo/gtypes.h"
 #include "Object.h"
 #include "Stream.h"
+
+struct JPXStreamPrivate;
 
 class JPXStream: public FilterStream {
 public:
 
   JPXStream(Stream *strA);
-  virtual ~JPXStream();
-  virtual StreamKind getKind() { return strJPX; }
-  virtual void reset();
-  virtual void close();
-  virtual int getPos();
-  virtual int getChar();
-  virtual int lookChar();
-  virtual GooString *getPSFilter(int psLevel, char *indent);
-  virtual GBool isBinary(GBool last = gTrue);
-  virtual void getImageParams(int *bitsPerComponent, StreamColorSpaceMode *csMode);
+  ~JPXStream();
+  StreamKind getKind() override { return strJPX; }
+  void reset() override;
+  void close() override;
+  Goffset getPos() override;
+  int getChar() override;
+  int lookChar() override;
+  GooString *getPSFilter(int psLevel, const char *indent) override;
+  GBool isBinary(GBool last = gTrue) override;
+  void getImageParams(int *bitsPerComponent, StreamColorSpaceMode *csMode) override;
 
+  int readStream(int nChars, Guchar *buffer) {
+    return str->doGetChars(nChars, buffer);
+  }
 private:
-  void init();
-  void init2(unsigned char *buf, int bufLen, OPJ_CODEC_FORMAT format);
+  JPXStream(const JPXStream &other);
+  JPXStream& operator=(const JPXStream &other);
+  JPXStreamPrivate *priv;
 
-  opj_image_t *image;
-  opj_dinfo_t *dinfo;
-  int counter;
-  GBool inited;
+  void init();
+  GBool hasGetChars() override { return true; }
+  int getChars(int nChars, Guchar *buffer) override;
 };
 
 #endif

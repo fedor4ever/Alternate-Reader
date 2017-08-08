@@ -9,6 +9,7 @@
 #define DJVUREADER_H_
 
 #include "AbstractReader.h"
+#include "ddjvuapi.h"
 
 class DjvuReader : public AbstractReader
 	{

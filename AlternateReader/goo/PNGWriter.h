@@ -6,36 +6,55 @@
 //
 // Copyright (C) 2009 Warren Toomey <wkt@tuhs.org>
 // Copyright (C) 2009 Shen Liang <shenzhuxi@gmail.com>
-// Copyright (C) 2009 Albert Astals Cid <aacid@kde.org>
+// Copyright (C) 2009, 2011-2013 Albert Astals Cid <aacid@kde.org>
+// Copyright (C) 2009 Stefan Thomas <thomas@eload24.com>
+// Copyright (C) 2010, 2011, 2013, 2017 Adrian Johnson <ajohnson@redneon.com>
+// Copyright (C) 2012 Pino Toscano <pino@kde.org>
 //
 //========================================================================
 
 #ifndef PNGWRITER_H
 #define PNGWRITER_H
 
-#include <config.h>
+#include "poppler-config.h"
 
 #ifdef ENABLE_LIBPNG
 
-#include <cstdio>
-#include <png.h>
+#include "ImgWriter.h"
 
-class PNGWriter
+struct PNGWriterPrivate;
+
+class PNGWriter : public ImgWriter
 {
-	public:
-		PNGWriter();
-		~PNGWriter();
-		
-		bool init(FILE *f, int width, int height);
-		
-		bool writePointers(png_bytep *rowPointers);
-		bool writeRow(png_bytep *row);
-		
-		bool close();
-	
-	private:
-		png_structp png_ptr;
-		png_infop info_ptr;
+public:
+
+  /* RGB        - 3 bytes/pixel
+   * RGBA       - 4 bytes/pixel
+   * GRAY       - 1 byte/pixel
+   * MONOCHROME - 8 pixels/byte
+   * RGB48      - 6 bytes/pixel
+   */
+  enum Format { RGB, RGBA, GRAY, MONOCHROME, RGB48 };
+
+  PNGWriter(Format format = RGB);
+  ~PNGWriter();
+
+  void setICCProfile(const char *name, unsigned char *data, int size);
+  void setSRGBProfile();
+
+
+  bool init(FILE *f, int width, int height, int hDPI, int vDPI) override;
+
+  bool writePointers(unsigned char **rowPointers, int rowCount) override;
+  bool writeRow(unsigned char **row) override;
+
+  bool close() override;
+
+private:
+  PNGWriter(const PNGWriter &other);
+  PNGWriter& operator=(const PNGWriter &other);
+
+  PNGWriterPrivate *priv;
 };
 
 #endif
