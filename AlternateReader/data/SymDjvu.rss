@@ -38,7 +38,7 @@ RESOURCE LOCALISABLE_APP_INFO r_localisable_app_info
 		{
 		caption = STR_SymDjvuApplicationName;
 		number_of_icons = 1;
-		icon_file = "c:\\resource\\apps\\SymDjvu_aif.mif";
+		icon_file = "\\resource\\apps\\SymDjvu_aif.mif";
 		};
 	}
 RESOURCE TBUF r_application_akn_view_reference1

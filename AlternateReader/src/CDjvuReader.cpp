@@ -2,6 +2,7 @@
 #include "CDjvuReader.h"
 
 _LIT(KExtensionDjvu, ".djvu");
+_LIT(KExtensionDjv, ".djv");
 _LIT(KExtensionPdf, ".pdf");
 
 /**
@@ -97,6 +98,13 @@ TBool CDjvuReader::OpenL(const TDesC& aFileName)
 			iAbstractReader->OpenL(aFileName);
 			return ETrue;
 		}
+	    else if(ext.CompareF(KExtensionDjv)==0)
+			{
+			iAbstractReader = (AbstractReader*)new DjvuReader();
+			iAbstractReader->iBitmap = iBitmap;
+			iAbstractReader->OpenL(aFileName);
+			return ETrue;
+			}
 	    else if (ext.CompareF(KExtensionPdf)==0)
 		{
 			iAbstractReader = (AbstractReader*)new PdfReader();

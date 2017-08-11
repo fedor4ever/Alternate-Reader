@@ -81,6 +81,13 @@ void CDECL error(ErrorCategory category, Goffset pos, const char *msg, ...) {
     }
   }
 
+  freopen("c:\\AReader_trace.txt","a",stdout);
+  fprintf(stdout, errorCategoryNames[category]);
+  printf("\t");
+  if(pos >= 0) printf("%lld\t", pos);
+  fprintf(stdout, ": %s\n", sanitized->getCString());
+  fclose(stdout);
+  
   if (errorCbk) {
     (*errorCbk)(errorCbkData, category, pos, sanitized->getCString());
   } else {

@@ -5,18 +5,18 @@
 
 target		fontconfig.lib
 targettype	lib
-uid 		0x1000008d 0xe000ff05
-capability	none
+// uid 		0x1000008d 0xe000ff05
+// capability	none
 
-epocallowdlldata
+// epocallowdlldata
 
 macro	FC_BUILD_LIBRARY
 
-#ifdef WINSCW
-deffile	bwins/fontconfig.def
-#else
-deffile	eabi/fontconfig.def
-#endif
+// #ifdef WINSCW
+// deffile	bwins/fontconfig.def
+// #else
+// deffile	eabi/fontconfig.def
+// #endif
 
 macro HAVE_STDINT_H
 macro HAVE_RANDOM
@@ -55,6 +55,6 @@ source	fcstr.c
 source	fcxml.c
 source	ftglue.c
 
-library	libc.lib
-staticlibrary	freetype.lib
-staticlibrary	libexpat.lib
+// library	libc.lib
+// staticlibrary	freetype.lib
+// staticlibrary	libexpat.lib
