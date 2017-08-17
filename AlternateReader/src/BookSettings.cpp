@@ -36,21 +36,19 @@ void CBookSettings::ConstructL()
 
 void 
 CBookSettings::ExternalizeL(RWriteStream& aStream) const
-	{
-	
-		aStream << iBookName;
-			
-		aStream << iCurrentPage;
-		
-		aStream << iCursorPositionX;
-		aStream << iCursorPositionY;
-		aStream << iFullScreenMode;
-		
-		aStream << iZoom;
-		aStream << iDPI;
-		aStream << iPageWidth;
-	
-	}
+{
+	aStream << iBookName;
+
+	aStream << iCurrentPage;
+
+	aStream << iCursorPositionX;
+	aStream << iCursorPositionY;
+	aStream << iFullScreenMode;
+
+	aStream << iZoom;
+	aStream << iDPI;
+	aStream << iPageWidth;
+}
 
 void
 CBookSettings::InternalizeL(RReadStream& aStream)
@@ -88,7 +86,6 @@ void CBookSettings::LoadSettings(TFileName fileName)
 		
 		// Catalog with drive
 		RProcess process;
-		TPtrC drive = process.FileName().Left(2);
 		TBuf<KMaxFileName> name;
 		fs.PrivatePath(name);
 		//name.Insert(0, drive);
@@ -120,7 +117,7 @@ void CBookSettings::LoadSettings(TFileName fileName)
 				iCurrentPage     = 0;
 				iCursorPositionX = 0;
 				iCursorPositionY = 0;
-				iFullScreenMode = EFalse;
+				iFullScreenMode = false;
 				iPageWidth = 360;
 				iZoom = 1;
 				iDPI = 30;
@@ -146,7 +143,7 @@ void CBookSettings::ApplyCurrentSettings()
 	{
 		iContainer->iCursorPosition.iX = iCursorPositionX;
 		iContainer->iCursorPosition.iY = iCursorPositionY;
-		iContainer->SetFullScreenMode(iFullScreenMode);
+		iContainer->EnableFullScreenMode(iFullScreenMode);
 	}
 
 void CBookSettings::SaveSettings()

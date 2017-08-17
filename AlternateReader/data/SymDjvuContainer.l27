@@ -25,8 +25,6 @@ CHARACTER_SET UTF8
 #define qtn_select_file_back "Wroc"
 
 #define qtn_about_dialog_title "O programie"
-#define qtn_about_dialog_text "AlternateReader 1.0.8(3)\n\nAutor: Vasily Kharitonov" \
-"\nkharitonov2004@mail.ru\n\nhttp://sourceforge.net/projects/alternatedjvu/\n\nDatki:" \
-"\nWEBMONEY RUB: R354392641614\nWEBMONEY WMZ:"\
-"Z290483498834\nWEBMONEY EUR: E240134583601\nWEBMONEY UAH:"\
-"U335103001810"
+#define qtn_about_dialog_text "AlternateReader 1.0.8(5)\n\nAutor: Vasily Kharitonov" \
+"\nhttp://sourceforge.net/projects/alternatedjvu/," \
+"\n\nStryzhniou Fiodar\nhttps://github.com/fedor4ever/Alternate-Reader"

@@ -573,17 +573,18 @@ void Page::displaySlice(OutputDev *out, double hDPI, double vDPI,
 			void *abortCheckCbkData,
                         GBool (*annotDisplayDecideCbk)(Annot *annot, void *user_data),
                         void *annotDisplayDecideCbkData,
-                        GBool copyXRef) {
+                        GBool copyXRef)
+{
   Gfx *gfx;
   Object obj;
   Annots *annotList;
   int i;
   
   if (!out->checkPageSlice(this, hDPI, vDPI, rotate, useMediaBox, crop,
-			   sliceX, sliceY, sliceW, sliceH,
-			   printing,
-			   abortCheckCbk, abortCheckCbkData,
-			   annotDisplayDecideCbk, annotDisplayDecideCbkData)) {
+			sliceX, sliceY, sliceW, sliceH,
+			printing,
+			abortCheckCbk, abortCheckCbkData,
+			annotDisplayDecideCbk, annotDisplayDecideCbkData)) {
     return;
   }
   pageLocker();

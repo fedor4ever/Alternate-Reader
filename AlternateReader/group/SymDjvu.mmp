@@ -4,13 +4,13 @@ UID			   0x100039CE 0xE1A0B4F1
 VENDORID	  	  0
 TARGETTYPE		exe
 EPOCSTACKSIZE	 0x10000
-EPOCHEAPSIZE 0x3000 52428800
+EPOCHEAPSIZE 0x3000 20000000
 
 MACRO HAVE_CONFIG_H=1
 OPTION CW -wchar_t on
 MACRO  _WCHAR_T_DECLARED
 MACRO  __LONG_LONG_SUPPORTED
-MACRO  SYMBIAN_OE_POSIX_SIGNALS WITH_FONTCONFIGURATION_FONTCONFIG
+MACRO  SYMBIAN_OE_POSIX_SIGNALS WITH_FONTCONFIGURATION_FONTCONFIG HAVE_DCT_DECODER
 
 SYSTEMINCLUDE \epoc32\include
 SYSTEMINCLUDE \epoc32\include\variant
@@ -123,6 +123,7 @@ TARGETPATH resource\apps
 END //RESOURCE
 
 START RESOURCE	SymDjvu_reg.rss
+LANG			sc
 TARGETPATH 	  \private\10003a3f\apps
 END //RESOURCE
 
@@ -234,22 +235,18 @@ SOURCE CDjvuReader.cpp
 SOURCE BookSettings.cpp 
 SOURCE AnimatedGif.cpp 
 SOURCE RenderThreadManager.cpp
-
-SOURCEPATH ..\src
 SOURCE WaitingAnimation.cpp 
 SOURCE LastFileOpener.cpp
-SOURCEPATH ..\src
 SOURCE DjvuReader.cpp PdfReader.cpp
-SOURCEPATH ..\fofi
-SOURCE FoFiIdentifier.cc
-SOURCEPATH ..\src
 SOURCE libc-missed.c
 
-SOURCEPATH ..\poppler
-SOURCE Linearization.cc
+SOURCEPATH ..\fofi
+SOURCE FoFiIdentifier.cc
+
 SOURCEPATH ..\goo
 SOURCE grandom.cc PNGWriter.cc
 SOURCEPATH ..\poppler
+SOURCE Linearization.cc
 SOURCE UTF.cc CachedFile.cc Catalog.cc Hints.cc SignatureInfo.cc Rendition.cc ViewerPreferences.cc StructTreeRoot.cc StructElement.cc MarkedContentOutputDev.cc
 
 OPTION GCCE -std=c++14

@@ -58,3 +58,4 @@ source	ftglue.c
 // library	libc.lib
 // staticlibrary	freetype.lib
 // staticlibrary	libexpat.lib
+OPTION GCCE -std=c++14

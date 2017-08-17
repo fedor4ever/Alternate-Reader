@@ -14,7 +14,8 @@ NAME SYMD
 #include <appinfo.rh>
 #include <CommonDialogs.rh>
 #include "SymDjvu.hrh"
-#include "SymDjvu.loc"
+
+#define STR_SymDjvuApplicationName "AlternateReader"
 
 RESOURCE RSS_SIGNATURE
 	{

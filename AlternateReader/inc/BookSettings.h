@@ -45,7 +45,7 @@ private:
 	// CSymDjvuContainer settings 
 	TInt32  iCursorPositionX;
 	TInt32  iCursorPositionY;
-	TReal   iFullScreenMode;
+	TUint8   iFullScreenMode; //RReadStream doesn't handle bool type
 	
 private:
 

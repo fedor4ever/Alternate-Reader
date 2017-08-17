@@ -3,7 +3,6 @@
 #include <avkon.rsg>
 #include <avkon.rh>
 #include <appinfo.rh>
-#include "SymDjvu_reg.loc"
 #include <SymDjvu.rsg>
 
 UID2 KUidAppRegistrationResourceFile
@@ -12,7 +11,7 @@ UID3 0xE1A0B4F1
 RESOURCE APP_REGISTRATION_INFO
 	{
 	app_file="SymDjvu";
-	localisable_resource_file = qtn_loc_resource_file_1;
+	localisable_resource_file = "\\resource\\apps\\SymDjvu";
 	localisable_resource_id = R_LOCALISABLE_APP_INFO;
 
 	embeddability = KAppEmbeddable;

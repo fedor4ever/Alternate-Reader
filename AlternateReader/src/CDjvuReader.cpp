@@ -38,7 +38,7 @@ CDjvuReader* CDjvuReader::NewLC()
  */
 void CDjvuReader::ConstructL()
 	{
-		iBitmap = new (ELeave) CFbsBitmap;
+		iBitmap = new (ELeave) CFbsBitmap();
 	}
 
 CDjvuReader::CDjvuReader()
@@ -98,13 +98,13 @@ TBool CDjvuReader::OpenL(const TDesC& aFileName)
 			iAbstractReader->OpenL(aFileName);
 			return ETrue;
 		}
-	    else if(ext.CompareF(KExtensionDjv)==0)
-			{
+	    else if (ext.CompareF(KExtensionDjv)==0)
+		{
 			iAbstractReader = (AbstractReader*)new DjvuReader();
 			iAbstractReader->iBitmap = iBitmap;
 			iAbstractReader->OpenL(aFileName);
 			return ETrue;
-			}
+		}
 	    else if (ext.CompareF(KExtensionPdf)==0)
 		{
 			iAbstractReader = (AbstractReader*)new PdfReader();

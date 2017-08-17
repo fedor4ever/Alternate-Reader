@@ -29,7 +29,7 @@
 #include "RenderThreadManager.h"
 #include "SymDjvuContainer.h"
 
-#include "numberconversion.h"
+#include <numberconversion.h>
 #include <e32err.h>
 
 
@@ -91,7 +91,6 @@ CSymDjvuContainerView* CSymDjvuContainerView::NewLC()
  */ 
 void CSymDjvuContainerView::ConstructL()
 	{
-		
 		BaseConstructL( R_SYM_DJVU_CONTAINER_SYM_DJVU_CONTAINER_VIEW );
 		iDjVuReader = CDjvuReader::NewL();
 	}
@@ -132,9 +131,10 @@ void CSymDjvuContainerView::HandleCommandL( TInt aCommand )
 				break;		
 			case EFitActualSize:
 				commandHandled = HandleFitActualSizeItemSelectedL();
-				break;		
+				break;	
+			case EExitFullscreen: // FALLTHRU
 			case EFullscreen:
-				commandHandled = HandleFullscreenItemSelectedL();
+				commandHandled = HandleSetFullScreenModeL();
 				break;		
 			case EButtonDown:
 				commandHandled = HandleDownButtonPressedL();
@@ -179,7 +179,8 @@ void CSymDjvuContainerView::DoActivateL(
 		
 		if (!iRenderThreadManager)
 		{
-			CSymDjvuContainer* mSymDjvuContainer = CreateContainerL();
+			CSymDjvuContainer* mSymDjvuContainer =
+					CSymDjvuContainer::NewL( ClientRect(), NULL, this, iDjVuReader);
 			mSymDjvuContainer->SetMopParent( this );
 			AppUi()->AddToStackL( *this, mSymDjvuContainer );
 			
@@ -205,7 +206,7 @@ void CSymDjvuContainerView::DoActivateL(
 void CSymDjvuContainerView::DoDeactivate()
 	{
 		
-		if ( iRenderThreadManager->iContainer )
+		if ( iRenderThreadManager->iContainer != NULL )
 		{
 			AppUi()->RemoveFromViewStack( *this, iRenderThreadManager->iContainer );
 		}
@@ -220,18 +221,12 @@ void CSymDjvuContainerView::HandleStatusPaneSizeChange()
 		CAknView::HandleStatusPaneSizeChange();
 		
 		// this may fail, but we're not able to propagate exceptions here
-		TRAPD(err, SetupStatusPaneL());
-	}
-
-/**
- *	Creates the top-level container for the view.  You may modify this method's
- *	contents and the CSymDjvuContainer::NewL() signature as needed to initialize the
- *	container, but the signature for this method is fixed.
- *	@return new initialized instance of CSymDjvuContainer
- */
-CSymDjvuContainer* CSymDjvuContainerView::CreateContainerL()
-	{
-		return CSymDjvuContainer::NewL( ClientRect(), NULL, this, iDjVuReader);
+		TVwsViewId view;
+		AppUi()->GetActiveViewId( view );
+		if ( view.iViewUid == Id() )
+		{
+			TRAPD( err, SetupStatusPaneL() );
+		}
 	}
 
 #ifdef _TOUCH_SUPPORT_ 
@@ -527,7 +522,7 @@ TBool CSymDjvuContainerView::HandleZoomWidthItemSelectedL()
 		if (iDjVuReader && iDjVuReader->IsOpen())
 		{
 			iRenderThreadManager->RenderZoomWidth();
-		}       	
+		}
 		
 		return ETrue;
 	}
@@ -537,22 +532,26 @@ TBool CSymDjvuContainerView::HandleFitActualSizeItemSelectedL()
 		if (iDjVuReader && iDjVuReader->IsOpen())
 		{
 			iRenderThreadManager->RenderFitActualSize();
-		}       	
-		
+		}
 		return ETrue;
 	}
 
-TBool CSymDjvuContainerView::HandleFullscreenItemSelectedL()
+TBool CSymDjvuContainerView::HandleSetFullScreenModeL()
+{
+	if (!iRenderThreadManager->iContainer->iFullScreenMode)
 	{
-		iRenderThreadManager->iContainer->SetFullScreenMode();
-		return ETrue;
+		iRenderThreadManager->iContainer->EnableFullScreenMode(true);
 	}
+	else
+	{
+		iRenderThreadManager->iContainer->EnableFullScreenMode(false);
+	}
+	return ETrue;
+}
 
 TBool CSymDjvuContainerView::HandleExitItemSelectedL()
 	{
-		
 		AppUi()->HandleCommandL( EEikCmdExit );
-	
 		return ETrue;
 	}
 
@@ -577,7 +576,7 @@ TBool CSymDjvuContainerView::HandleUpButtonPressedL()
 
 		if (iRenderThreadManager->iContainer->iDjVuReader && iRenderThreadManager->iContainer->iDjVuReader->IsOpen())
 		{
-			
+
 			if (iRenderThreadManager->iContainer->iCursorPosition.iY == iRenderThreadManager->iContainer->iMargin
 				|| iRenderThreadManager->iContainer->iDjVuReader->GetBitmap()->SizeInPixels().iHeight <= iRenderThreadManager->iContainer->Rect().Height())
 			{
@@ -585,7 +584,7 @@ TBool CSymDjvuContainerView::HandleUpButtonPressedL()
 				{
 					iRenderThreadManager->RenderPreviousPage();
 				}
-				
+
 			}
 			else
 			{
@@ -594,7 +593,6 @@ TBool CSymDjvuContainerView::HandleUpButtonPressedL()
 				iRenderThreadManager->iContainer->DrawNow();						
 			}
 		}
-		
 		return ETrue;
 	}
 

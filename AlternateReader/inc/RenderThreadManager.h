@@ -13,7 +13,7 @@ class CRenderThreadManager : public CActive
 	{
 public:
 	// Cancel and destroy
-	~CRenderThreadManager();
+	virtual ~CRenderThreadManager();
 
 	// Two-phased constructor.
 	static CRenderThreadManager* NewL();

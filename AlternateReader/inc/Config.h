@@ -30,7 +30,9 @@ extern "C" ssize_t pwrite(int fd, const void *buf, size_t count, off_t offset);
 
 /* Use libpng to export images in pdftohtml. */
 /* #undef ENABLE_LIBPNG */
+#ifndef ENABLE_LIBPNG
 #define ENABLE_LIBPNG 1
+#endif
 
 /* Use liblcms for color management. */
 /* #undef USE_CMS */
@@ -81,10 +83,7 @@ extern "C" ssize_t pwrite(int fd, const void *buf, size_t count, off_t offset);
 #define HAVE_MKSTEMP 1
 
 /* Define to 1 if you have the `mkstemps' function. */
-#define HAVE_MKSTEMPS 1
-
-/* Define to 1 if you have the <ndir.h> header file, and it defines `DIR'. */
-#define HAVE_NDIR_H 1
+//#define HAVE_MKSTEMPS 1 //unused
 
 /* Define to 1 if you have the `popen' function. */
 #define HAVE_POPEN 1
@@ -103,12 +102,6 @@ extern "C" ssize_t pwrite(int fd, const void *buf, size_t count, off_t offset);
 
 /* Define to 1 if you have the <string.h> header file. */
 #define HAVE_STRING_H 1
-
-/* Define to 1 if you have the <sys/dir.h> header file, and it defines `DIR'. */
-#define HAVE_SYS_DIR_H 1
-
-/* Define to 1 if you have the <sys/ndir.h> header file, and it defines `DIR'. */
-#define HAVE_SYS_NDIR_H 1
 
 /* Define to 1 if you have the <sys/stat.h> header file. */
 #define HAVE_SYS_STAT_H 1

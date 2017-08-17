@@ -131,7 +131,7 @@ void CSymDjvuContainer::ConstructL(
 		
 		iGif = CAnimatedGif::NewL(_L("c:\\private\\e1a0b4f1\\load.gif"), *(GetWindow()), TPoint(0,0));
 			
-		iFullScreenMode = EFalse;
+		iFullScreenMode = false;
 		
 		iCursorPosition.iX = 0;
 		iCursorPosition.iY = 0;
@@ -140,7 +140,7 @@ void CSymDjvuContainer::ConstructL(
 		iMargin = 15; 
 		
 		iDjVuReader = aDjvuReader;
-		
+
 		SetRect( aRect );
 		
 		ActivateL();
@@ -180,7 +180,7 @@ CCoeControl* CSymDjvuContainer::ComponentControl( TInt aIndex ) const
  */				
 void CSymDjvuContainer::SizeChanged()
 	{
-//		CCoeControl::SizeChanged();
+		CCoeControl::SizeChanged();
 	}
 
 RWindow*
@@ -232,22 +232,18 @@ TKeyResponse CSymDjvuContainer::OfferKeyEventL(
 					} 
 					
 					return EKeyWasConsumed;
-
 				case 50:
 					
 					iCommandObserver->ProcessCommandL(EZoomIn);
 					return EKeyWasConsumed;
-
 				case 56:
 					
 					iCommandObserver->ProcessCommandL(EZoomOut); 
 					return EKeyWasConsumed;
-
 				case 42: // *
-					
-					iCommandObserver->ProcessCommandL(EFullscreen); 
+
+					iCommandObserver->ProcessCommandL(EExitFullscreen); 
 					return EKeyWasConsumed;
-				
 				case EKeyEnter:
 					
 					break;
@@ -365,85 +361,49 @@ void CSymDjvuContainer::HandlePointerEventL(const TPointerEvent& aPointerEvent)
 				
 				if ( !iDragEnabled )
 				{
-					const TInt KScrollRectHeight = 50;
-					
-					TRect viewRect(Rect());
-					TRect topRect(viewRect.iTl, TSize(viewRect.Width(), KScrollRectHeight));
-					TRect downRect(TPoint(viewRect.iTl.iX, viewRect.iBr.iY - KScrollRectHeight),
-							TSize(viewRect.Width(), KScrollRectHeight));
-					
-					if (topRect.Contains(aPointerEvent.iPosition))
-					{
-						iCommandObserver->ProcessCommandL(EButtonUp);
-					} else if (downRect.Contains(aPointerEvent.iPosition))
+					if (aPointerEvent.iPosition.iY > (Rect().Height() / 2))
 					{
 						iCommandObserver->ProcessCommandL(EButtonDown);
+					}
+					else
+					{
+						iCommandObserver->ProcessCommandL(EButtonUp);
 					}
 				}
 				
 				break;
 			default:
-				
 				break;
 		}
 		
 		// Call base class HandlePointerEventL()
-//		CCoeControl::HandlePointerEventL(aPointerEvent);
+		CCoeControl::HandlePointerEventL(aPointerEvent);
     }
 #endif
 
 
 void CSymDjvuContainer::ProcessCommandL(TInt aCommand)
 {
-	switch(aCommand)
-    {
-        case EExitFullscreen:
-        	{
-				iCommandObserver->ProcessCommandL(EFullscreen);
-        	}
-        	break;
-        	
-        default:
-        {
-        	iCommandObserver->ProcessCommandL(aCommand);
-        }
-        break;
-    }
+	iCommandObserver->ProcessCommandL(aCommand);
 }
 
-void CSymDjvuContainer::SetFullScreenMode(TBool aMode)
-	{
-		if(aMode != iFullScreenMode)
-		{
-			iCommandObserver->ProcessCommandL(EFullscreen);
-		}	
-	}
-
-
-void CSymDjvuContainer::SetFullScreenMode()
+void CSymDjvuContainer::EnableFullScreenMode(bool aMode)
 {
-	if (!iFullScreenMode)
+	iFullScreenMode = aMode;
+	if (iFullScreenMode == true)
 	{
-		iFullScreenMode = ETrue;
-
 #ifdef _TOUCH_SUPPORT_
 		EnableLongTapAnimation(ETrue);
 #endif	
-
 		SetExtentToWholeScreen();
 	}
 	else
 	{
-
 #ifdef _TOUCH_SUPPORT_
 		EnableLongTapAnimation(EFalse);
-#endif	
-
-		iFullScreenMode = EFalse;
-
+#endif
 		SetRect(iAvkonViewAppUi->View( TUid::Uid( ESymDjvuContainerViewId ) )->ClientRect());
 	}
-
 	CursorPositionCorrection();
 	DrawNow();
 }
@@ -453,7 +413,6 @@ void CSymDjvuContainer::SetFullScreenMode()
 void CSymDjvuContainer::HandleLongTapEventL( const TPoint& aPenEventLocation, 
 											 const TPoint& aPenEventScreenLocation )
     {
-		
 		if (!iStylusPopupMenu)
 		{
 			iStylusPopupMenu = CAknStylusPopUpMenu::NewL( this , aPenEventLocation);
@@ -471,8 +430,8 @@ void CSymDjvuContainer::HandleLongTapEventL( const TPoint& aPenEventLocation,
 			iStylusPopupMenu->SetItemDimmed(EFitActualSize, !iDjVuReader->IsOpen() || iGif->IsStart());
 			iStylusPopupMenu->SetItemDimmed(EGoToPage,      !iDjVuReader->IsOpen() || iGif->IsStart());
 		
-			iStylusPopupMenu->ShowMenu();
 			iStylusPopupMenu->SetPosition(aPenEventLocation);
+			iStylusPopupMenu->ShowMenu();
 		}
 		
     }

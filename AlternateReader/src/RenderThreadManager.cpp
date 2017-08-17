@@ -34,6 +34,7 @@ void CRenderThreadManager::ConstructL()
 
 CRenderThreadManager::~CRenderThreadManager()
 	{
+		if(iAnimation->IsActive()) iAnimation->DoCancel();
 		Cancel(); // Cancel any request, if outstanding
 		iThread.Close();
 		
@@ -353,5 +354,6 @@ void CRenderThreadManager::RunL()
 
 TInt CRenderThreadManager::RunError(TInt aError)
 	{
+		if(iAnimation->IsActive()) iAnimation->DoCancel();
 		return aError;
 	}

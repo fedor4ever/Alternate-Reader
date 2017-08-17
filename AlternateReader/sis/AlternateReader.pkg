@@ -38,12 +38,9 @@
 	"$(EPOCROOT)Epoc32\data\z\resource\apps\SymDjvu.r27"
 }    -"!:\resource\apps\SymDjvu.rsc"
 
-{
-"$(EPOCROOT)Epoc32\data\z\private\10003a3f\apps\SymDjvu_reg.r01"
-"$(EPOCROOT)Epoc32\data\z\private\10003a3f\apps\SymDjvu_reg.r02"
-"$(EPOCROOT)Epoc32\data\z\private\10003a3f\apps\SymDjvu_reg.r16"
-"$(EPOCROOT)Epoc32\data\z\private\10003a3f\apps\SymDjvu_reg.r27"
-}	-"!:\private\10003a3f\import\apps\SymDjvu_reg.rsc"
+
+"$(EPOCROOT)Epoc32\data\z\private\10003a3f\apps\SymDjvu_reg.rsc"
+	-"!:\private\10003a3f\import\apps\SymDjvu_reg.rsc"
 
 
 "$(EPOCROOT)epoc32\data\z\resource\apps\SymDjvu_aif.mif" -"!:\resource\apps\SymDjvu_aif.mif"

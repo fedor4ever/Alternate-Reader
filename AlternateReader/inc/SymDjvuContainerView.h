@@ -30,22 +30,21 @@ public:
 	static CSymDjvuContainerView* NewLC();        
 	void ConstructL();
 	virtual ~CSymDjvuContainerView();
-						
+
 	// from base class CAknView
 	TUid Id() const;
 	void HandleCommandL( TInt aCommand );
-	
-	CSymDjvuContainer* CreateContainerL();
+
 	static TInt RunPageNumL( 
 			TDes& aData, 
 			TBool aUseDefaults = ETrue, 
 			const TDesC* aOverridePrompt = NULL );
-	
+
 	TBool HandleUpButtonPressedL();
 	TBool HandleDownButtonPressedL();
-	
+
 	void SaveSettings();
-	
+
 protected:
 	
 	// from base class CAknView
@@ -66,7 +65,7 @@ protected:
 	TBool HandleZoomOutItemSelectedL();
 	TBool HandleZoomWidthItemSelectedL();
 	TBool HandleFitActualSizeItemSelectedL();
-	TBool HandleFullscreenItemSelectedL();
+	TBool HandleSetFullScreenModeL();
 	TBool HandleExitItemSelectedL();
 	TBool HandleAboutItemSelectedL();
 
@@ -76,9 +75,9 @@ private:
 
 public:
 	
-	CRenderThreadManager* iRenderThreadManager;
-	CDjvuReader* iDjVuReader;
-	CLastFileOpener* iLastFileOpener;
+	CRenderThreadManager* iRenderThreadManager = nullptr;
+	CDjvuReader* iDjVuReader = nullptr;
+	CLastFileOpener* iLastFileOpener = nullptr;
 	
 	};
 

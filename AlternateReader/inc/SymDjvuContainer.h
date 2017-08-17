@@ -60,8 +60,7 @@ public:
 	void HandleResourceChange( TInt aType );
 	
 	RWindow* GetWindow();
-	void SetFullScreenMode(TBool aMode);
-	void SetFullScreenMode();
+	void EnableFullScreenMode(bool aMode);
 	
 	virtual void HandlePointerEventL(const TPointerEvent& aPointerEvent);
 	virtual void HandleLongTapEventL(const TPoint& aPenEventLocation, 
@@ -99,7 +98,7 @@ public:
 	TPoint iEButtonDownPosition;
 	
 	TBool iDragEnabled;
-	TBool iFullScreenMode;
+	bool iFullScreenMode;
 	
 	TInt dX;
 	TInt dY;
@@ -163,8 +162,7 @@ public:
 	void HandleResourceChange( TInt aType );
 	
 	RWindow* GetWindow();
-	void SetFullScreenMode(TBool aMode);
-	void SetFullScreenMode();
+	void EnableFullScreenMode(TBool aMode);
 protected:
 	// from base class CCoeControl
 	void SizeChanged();
