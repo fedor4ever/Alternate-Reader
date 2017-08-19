@@ -540,10 +540,14 @@ TBool CSymDjvuContainerView::HandleSetFullScreenModeL()
 {
 	if (!iRenderThreadManager->iContainer->iFullScreenMode)
 	{
+		StatusPane()->MakeVisible(EFalse);
+		Cba()->MakeVisible(EFalse);
 		iRenderThreadManager->iContainer->EnableFullScreenMode(true);
 	}
 	else
 	{
+		StatusPane()->MakeVisible(ETrue);
+		Cba()->MakeVisible(ETrue);
 		iRenderThreadManager->iContainer->EnableFullScreenMode(false);
 	}
 	return ETrue;
