@@ -35,9 +35,9 @@ public:
 	TUid Id() const;
 	void HandleCommandL( TInt aCommand );
 
-	static TInt RunPageNumL( 
-			TDes& aData, 
-			TBool aUseDefaults = ETrue, 
+	static TInt RunPageNumL(
+			TDes& aData,
+			TBool aUseDefaults = ETrue,
 			const TDesC* aOverridePrompt = NULL );
 
 	TBool HandleUpButtonPressedL();
@@ -60,7 +60,7 @@ protected:
 	#endif
 	
 	TBool HandleOpenFileMenuItemSelectedL();
-	TBool HandleGoToPageItemSelectedL();
+	TBool HandleGoToPageL();
 	TBool HandleZoomInItemSelectedL();
 	TBool HandleZoomOutItemSelectedL();
 	TBool HandleZoomWidthItemSelectedL();

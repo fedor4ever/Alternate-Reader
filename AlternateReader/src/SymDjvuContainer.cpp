@@ -345,8 +345,8 @@ void CSymDjvuContainer::HandlePointerEventL(const TPointerEvent& aPointerEvent)
 				dX = iEButtonDownLastPositionDrag.iX - aPointerEvent.iPosition.iX;	
 				dY = iEButtonDownLastPositionDrag.iY - aPointerEvent.iPosition.iY;
 				
-				if (iVertFix)
-					iCursorPosition.iX -= dX;
+
+				iCursorPosition.iX -= dX;
 
 				iCursorPosition.iY -= dY;
 				

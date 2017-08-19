@@ -199,3 +199,14 @@ void DjvuReader::RenderPageWithoutBitmapCopyL(TInt aPage)
 		iBitmapCopyWaiting = ETrue;
 		
 	}
+
+void DjvuReader::LoadTOC()
+{
+}
+
+
+void DjvuReader::FindText(const TDesC & str)
+{
+}
+
+

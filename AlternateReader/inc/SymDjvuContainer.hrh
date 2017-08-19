@@ -26,7 +26,11 @@ enum TSymDjvuContainerViewCommands
 	EButtonDown,
 	EButtonUp,
 	
-	EFixVertically
+	EOpenLibrary,
+	EOpenTOC,
+	EOpenBookmarks,
+
+	EFindText
 	};
 enum TSymDjvuContainerViewControls
 	{

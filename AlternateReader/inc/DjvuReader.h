@@ -27,6 +27,8 @@ public:
 	void OpenL(const TDesC& aFileName);
 	void RenderPageWithoutBitmapCopyL(TInt aPage);
 	void BitmapCopyL();
+	virtual void FindText(const TDesC& str) override;
+	virtual void LoadTOC() override;
 	
 	void SetPageWidth(TInt aPageWidth)
 	{

@@ -38,11 +38,13 @@ public:
 		const CCoeControl* aParent, 
 		MEikCommandObserver* aCommandObserver,
 		CDjvuReader* aDjvuReader );
+
 	static CSymDjvuContainer* NewLC( 
 		const TRect& aRect, 
 		const CCoeControl* aParent, 
 		MEikCommandObserver* aCommandObserver,
 		CDjvuReader* aDjvuReader );
+
 	void ConstructL( 
 		const TRect& aRect, 
 		const CCoeControl* aParent, 
@@ -65,11 +67,7 @@ public:
 	virtual void HandlePointerEventL(const TPointerEvent& aPointerEvent);
 	virtual void HandleLongTapEventL(const TPoint& aPenEventLocation, 
 									 const TPoint& aPenEventScreenLocation);
-	void FixVertically()
-	{
-		iVertFix = !iVertFix;
-	}
-	
+
 protected:
 	// from base class CCoeControl
 	void SizeChanged();
@@ -108,9 +106,7 @@ public:
 	
 	CDjvuReader* iDjVuReader;
 	CAnimatedGif* iGif;
-	
-	TBool iVertFix;
-	
+
 	void Rotate();
 	
 	void CursorPositionCorrection();

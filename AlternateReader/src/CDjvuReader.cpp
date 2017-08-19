@@ -116,3 +116,14 @@ TBool CDjvuReader::OpenL(const TDesC& aFileName)
 	    return EFalse;
 	    
 	}
+
+void CDjvuReader::FindText(const TDesC & str)
+{
+	iAbstractReader->FindText(str);
+}
+
+
+void CDjvuReader::LoadTOC()
+{
+	iAbstractReader->LoadTOC();
+}

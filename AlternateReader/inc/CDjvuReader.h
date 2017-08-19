@@ -37,6 +37,8 @@ public:
 	TBool OpenL(const TDesC& aFileName);
 	void RenderPageWithoutBitmapCopyL(TInt aPage);
 	void BitmapCopyL();
+	virtual void FindText(const TDesC& str);
+	virtual void LoadTOC();
 	
 	void NextPageWithoutBitmapCopyL();
 	void PreviousPageWithoutBitmapCopyL();

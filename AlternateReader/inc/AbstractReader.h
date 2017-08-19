@@ -21,6 +21,8 @@ public:
 	virtual void OpenL(const TDesC& aFileName) = 0;
 	virtual void RenderPageWithoutBitmapCopyL(TInt aPage) = 0;
 	virtual void BitmapCopyL() = 0;
+	virtual void FindText(const TDesC& str) = 0;
+	virtual void LoadTOC() = 0;
 	
 	// Manages
 	virtual TInt FirstPageNumber() = 0;

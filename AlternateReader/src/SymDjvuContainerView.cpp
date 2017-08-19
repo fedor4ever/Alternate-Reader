@@ -118,7 +118,7 @@ void CSymDjvuContainerView::HandleCommandL( TInt aCommand )
 				commandHandled = HandleOpenFileMenuItemSelectedL();
 				break;
 			case EGoToPage:
-				commandHandled = HandleGoToPageItemSelectedL();
+				commandHandled = HandleGoToPageL();
 				break;		
 			case EZoomIn:
 				commandHandled = HandleZoomInItemSelectedL();
@@ -148,9 +148,13 @@ void CSymDjvuContainerView::HandleCommandL( TInt aCommand )
 			case EAbout:
 				commandHandled = HandleAboutItemSelectedL();
 				break;
-			case EFixVertically:
-				if (iRenderThreadManager->iContainer)
-					iRenderThreadManager->iContainer->FixVertically();
+			case EFindText:
+				break;
+			case EOpenLibrary:
+				break;
+			case EOpenBookmarks:
+				break;
+			case EOpenTOC:
 				break;
 			default:
 				break;
@@ -442,7 +446,7 @@ TBool CSymDjvuContainerView::HandleOpenFileMenuItemSelectedL()
 	
 	}
 
-TBool CSymDjvuContainerView::HandleGoToPageItemSelectedL()
+TBool CSymDjvuContainerView::HandleGoToPageL()
 	{
 		if (iDjVuReader && iDjVuReader->IsOpen())
 		{

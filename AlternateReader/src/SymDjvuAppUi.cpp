@@ -72,25 +72,18 @@ void CSymDjvuAppUi::InitializeContainersL()
  * @param aCommand command id to be handled
  */
 void CSymDjvuAppUi::HandleCommandL( TInt aCommand )
-	{
+{
 
-		TBool commandHandled = EFalse;
-		switch ( aCommand )
-		{ // code to dispatch to the AppUi's menu and CBA commands is generated here
-			default:
-				break;
-		}
-		
-		if ( !commandHandled ) 
-		{
-			if ( aCommand == EAknSoftkeyExit || aCommand == EEikCmdExit )
-			{
-				iSymDjvuContainerView->SaveSettings();
-				Exit();
-			}
-		}
-
+	switch ( aCommand )
+	{ // code to dispatch to the AppUi's menu and CBA commands is generated here
+		case EAknSoftkeyExit: //Fallthru
+		case EEikCmdExit:
+			iSymDjvuContainerView->SaveSettings();
+			Exit();
+		default:
+			break;
 	}
+}
 
 /** 
  * Override of the HandleResourceChangeL virtual function
