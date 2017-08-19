@@ -155,32 +155,19 @@ public:
  
     	return iAbstractReader->iPageWidth;
    	}
-    
-    void IncrementZoomL()
-    {
-    	iAbstractReader->iZoomK += KZoomFactor;
-    	iAbstractReader->RenderPageWithoutBitmapCopyL(iAbstractReader->iCurrentPage);
-    }
-    
-    void IncrementZoomWithoutBitmapCopyL()
-	{
-    	iAbstractReader->iZoomK += KZoomFactor;
-		iAbstractReader->RenderPageWithoutBitmapCopyL(iAbstractReader->iCurrentPage);
-	}
-    
-    void DecrementZoomL()
-    {
-    	if (iAbstractReader->iZoomK > KZoomFactor)
-    		iAbstractReader->iZoomK -= KZoomFactor;
-    	iAbstractReader->RenderPageWithoutBitmapCopyL(iAbstractReader->iCurrentPage);
-    }
-    
+
     void DecrementZoomWithoutBitmapCopyL()
     {
     	if (iAbstractReader->iZoomK > KZoomFactor)
     		iAbstractReader->iZoomK -= KZoomFactor;
     	iAbstractReader->RenderPageWithoutBitmapCopyL(iAbstractReader->iCurrentPage);
     }    
+    
+    void IncrementZoomWithoutBitmapCopyL()
+	{
+    	iAbstractReader->iZoomK += KZoomFactor;
+		iAbstractReader->RenderPageWithoutBitmapCopyL(iAbstractReader->iCurrentPage);
+	}
     
     TInt GetImageWidth() const
 	{

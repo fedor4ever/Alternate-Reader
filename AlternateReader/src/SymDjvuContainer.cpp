@@ -390,7 +390,7 @@ void CSymDjvuContainer::ProcessCommandL(TInt aCommand)
 void CSymDjvuContainer::EnableFullScreenMode(bool aMode)
 {
 	iFullScreenMode = aMode;
-	if (iFullScreenMode == true)
+	if (iFullScreenMode)
 	{
 #ifdef _TOUCH_SUPPORT_
 		EnableLongTapAnimation(ETrue);
@@ -443,17 +443,7 @@ void CSymDjvuContainer::HandleLongTapEventL( const TPoint& aPenEventLocation,
 void CSymDjvuContainer::HandleResourceChange( TInt aType )
 {
 	CCoeControl::HandleResourceChange( aType );
-	
-	if (iFullScreenMode)
-	{
-		SetExtentToWholeScreen();
-	} else {
-		SetRect(iAvkonViewAppUi->View( TUid::Uid( ESymDjvuContainerViewId ) )->ClientRect());
-	}
-
-	CursorPositionCorrection();
-	DrawNow();
-
+	EnableFullScreenMode(iFullScreenMode);
 }
 				
 /**
