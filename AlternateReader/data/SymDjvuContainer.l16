@@ -25,6 +25,11 @@ CHARACTER_SET UTF8
 #define qtn_select_file_open "Открыть"
 #define qtn_select_file_back "Назад"
 
+#define qtn_choose_toc "Оглавление"
+#define qtn_choose_bookmarks "Закладки"
+#define qtn_choose_find "Найти"
+#define qtn_choose_library "История чтения"
+
 #define qtn_about_dialog_title "О программе"
 #define qtn_about_dialog_text "AlternateReader 1.0.8(5)\n\nАвторы: Василий Харитонов" \
 "\nhttp://sourceforge.net/projects/alternatedjvu/," \

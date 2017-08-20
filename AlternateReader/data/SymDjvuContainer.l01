@@ -24,7 +24,12 @@ CHARACTER_SET UTF8
 #define qtn_select_file_select "Select"
 #define qtn_select_file_open "Open"
 #define qtn_select_file_back "Back"
-	
+
+#define qtn_choose_toc "Table of contents"
+#define qtn_choose_bookmarks "Bookmarks"
+#define qtn_choose_find "Find"
+#define qtn_choose_library "Reader's history"
+
 #define qtn_about_dialog_title "About"
 #define qtn_about_dialog_text "AlternateReader 1.0.8(5)\n\nAutors: Vasily Kharitonov" \
 "\nhttp://sourceforge.net/projects/alternatedjvu/," \

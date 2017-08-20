@@ -1,4 +1,5 @@
 
+
 // localized strings for language: FR French (02)
 CHARACTER_SET UTF8
 
@@ -15,13 +16,21 @@ CHARACTER_SET UTF8
 #define STR_SymDjvuContainerViewSelectMemory "Sélectionner la mémoire :" 
 #define STR_SymDjvuContainerViewExit "Quitter" 
 #define STR_SymDjvuContainerViewAbout "À propos..." 
+
 #define qtn_choose_page "Choisir la page" 
 #define qtn_choose_page_maximum "Total" 
-#define qtn_choose_page_pages "pages" 
+#define qtn_choose_page_pages "pages"
+
 #define qtn_select_file_select_file "Sélectionner le fichier" 
 #define qtn_select_file_select "Sélectionner" 
 #define qtn_select_file_open "Ouvrir" 
-#define qtn_select_file_back "Retour" 
+#define qtn_select_file_back "Retour"
+
+#define qtn_choose_toc "Table of contents"
+#define qtn_choose_bookmarks "Bookmarks"
+#define qtn_choose_find "Find"
+#define qtn_choose_library "Reader's history"
+
 #define qtn_about_dialog_title "À propos" 
 #define qtn_about_dialog_text "AlternateReader 1.0.8(5)\n\nAuteur: Vasily Kharitonov" \
 "\nhttp://sourceforge.net/projects/alternatedjvu/," \

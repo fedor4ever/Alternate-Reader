@@ -1,3 +1,4 @@
+
 // localized strings for language: PL Polish (27)
 CHARACTER_SET UTF8
 
@@ -23,6 +24,11 @@ CHARACTER_SET UTF8
 #define qtn_select_file_select "Wybierz"
 #define qtn_select_file_open "Otworz"
 #define qtn_select_file_back "Wroc"
+
+#define qtn_choose_toc "Table of contents"
+#define qtn_choose_bookmarks "Bookmarks"
+#define qtn_choose_find "Find"
+#define qtn_choose_library "Reader's history"
 
 #define qtn_about_dialog_title "O programie"
 #define qtn_about_dialog_text "AlternateReader 1.0.8(5)\n\nAutor: Vasily Kharitonov" \
