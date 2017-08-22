@@ -108,67 +108,68 @@ TUid CSymDjvuContainerView::Id() const
  * @param aCommand command id to be handled
  */
 void CSymDjvuContainerView::HandleCommandL( TInt aCommand )
+{
+	TBool commandHandled = EFalse;
+	switch ( aCommand )
 	{
-
-		TBool commandHandled = EFalse;
-		switch ( aCommand )
-			{
-			
-			case EOpenFile:
-				commandHandled = HandleOpenFileMenuItemSelectedL();
-				break;
-			case EGoToPage:
-				commandHandled = HandleGoToPageL();
-				break;		
-			case EZoomIn:
-				commandHandled = HandleZoomInItemSelectedL();
-				break;		
-			case EZoomOut:
-				commandHandled = HandleZoomOutItemSelectedL();
-				break;		
-			case EZoomWidth:
-				commandHandled = HandleZoomWidthItemSelectedL();
-				break;		
-			case EFitActualSize:
-				commandHandled = HandleFitActualSizeItemSelectedL();
-				break;	
-			case EExitFullscreen: // FALLTHRU
-			case EFullscreen:
-				commandHandled = HandleSetFullScreenModeL();
-				break;		
-			case EButtonDown:
-				commandHandled = HandleDownButtonPressedL();
-				break;		
-			case EButtonUp:
-				commandHandled = HandleUpButtonPressedL();
-				break;		
-			case EExit:
-				commandHandled = HandleExitItemSelectedL();
-				break;		
-			case EAbout:
-				commandHandled = HandleAboutItemSelectedL();
-				break;
-			case EFindText:
-				break;
-			case EOpenLibrary:
-				break;
-			case EOpenBookmarks:
-				break;
-			case EOpenTOC:
-				break;
-			default:
-				break;
-			}
-			
-			if ( !commandHandled ) 
-			{
-				if ( aCommand == EAknSoftkeyExit )
-				{
-					HandleExitItemSelectedL();
-				}
-			}
-	
+		case EOpenFile:
+			commandHandled = HandleOpenFileMenuItemSelectedL();
+			break;
+		case EGoToPage:
+			commandHandled = HandleGoToPageL();
+			break;		
+		case EZoomIn:
+			commandHandled = HandleZoomInItemSelectedL();
+			break;		
+		case EZoomOut:
+			commandHandled = HandleZoomOutItemSelectedL();
+			break;		
+		case EZoomWidth:
+			commandHandled = HandleZoomWidthItemSelectedL();
+			break;		
+		case EFitActualSize:
+			commandHandled = HandleFitActualSizeItemSelectedL();
+			break;	
+		case EExitFullscreen: // FALLTHRU
+		case EFullscreen:
+			commandHandled = HandleSetFullScreenModeL();
+			break;		
+		case EButtonDown:
+			commandHandled = HandleDownButtonPressedL();
+			break;		
+		case EButtonUp:
+			commandHandled = HandleUpButtonPressedL();
+			break;		
+		case EExit:
+			commandHandled = HandleExitItemSelectedL();
+			break;		
+		case EAbout:
+			commandHandled = HandleAboutItemSelectedL();
+			break;
+		case EFindText:
+			commandHandled = HandleFindText();
+			break;
+		case EOpenLibrary:
+			commandHandled = DoNothing();
+			break;
+		case EOpenBookmarks:
+			commandHandled = DoNothing();
+			break;
+		case EOpenTOC:
+			commandHandled = DoNothing();
+			break;
+		default:
+		break;
 	}
+
+	if ( !commandHandled ) 
+	{
+		if ( aCommand == EAknSoftkeyExit )
+		{
+			HandleExitItemSelectedL();
+		}
+	}
+}
 
 /**
  *	Handles user actions during activation of the view, 
@@ -235,18 +236,55 @@ void CSymDjvuContainerView::HandleStatusPaneSizeChange()
 
 #ifdef _TOUCH_SUPPORT_ 
 void CSymDjvuContainerView::DynInitMenuPaneL(TInt aResourceId, CEikMenuPane* aMenuPane)
-  {
+{
+	TBool isOpen = iDjVuReader->IsOpen(), isStarted = iRenderThreadManager->iThreadStarted;
     if (R_SYM_DJVU_CONTAINER_MENU_PANE1_MENU_PANE == aResourceId)
-      {
-		aMenuPane->SetItemDimmed(EOpenFile,                                iRenderThreadManager->iThreadStarted);
-		aMenuPane->SetItemDimmed(EZoomIn,        !iDjVuReader->IsOpen() || iRenderThreadManager->iThreadStarted);
-		aMenuPane->SetItemDimmed(EZoomOut,       !iDjVuReader->IsOpen() || iRenderThreadManager->iThreadStarted);
-		aMenuPane->SetItemDimmed(EZoomWidth,     !iDjVuReader->IsOpen() || iRenderThreadManager->iThreadStarted);
-		aMenuPane->SetItemDimmed(EFitActualSize, !iDjVuReader->IsOpen() || iRenderThreadManager->iThreadStarted);
-		aMenuPane->SetItemDimmed(EGoToPage,      !iDjVuReader->IsOpen() || iRenderThreadManager->iThreadStarted);
-      }
-  }
+	{
+		aMenuPane->SetItemDimmed(EOpenFile,                 isStarted);
+		aMenuPane->SetItemDimmed(EZoomIn,        !isOpen || isStarted);
+		aMenuPane->SetItemDimmed(EZoomOut,       !isOpen || isStarted);
+		aMenuPane->SetItemDimmed(EGoToPage,      !isOpen || isStarted);
+	}
+	if(R_ADVANCED_SUBMENU == aResourceId)
+	{
+		aMenuPane->SetItemDimmed(EZoomWidth,     !isOpen || isStarted);
+		aMenuPane->SetItemDimmed(EFitActualSize, !isOpen || isStarted);
+		aMenuPane->SetItemDimmed(EOpenTOC,		 !isOpen || isStarted);
+		aMenuPane->SetItemDimmed(EOpenBookmarks, !isOpen || isStarted);
+		aMenuPane->SetItemDimmed(EFindText,		 !isOpen || isStarted);
+	}
+}
 #endif
+
+TBool CSymDjvuContainerView::HandleFindText()
+{
+	if (iDjVuReader && iDjVuReader->IsOpen())
+		{
+			TBuf<50> title;
+			TBuf<50> result;
+			
+			result.Zero();
+			title.Zero();
+			
+			HBufC* msg = iEikonEnv->AllocReadResourceLC(R_FIND_TEXT);
+			title.Append(*msg);
+			CleanupStack::PopAndDestroy(msg);
+			
+			CAknTextQueryDialog* dlg = CAknTextQueryDialog::NewL(result);
+			dlg->PrepareLC(R_FIND_DATA_QUERY);
+			
+			CleanupStack::PushL(dlg);
+			dlg->SetPromptL(title); // XXX: Why SetPromptL works as SetTitleL() on s60v5sdk?
+//			dlg->SetTitleL(title); // XXX: works as SetPromptL() lol
+			CleanupStack::Pop(); // queryDialog
+
+			if(EAknSoftkeyOk == dlg->RunLD())
+			{
+				iDjVuReader->FindText(title);
+			}
+		}
+	return ETrue;
+}
 
 void CSymDjvuContainerView::SetupStatusPaneL()
 	{
@@ -443,7 +481,6 @@ TBool CSymDjvuContainerView::HandleOpenFileMenuItemSelectedL()
 			} while (!result);
 	
 		return result;
-	
 	}
 
 TBool CSymDjvuContainerView::HandleGoToPageL()
@@ -495,50 +532,45 @@ TBool CSymDjvuContainerView::HandleGoToPageL()
 				iRenderThreadManager->RenderCurrentPage();
 		
 			}
-
 		}       	
-		
 		return ETrue;
 	}
 
 TBool CSymDjvuContainerView::HandleZoomInItemSelectedL()
+{
+	if (iDjVuReader && iDjVuReader->IsOpen())
 	{
-		if (iDjVuReader && iDjVuReader->IsOpen())
-		{
-			iRenderThreadManager->RenderIncrementZoom();
-		}       	
-		
-		return ETrue;
-	}
+		iRenderThreadManager->RenderIncrementZoom();
+	}       	
+	return ETrue;
+}
 
 TBool CSymDjvuContainerView::HandleZoomOutItemSelectedL()
+{
+	if (iDjVuReader && iDjVuReader->IsOpen())
 	{
-		if (iDjVuReader && iDjVuReader->IsOpen())
-		{
-			iRenderThreadManager->RenderDecrementZoom();
-		}       	
-		
-		return ETrue;
-	}
+		iRenderThreadManager->RenderDecrementZoom();
+	}       	
+	return ETrue;
+}
 
 TBool CSymDjvuContainerView::HandleZoomWidthItemSelectedL()
+{
+	if (iDjVuReader && iDjVuReader->IsOpen())
 	{
-		if (iDjVuReader && iDjVuReader->IsOpen())
-		{
-			iRenderThreadManager->RenderZoomWidth();
-		}
-		
-		return ETrue;
+		iRenderThreadManager->RenderZoomWidth();
 	}
+	return ETrue;
+}
 
 TBool CSymDjvuContainerView::HandleFitActualSizeItemSelectedL()
+{
+	if (iDjVuReader && iDjVuReader->IsOpen())
 	{
-		if (iDjVuReader && iDjVuReader->IsOpen())
-		{
-			iRenderThreadManager->RenderFitActualSize();
-		}
-		return ETrue;
+		iRenderThreadManager->RenderFitActualSize();
 	}
+	return ETrue;
+}
 
 TBool CSymDjvuContainerView::HandleSetFullScreenModeL()
 {
@@ -558,26 +590,26 @@ TBool CSymDjvuContainerView::HandleSetFullScreenModeL()
 }
 
 TBool CSymDjvuContainerView::HandleExitItemSelectedL()
-	{
-		AppUi()->HandleCommandL( EEikCmdExit );
-		return ETrue;
-	}
+{
+	AppUi()->HandleCommandL( EEikCmdExit );
+	return ETrue;
+}
 
 TBool CSymDjvuContainerView::HandleAboutItemSelectedL()
-	{
-		
-		CAknMessageQueryDialog* dlg = new (ELeave) CAknMessageQueryDialog();
-		dlg->PrepareLC(R_ABOUT_QUERY_DIALOG);
-		HBufC* title = iEikonEnv->AllocReadResourceLC(R_ABOUT_DIALOG_TITLE);
-		dlg->QueryHeading()->SetTextL(*title);
-		CleanupStack::PopAndDestroy(); //title
-		HBufC* msg = iEikonEnv->AllocReadResourceLC(R_ABOUT_DIALOG_TEXT);
-		dlg->SetMessageTextL(*msg);
-		CleanupStack::PopAndDestroy(); //msg
-		dlg->RunLD();
-	
-		return ETrue;
-	}
+{
+
+	CAknMessageQueryDialog* dlg = new (ELeave) CAknMessageQueryDialog();
+	dlg->PrepareLC(R_ABOUT_QUERY_DIALOG);
+	HBufC* title = iEikonEnv->AllocReadResourceLC(R_ABOUT_DIALOG_TITLE);
+	dlg->QueryHeading()->SetTextL(*title);
+	CleanupStack::PopAndDestroy(); //title
+	HBufC* msg = iEikonEnv->AllocReadResourceLC(R_ABOUT_DIALOG_TEXT);
+	dlg->SetMessageTextL(*msg);
+	CleanupStack::PopAndDestroy(); //msg
+	dlg->RunLD();
+
+	return ETrue;
+}
 
 TBool CSymDjvuContainerView::HandleUpButtonPressedL()
 	{
@@ -631,6 +663,6 @@ TBool CSymDjvuContainerView::HandleDownButtonPressedL()
 	}
 
 void CSymDjvuContainerView::SaveSettings()
-	{
-		iRenderThreadManager->iBookSettings->SaveSettings();
-	}
+{
+	iRenderThreadManager->iBookSettings->SaveSettings();
+}

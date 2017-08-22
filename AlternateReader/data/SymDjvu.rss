@@ -20,18 +20,22 @@ NAME SYMD
 RESOURCE RSS_SIGNATURE
 	{
 	}
+
 RESOURCE TBUF
 	{
 	buf = STR_SymDjvuApplicationName;
 	}
+
 RESOURCE EIK_APP_INFO r_application_sym_djvu_app_ui
 	{
 	cba = R_AVKON_SOFTKEYS_OPTIONS_EXIT;
 	status_pane = r_application_status_pane;
 	}
+
 RESOURCE STATUS_PANE_APP_MODEL r_application_status_pane
 	{
 	}
+
 RESOURCE LOCALISABLE_APP_INFO r_localisable_app_info
 	{
 	short_caption = STR_SymDjvuApplicationName;
@@ -42,6 +46,7 @@ RESOURCE LOCALISABLE_APP_INFO r_localisable_app_info
 		icon_file = "\\resource\\apps\\SymDjvu_aif.mif";
 		};
 	}
+
 RESOURCE TBUF r_application_akn_view_reference1
 	{
 	}

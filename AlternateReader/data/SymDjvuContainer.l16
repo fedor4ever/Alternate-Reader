@@ -11,7 +11,6 @@ CHARACTER_SET UTF8
 #define STR_SymDjvuContainerViewFitActualSize "Актуальный размер"
 #define STR_SymDjvuContainerViewFullscreen "Полноэкранный режим"
 #define STR_SymDjvuContainerViewExitFullscreen "Обычный режим"
-#define STR_SymDjvuContainerViewToggleHorizontalScroll "Блокировать по горизонтали"
 #define STR_SymDjvuContainerViewSelectMemory "Выбор памяти:"
 #define STR_SymDjvuContainerViewExit "Выход"
 #define STR_SymDjvuContainerViewAbout "О программе..."
@@ -25,10 +24,14 @@ CHARACTER_SET UTF8
 #define qtn_select_file_open "Открыть"
 #define qtn_select_file_back "Назад"
 
-#define qtn_choose_toc "Оглавление"
-#define qtn_choose_bookmarks "Закладки"
-#define qtn_choose_find "Найти"
-#define qtn_choose_library "История чтения"
+#define STR_SymDjvuContainerViewAdvancedOption "Дополнительно"
+
+#define STR_SymDjvuContainerViewTOC "Оглавление"
+#define STR_SymDjvuContainerViewBookmarks "Закладки"
+#define STR_SymDjvuContainerViewFindText "Найти в книге"
+#define STR_SymDjvuContainerViewLibrary "История чтения"
+
+#define qtn_find_text "Искать в книге:"
 
 #define qtn_about_dialog_title "О программе"
 #define qtn_about_dialog_text "AlternateReader 1.0.8(5)\n\nАвторы: Василий Харитонов" \

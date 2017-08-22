@@ -183,3 +183,14 @@ void PdfReader::RenderPageWithoutBitmapCopyL(TInt aPage)
 		iBitmapCopyWaiting = ETrue;
 		
 	}
+
+void PdfReader::FindText(const TDesC & str)
+{
+}
+
+
+void PdfReader::LoadTOC()
+{
+}
+
+

@@ -68,6 +68,8 @@ protected:
 	TBool HandleSetFullScreenModeL();
 	TBool HandleExitItemSelectedL();
 	TBool HandleAboutItemSelectedL();
+	TBool HandleFindText();
+	TBool DoNothing(){return ETrue;}
 
 private:
 	

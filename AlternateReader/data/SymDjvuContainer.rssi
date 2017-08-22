@@ -3,7 +3,7 @@
  Name        : SymDjvuContainer.rssi
  Author      : midday
  Copyright   : All right reserved by Midday ЬРав 2009
- Description : 
+ Description :
 ========================================================================
 */
 #include "SymDjvuContainer.hrh"
@@ -46,7 +46,7 @@ RESOURCE MENU_PANE r_sym_djvu_container_menu_pane1_menu_pane
 	{
 	items =
 		{
-		
+
 		MENU_ITEM
 			{
 				txt = STR_SymDjvuContainerViewOpenFile;
@@ -65,6 +65,40 @@ RESOURCE MENU_PANE r_sym_djvu_container_menu_pane1_menu_pane
 			},
 		MENU_ITEM
 			{
+				cascade = r_advanced_submenu;
+				txt = STR_SymDjvuContainerViewAdvancedOption;
+			},
+
+		MENU_ITEM
+			{
+				txt = STR_SymDjvuContainerViewFullscreen;
+				command = EFullscreen;
+			},
+		MENU_ITEM
+			{
+				txt = STR_SymDjvuContainerViewGoToPage;
+				command = EGoToPage;
+			},
+		MENU_ITEM
+			{
+				txt = STR_SymDjvuContainerViewAbout;
+				command = EAbout;
+			},
+		MENU_ITEM
+			{
+				txt = STR_SymDjvuContainerViewExit;
+				command = EExit;
+			}
+
+		};
+	}
+
+RESOURCE MENU_PANE r_advanced_submenu
+{
+	items =
+		{
+		MENU_ITEM
+			{
 				txt = STR_SymDjvuContainerViewZoomWidth;
 				command = EZoomWidth;
 			},
@@ -75,27 +109,28 @@ RESOURCE MENU_PANE r_sym_djvu_container_menu_pane1_menu_pane
 			},
 		MENU_ITEM
 			{
-				txt = STR_SymDjvuContainerViewFullscreen;
-				command = EFullscreen; 
+				txt = STR_SymDjvuContainerViewLibrary;
+				command = EOpenLibrary;
 			},
 		MENU_ITEM
 			{
-				txt = STR_SymDjvuContainerViewGoToPage;
-				command = EGoToPage; 
+				txt = STR_SymDjvuContainerViewTOC;
+				command = EOpenTOC;
 			},
 		MENU_ITEM
 			{
-				txt = STR_SymDjvuContainerViewAbout;
-				command = EAbout; 
+				txt = STR_SymDjvuContainerViewBookmarks;
+				command = EOpenBookmarks;
 			},
 		MENU_ITEM
 			{
-				txt = STR_SymDjvuContainerViewExit;
-				command = EExit; 
-			}			
-			
+				txt = STR_SymDjvuContainerViewFindText;
+				command = EFindText;
+			}
+
 		};
-	}
+}
+
 RESOURCE DIALOG r_sym_djvu_container_wait_dialog
 	{
 	flags = EAknWaitNoteFlags;
@@ -148,23 +183,23 @@ RESOURCE STYLUS_POPUP_MENU r_stylus_popup_menu
 				},
 			STYLUS_POPUP_MENU_ITEM
 				{
-					txt = STR_SymDjvuContainerViewToggleHorizontalScroll;
-					command = EFixVertically;
+					txt = STR_SymDjvuContainerViewFindText;
+					command = EFindText;
 				},
 			STYLUS_POPUP_MENU_ITEM
 				{
 					txt = STR_SymDjvuContainerViewExitFullscreen;
-					command = EExitFullscreen; 
+					command = EExitFullscreen;
 				},
 			STYLUS_POPUP_MENU_ITEM
 				{
 					txt = STR_SymDjvuContainerViewGoToPage;
-					command = EGoToPage; 
+					command = EGoToPage;
 				},
 			STYLUS_POPUP_MENU_ITEM
 				{
 					txt = STR_SymDjvuContainerViewExit;
-					command = EExit; 
+					command = EExit;
 				}
 		};
 	}
@@ -197,6 +232,7 @@ RESOURCE DIALOG r_sym_djvu_container_page_num
 			}
 		};
 	}
+
 RESOURCE TBUF r_sym_djvu_container_num_of_page
 	{
 	buf = "";
@@ -228,6 +264,31 @@ RESOURCE DIALOG r_about_query_dialog
 		};
 	}
 
+RESOURCE DIALOG r_find_data_query
+{
+	flags = EGeneralQueryFlags;
+	buttons = R_AVKON_SOFTKEYS_SHOW_CANCEL;
+	items =
+		{
+		DLG_LINE
+			{
+				type = EAknCtQuery;
+				id = EGeneralQuery;
+				control = AVKON_DATA_QUERY
+					{
+						layout = EDataLayout;
+						label = ""; // dialof title
+						control = EDWIN
+							{
+								width = 5;
+								lines = 1;
+								maxlength = 15;
+							};
+					};
+			}
+		};
+}
+
 RESOURCE TBUF32 r_about_dialog_title
 	{
 		buf = qtn_about_dialog_title;
@@ -252,6 +313,10 @@ RESOURCE TBUF r_choose_page_pages
 		buf = qtn_choose_page_pages;
 	}
 
+RESOURCE TBUF r_find_text
+	{
+		buf = qtn_find_text;
+	}
 
 RESOURCE TBUF r_select_file_select_file
 	{

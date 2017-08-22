@@ -12,7 +12,7 @@
 &EN,FR,RU,PL
 
 ; standard SIS file header
-#{"AlternateReader","AlternateReader","AlternateReader","AlternateReader"},(0xE1A0B4F1),1,8,4
+#{"AlternateReader","AlternateReader","AlternateReader","AlternateReader"},(0xE1A0B4F1),1,8,5
 
 ;Localised Vendor name
 %{"Kharitonov","Kharitonov","Kharitonov","Kharitonov"}

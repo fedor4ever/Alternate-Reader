@@ -10,7 +10,6 @@ CHARACTER_SET UTF8
 #define STR_SymDjvuContainerViewZoomWidth "Fit Width"
 #define STR_SymDjvuContainerViewFitActualSize "Fit Actual Size"
 #define STR_SymDjvuContainerViewFullscreen "Fullscreen mode"
-#define STR_SymDjvuContainerViewToggleHorizontalScroll "Toggle side scroll"
 #define STR_SymDjvuContainerViewExitFullscreen "Normal mode"
 #define STR_SymDjvuContainerViewSelectMemory "Select memory:"
 #define STR_SymDjvuContainerViewExit "Exit"
@@ -25,10 +24,14 @@ CHARACTER_SET UTF8
 #define qtn_select_file_open "Open"
 #define qtn_select_file_back "Back"
 
-#define qtn_choose_toc "Table of contents"
-#define qtn_choose_bookmarks "Bookmarks"
-#define qtn_choose_find "Find"
-#define qtn_choose_library "Reader's history"
+#define STR_SymDjvuContainerViewAdvancedOption "Advanced"
+
+#define STR_SymDjvuContainerViewTOC "Table of contents"
+#define STR_SymDjvuContainerViewBookmarks "Bookmarks"
+#define STR_SymDjvuContainerViewFindText "Search text"
+#define STR_SymDjvuContainerViewLibrary "Reader's history"
+
+#define qtn_find_text "Search in text for:"
 
 #define qtn_about_dialog_title "About"
 #define qtn_about_dialog_text "AlternateReader 1.0.8(5)\n\nAutors: Vasily Kharitonov" \
