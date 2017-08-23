@@ -59,17 +59,16 @@ protected:
 	void DynInitMenuPaneL(TInt aResourceId, CEikMenuPane* aMenuPane);
 	#endif
 	
-	TBool HandleOpenFileMenuItemSelectedL();
-	TBool HandleGoToPageL();
-	TBool HandleZoomInItemSelectedL();
-	TBool HandleZoomOutItemSelectedL();
-	TBool HandleZoomWidthItemSelectedL();
-	TBool HandleFitActualSizeItemSelectedL();
-	TBool HandleSetFullScreenModeL();
-	TBool HandleExitItemSelectedL();
-	TBool HandleAboutItemSelectedL();
-	TBool HandleFindText();
-	TBool DoNothing(){return ETrue;}
+	void HandleOpenFileMenuItemSelectedL();
+	void HandleGoToPageL();
+	void HandleZoomInItemSelectedL();
+	void HandleZoomOutItemSelectedL();
+	void HandleZoomWidthItemSelectedL();
+	void HandleFitActualSizeItemSelectedL();
+	void HandleSetFullScreenModeL();
+	void HandleAboutItemSelectedL();
+	void HandleFindText();
+	void DoNothing(){}
 
 private:
 	

@@ -19,8 +19,6 @@ enum TSymDjvuContainerViewCommands
 	EExitFullscreen,
 	
 	EGoToPage,
-	
-	EExit,
 	EAbout,
 	
 	EButtonDown,

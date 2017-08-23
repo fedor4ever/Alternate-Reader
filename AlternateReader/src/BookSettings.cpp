@@ -140,16 +140,17 @@ void CBookSettings::LoadSettings(TFileName fileName)
 	}
 
 void CBookSettings::ApplyCurrentSettings()
-	{
-		iContainer->iCursorPosition.iX = iCursorPositionX;
-		iContainer->iCursorPosition.iY = iCursorPositionY;
-		iContainer->EnableFullScreenMode(iFullScreenMode);
-	}
+{
+	iContainer->iCursorPosition.iX = iCursorPositionX;
+	iContainer->iCursorPosition.iY = iCursorPositionY;
+	iContainer->EnableFullScreenMode(iFullScreenMode);
+}
 
 void CBookSettings::SaveSettings()
 	{
+		if(iBookName.Length() == 0) return;
 		TParse parse;
-	
+
 		// Connecting to file system
 		RFs fs;
 		User::LeaveIfError(fs.Connect());
@@ -163,7 +164,6 @@ void CBookSettings::SaveSettings()
 		
 		// Catalog with drive
 		RProcess process;
-		TPtrC drive = process.FileName().Left(2);
 		TBuf<KMaxFileName> name;
 		fs.PrivatePath(name);
 		//name.Insert(0, drive);
@@ -192,32 +192,32 @@ void CBookSettings::SaveSettings()
 		}				
 		CleanupStack::PopAndDestroy(&fws);
 		CleanupStack::PopAndDestroy(&fs);
-		
 	}
 
 void CBookSettings::SaveLastOpenFile(TFileName aFileName)
-	{
-		// Connecting to file system
-		RFs fs;
-		User::LeaveIfError(fs.Connect());
-		CleanupClosePushL(fs);
+{
+	if(aFileName.Length()==0) return;
+	
+	// Connecting to file system
+	RFs fs;
+	User::LeaveIfError(fs.Connect());
+	CleanupClosePushL(fs);
 
-		// Private catalog with drive
-		RProcess process;
-		TPtrC drive = process.FileName().Left(2);
-		TBuf<KMaxFileName> name;
-		fs.PrivatePath(name);
-		//name.Insert(0, drive);
-		fs.MkDir(name);
-		name.Append(_L("LastDirectory.dat"));
-		
-		RFileWriteStream fws;
-		User::LeaveIfError(fws.Replace(fs, name, EFileWrite));
-		CleanupClosePushL(fws);
-		fws << aFileName; 
-		CleanupStack::PopAndDestroy(&fws);
-		CleanupStack::PopAndDestroy(&fs);
-	}
+	// Private catalog with drive
+	RProcess process;
+	TBuf<KMaxFileName> name;
+	fs.PrivatePath(name);
+	//name.Insert(0, drive);
+	fs.MkDir(name);
+	name.Append(_L("LastDirectory.dat"));
+	
+	RFileWriteStream fws;
+	User::LeaveIfError(fws.Replace(fs, name, EFileWrite));
+	CleanupClosePushL(fws);
+	fws << aFileName; 
+	CleanupStack::PopAndDestroy(&fws);
+	CleanupStack::PopAndDestroy(&fs);
+}
 
 TBool CBookSettings::LoadLastDirectory(TFileName& aLastDirectory)
 	{
@@ -228,7 +228,6 @@ TBool CBookSettings::LoadLastDirectory(TFileName& aLastDirectory)
 	
 		// Private catalog with drive
 		RProcess process;
-		TPtrC drive = process.FileName().Left(2);
 		TBuf<KMaxFileName> name;
 		fs.PrivatePath(name);
 		//name.Insert(0, drive);
@@ -277,7 +276,6 @@ TBool CBookSettings::LoadLastOpenFile(TFileName& aLastFile)
 	
 		// Private catalog with drive
 		RProcess process;
-		TPtrC drive = process.FileName().Left(2);
 		TBuf<KMaxFileName> name;
 		fs.PrivatePath(name);
 		//name.Insert(0, drive);

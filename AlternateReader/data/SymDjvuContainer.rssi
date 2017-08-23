@@ -87,7 +87,7 @@ RESOURCE MENU_PANE r_sym_djvu_container_menu_pane1_menu_pane
 		MENU_ITEM
 			{
 				txt = STR_SymDjvuContainerViewExit;
-				command = EExit;
+				command = EEikCmdExit;
 			}
 
 		};
@@ -199,7 +199,7 @@ RESOURCE STYLUS_POPUP_MENU r_stylus_popup_menu
 			STYLUS_POPUP_MENU_ITEM
 				{
 					txt = STR_SymDjvuContainerViewExit;
-					command = EExit;
+					command = EEikCmdExit;
 				}
 		};
 	}
