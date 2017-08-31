@@ -263,14 +263,13 @@ void CSymDjvuContainerView::HandleFindText()
 		dlg->PrepareLC(R_FIND_DATA_QUERY);
 		
 		CleanupStack::PushL(dlg);
-		dlg->SetPromptL(title); // XXX: Why SetPromptL works as SetTitleL() on s60v5sdk?
-//			dlg->SetTitleL(title); // XXX: works as SetPromptL() lol
+		dlg->SetPromptL(title); // XXX: lol: SetPromptL() works as SetTitleL()
+//		and SetTitleL() works as SetPromptL() because AVKON_HEADING not set
+//			dlg->SetTitleL(title);
 		CleanupStack::Pop(); // queryDialog
 
 		if(EAknSoftkeyOk == dlg->RunLD())
-		{
 			iDjVuReader->FindText(title);
-		}
 	}
 }
 
