@@ -1,0 +1,16 @@
+/*
+ * plugin_uids.h
+ *
+ *  Created on: 28.9.2019
+ *      Author: Administrator
+ */
+
+#ifndef PLUGIN_UIDS_H_
+#define PLUGIN_UIDS_H_
+
+// UID3 for DLL
+#define ECOM_DLL_UID3 0
+// define implementation_uid and TImplementationProxy::iImplementationUid
+#define IMPLEMENTATION_PROXY_ENTRY_UID 0
+
+#endif /* PLUGIN_UIDS_H_ */

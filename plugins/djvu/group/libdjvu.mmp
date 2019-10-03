@@ -1,0 +1,30 @@
+
+TARGETTYPE LIB
+TARGET libdjvu.lib
+
+SYSTEMINCLUDE \epoc32\include
+SYSTEMINCLUDE \epoc32\include\variant
+SYSTEMINCLUDE \epoc32\include\ecom
+SYSTEMINCLUDE \epoc32\include\stdapis
+SYSTEMINCLUDE \epoc32\include\stdapis\sys
+SYSTEMINCLUDE \epoc32\include\stdapis\stlport
+
+USERINCLUDE ..\libdjvu 
+
+MACRO UNIX HAS_WCHAR HAVE_STDINT_H HAVE_MBSTATE_T HAVE_PTHREAD HAVE_EXCEPTIONS
+MACRO HAVE_LONG_LONG_INT SYMBIAN_OE_POSIX_SIGNALS
+
+SOURCEPATH ..\libdjvu
+SOURCE Arrays.cpp ByteStream.cpp DataPool.cpp DjVmDir.cpp DjVmDir0.cpp
+SOURCE DjVmDoc.cpp DjVmNav.cpp DjVuAnno.cpp DjVuDocument.cpp
+SOURCE DjVuErrorList.cpp DjVuFile.cpp DjVuFileCache.cpp DjVuGlobal.cpp
+SOURCE DjVuGlobalMemory.cpp DjVuImage.cpp DjVuInfo.cpp DjVuMessage.cpp
+SOURCE DjVuMessageLite.cpp DjVuNavDir.cpp DjVuPalette.cpp DjVuPort.cpp
+SOURCE DjVuText.cpp GBitmap.cpp GContainer.cpp GException.cpp
+SOURCE GIFFManager.cpp GMapAreas.cpp GOS.cpp GPixmap.cpp GRect.cpp
+SOURCE GScaler.cpp GSmartPointer.cpp GString.cpp GThreads.cpp GURL.cpp
+SOURCE GUnicode.cpp IFFByteStream.cpp IW44EncodeCodec.cpp IW44Image.cpp
+SOURCE JB2EncodeCodec.cpp JB2Image.cpp JPEGDecoder.cpp MMRDecoder.cpp
+SOURCE UnicodeByteStream.cpp XMLParser.cpp XMLTags.cpp ZPCodec.cpp
+SOURCE atomic.cpp ddjvuapi.cpp debug.cpp miniexp.cpp minilisp.cpp
+

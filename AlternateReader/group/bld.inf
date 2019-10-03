@@ -2,13 +2,9 @@
 PRJ_PLATFORMS
 WINSCW ARMV5 GCCE
 
-PRJ_EXPORTS
-
 PRJ_MMPFILES
 
 gnumakefile icons_aif_scalable_dc.mk
 
-
 SymDjvu.mmp
-../../poppler-0.57.0/symbian/poppler.mmp
-../../poppler-0.57.0/symbian/pdf-plugin.mmp
+

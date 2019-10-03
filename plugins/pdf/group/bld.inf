@@ -1,0 +1,9 @@
+
+PRJ_PLATFORMS
+WINSCW ARMV5 GCCE
+
+PRJ_MMPFILES
+
+poppler.mmp
+pdf_plugin.mmp
+pdf_recognizer.mmp

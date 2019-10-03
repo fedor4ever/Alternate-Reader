@@ -1,0 +1,31 @@
+#include <RegistryInfo.rh>
+#include "common.hrh"
+#include "plugin_uids.hrh"
+
+// Declares info for two implementations
+RESOURCE REGISTRY_INFO thePDF
+    {
+    // UID for the DLL
+    dll_uid = ECOM_DLL_UID3;
+    // Declare array of interface info
+    interfaces = 
+        {
+        INTERFACE_INFO
+            {
+            // UID of interface that is implemented
+            interface_uid = ALTERNATEREADER_interface_uid;
+            implementations = 
+                {
+                // Info for CImplementation1
+                IMPLEMENTATION_INFO
+                    {
+                    implementation_uid = IMPLEMENTATION_PROXY_ENTRY_UID;
+                    version_no = 1;
+                    display_name = "PDF plugin";
+                    default_data = "PDF";
+                    opaque_data = "";
+                    }
+                };
+            }
+        };
+    }

@@ -1,0 +1,9 @@
+
+PRJ_PLATFORMS
+WINSCW ARMV5 GCCE
+
+PRJ_MMPFILES
+
+libdjvu.mmp
+djvu_plugin.mmp
+djvu_recognizer.mmp

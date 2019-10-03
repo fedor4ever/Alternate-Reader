@@ -1,0 +1,29 @@
+TARGETTYPE PLUGIN
+TARGET AReader_pdf.dll
+
+#include "..\src\plugin_uids.hrh"
+UID 0x10009D8D ECOM_DLL_UID3
+
+LIBRARY libpthread.lib libc.lib euser.lib
+STATICLIBRARY libdjvu.lib
+
+SOURCEPATH ../src
+SOURCE CPDFDocument.cpp dllmain.cpp
+
+SYSTEMINCLUDE \epoc32\include
+SYSTEMINCLUDE \epoc32\include\variant
+SYSTEMINCLUDE \epoc32\include\ecom
+SYSTEMINCLUDE \epoc32\include\stdapis
+SYSTEMINCLUDE \epoc32\include\stdapis\sys
+SYSTEMINCLUDE \epoc32\include\stdapis\stlport
+
+USERINCLUDE ../../../AlternateReader/inc
+
+OPTION GCCE -fvisibility=hidden -fvisibility-inlines-hidden -DDEBUGLVL=4
+CAPABILITY NetworkServices ReadUserData WriteUserData
+
+MACRO UNIX HAS_WCHAR HAVE_STDINT_H HAVE_MBSTATE_T HAVE_PTHREAD HAVE_EXCEPTIONS
+MACRO HAVE_LONG_LONG_INT SYMBIAN_OE_POSIX_SIGNALS HAVE_NAMESPACES
+
+START RESOURCE pdf.rss
+END

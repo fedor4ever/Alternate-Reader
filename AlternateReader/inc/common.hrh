@@ -1,0 +1,14 @@
+/*
+ * common.hrh
+ *
+ *  Created on: 1.10.2019
+ *      Author: Administrator
+ */
+
+#ifndef COMMON_HRH_
+#define COMMON_HRH_
+
+// define interface_uid for seek and load plugins
+#define ALTERNATEREADER_interface_uid 0x10009DC1 
+
+#endif /* COMMON_HRH_ */
